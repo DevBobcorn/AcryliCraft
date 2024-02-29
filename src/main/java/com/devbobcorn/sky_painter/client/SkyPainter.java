@@ -2,6 +2,7 @@ package com.devbobcorn.sky_painter.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
 
 import com.devbobcorn.sky_painter.ExampleMod;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -38,12 +39,14 @@ public class SkyPainter {
         var g = 240F / 255F;
         var b = 241F / 255F;
 
-        //RenderSystem.clearColor(0, 0, 0, 0);
-        var mainRT = mc.getMainRenderTarget();
-        mainRT.setClearColor(r, g, b, 0);
-        mainRT.clear(Minecraft.ON_OSX);
+        RenderSystem.clearColor(0, 0, 0, 0F);
+        RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, false);
+
+        //var mainRT = mc.getMainRenderTarget();
+        //mainRT.setClearColor(r, g, b, 0);
+        //mainRT.clear(Minecraft.ON_OSX);
         // Bind write back to main target for upcoming rendering (solid block)
-        mainRT.bindWrite(false);
+        //mainRT.bindWrite(false);
         
         if (mc.level != null) {
             RenderSystem.setShaderFogColor(r, g, b);
