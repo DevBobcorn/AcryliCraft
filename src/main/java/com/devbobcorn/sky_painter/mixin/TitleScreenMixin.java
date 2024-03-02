@@ -1,5 +1,6 @@
 package com.devbobcorn.sky_painter.mixin;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,8 +31,7 @@ public class TitleScreenMixin {
     private long fadeInStart;
 
     @SuppressWarnings("null")
-    public void renderTex(PoseStack poseStack, ResourceLocation tex, int x, int y, int w, int h, int tex_w, int tex_h)
-    {
+    public void renderTex(PoseStack poseStack, ResourceLocation tex, int x, int y, int w, int h, int tex_w, int tex_h) {
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
@@ -42,8 +42,12 @@ public class TitleScreenMixin {
         GuiUtil.blit(poseStack, x, y, 0.0F, 0.0F, w, h, tex_w, tex_h);
     }
 
-    @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V", cancellable = true)
     @SuppressWarnings("null")
+    public void renderString(PoseStack poseStack, String str, int x, int y) {
+        GuiComponent.drawString(poseStack, s_minecraft.font, str, x, y, 16777215);
+    }
+
+    @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V", cancellable = true)
     public void renderHead(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
 
         RenderSystem.clearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -53,10 +57,15 @@ public class TitleScreenMixin {
             s_minecraft = Minecraft.getInstance();
 
         } else {
-            // Draw a string for debugging
+            // Draw debug info
             var windowId = ( (WindowHandle) (Object) (s_minecraft.getWindow()) ).GetGLFWId();
+            // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
+            boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
+            float opacity = GLFW.glfwGetWindowOpacity(windowId);
 
-            GuiComponent.drawString(poseStack, s_minecraft.font, "GLFW Window Id: " + String.valueOf(windowId), 0, 0, 16777215);
+            renderString(poseStack, "GLFW Window Id: " + String.valueOf(windowId), 2, 2);
+            renderString(poseStack, "TransparentBuffer Enabled: " + String.valueOf(tb), 2, 12);
+            renderString(poseStack, "Full-Window Opacity: " + opacity, 2, 22);
         }
 
         //var _this = (TitleScreen) (Object) this;
@@ -87,8 +96,7 @@ public class TitleScreenMixin {
             target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFunc(Lcom/mojang/blaze3d/platform/GlStateManager$SourceFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DestFactor;)V"
         )
     )
-    public void RenderSystem_blendFuncRedirect(SourceFactor src, DestFactor dst)
-    {
+    public void RenderSystem_blendFuncRedirect(SourceFactor src, DestFactor dst) {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     }
     */
@@ -103,8 +111,7 @@ public class TitleScreenMixin {
             target = "Lnet/minecraft/util/Mth;ceil(F)I"
         )
     )
-    public int Mth_ceilRedirect(float value)
-    {
+    public int Mth_ceilRedirect(float value) {
         return 0;
     }
     */
