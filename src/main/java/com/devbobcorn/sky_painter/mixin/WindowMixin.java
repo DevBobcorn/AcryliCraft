@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.devbobcorn.sky_painter.client.WindowHandle;
 import com.mojang.blaze3d.platform.DisplayData;
 import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
@@ -15,19 +17,25 @@ import com.mojang.blaze3d.platform.WindowEventHandler;
 import javax.annotation.Nullable;
 
 @Mixin(Window.class)
-public class WindowMixin {
+public class WindowMixin implements WindowHandle {
 
     @Shadow
     private static Logger LOGGER;
 
+    @Shadow
+    // GLFW Window id
+    private long window;
+
     @Redirect(
         method = "<init>",
+        remap = false, // Don't remap method name for constructors
         at = @At(
             value = "INVOKE",
-            target = "Lorg/lwjgl/glfw/GLFW;glfwDefaultWindowHints()V"
+            target = "Lorg/lwjgl/glfw/GLFW;glfwDefaultWindowHints()V",
+            remap = false // Don't remap method name for native methods
         )
     )
-    public void glfwWindowHintHook() {
+    public void glfwWindowHintRedirect() {
 
         LOGGER.info("Applying default window hints...");
 
@@ -64,5 +72,10 @@ public class WindowMixin {
             @Nullable String videoMode, String title, CallbackInfo callbackInfo) {
         
         LOGGER.info("Window created: " + title);
+    }
+
+    @Override
+    public long GetGLFWId() {
+        return window;
     }
 }

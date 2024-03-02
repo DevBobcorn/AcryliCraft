@@ -8,8 +8,7 @@
 	"client": [
 		"WindowMixin",
 		"TitleScreenMixin",
-		"PanoramaRendererMixin",
-		"VirtualScreenMixin"
+		"PanoramaRendererMixin"
 	],
 	"minVersion": "0.8"
 }
