@@ -15,8 +15,6 @@ import com.mojang.blaze3d.platform.DisplayData;
 import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
-import com.sun.jna.ptr.ByteByReference;
-import com.sun.jna.ptr.IntByReference;
 
 import javax.annotation.Nullable;
 
@@ -86,11 +84,6 @@ public class WindowMixin implements IWindow {
     @Override
     public long getWindowHandle() {
         return WindowUtil.getWindowHandle(window);
-    }
-
-    @Override
-    public void getLWA(IntByReference pcrKey, ByteByReference pbAlpha, IntByReference pdwFlags) {
-        WindowUtil.getLWA(getWindowHandle(), pcrKey, pbAlpha, pdwFlags);
     }
 
     private boolean setupAttempt = false;

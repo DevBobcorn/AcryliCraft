@@ -16,8 +16,6 @@ import com.devbobcorn.sky_painter.client.window.WindowUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sun.jna.ptr.ByteByReference;
-import com.sun.jna.ptr.IntByReference;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -70,24 +68,12 @@ public class TitleScreenMixin {
             var windowHandle = WindowUtil.getWindowHandle(windowId);
             // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
             boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
-            float opacity = GLFW.glfwGetWindowOpacity(windowId);
             boolean setupAttempt = iWindow.checkSetupAttempt();
-
-            var pcrKey = new IntByReference(42);
-            var pbAlpha = new ByteByReference((byte) 42);
-            var pdwFlags = new IntByReference((byte) 42);
-
-            iWindow.getLWA(pcrKey, pbAlpha, pdwFlags);
 
             renderString(poseStack, "GLFW Window Id: " + String.valueOf(windowId) + " Window Handle: " +
                     String.format("%016X", windowHandle), 2, 2);
             renderString(poseStack, "TransparentBuffer Enabled: " + String.valueOf(tb) +
                     " Setup Attempt: " + String.valueOf(setupAttempt), 2, 12);
-            renderString(poseStack, "Full-Window Opacity: " + opacity, 2, 22);
-
-            renderString(poseStack, "pcrKey: " + pcrKey.getValue(), 2, 32);
-            renderString(poseStack, "pbAlpha: " + pbAlpha.getValue(), 2, 42);
-            renderString(poseStack, "pdwFlags: " + pdwFlags.getValue(), 2, 52);
 
             if (!setupAttempt) {
                 var result = iWindow.trySetupWindow();
