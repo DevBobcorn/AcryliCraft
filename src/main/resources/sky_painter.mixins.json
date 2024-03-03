@@ -6,9 +6,11 @@
 	"mixins": [
 	],
 	"client": [
+		"MainMixin",
 		"WindowMixin",
 		"TitleScreenMixin",
-		"PanoramaRendererMixin"
+		"PanoramaRendererMixin",
+		"RenderTargetMixin"
 	],
 	"minVersion": "0.8"
 }
