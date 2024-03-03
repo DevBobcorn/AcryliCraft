@@ -6,7 +6,6 @@
 	"mixins": [
 	],
 	"client": [
-		"MainMixin",
 		"WindowMixin",
 		"TitleScreenMixin",
 		"PanoramaRendererMixin",

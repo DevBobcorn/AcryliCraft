@@ -95,9 +95,8 @@ public class TitleScreenMixin {
             }
         }
 
+        /*
         var _this = (TitleScreen) (Object) this;
-        //GuiUtil.fillGradient(poseStack, 0, 0, _this.width, _this.height, 400, (int) 0xFE000000, (int) 0x01000000);
-        //GuiUtil.fillGradient(poseStack, 0, 0, _this.width, _this.height, 400, (int) 0xFEFFFFFF, (int) 0x80AAAAAA);
 
         int halfWidth  = _this.width  >> 1;
         int halfHeight = _this.height >> 1;
@@ -106,6 +105,7 @@ public class TitleScreenMixin {
         GuiUtil.fillGradient(poseStack, halfWidth,       0, _this.width,   halfHeight, 400, (int) 0xFFFFFFFF, (int) 0xFFFFFFFF); // R-Upper, White Opaque
         GuiUtil.fillGradient(poseStack,      0, halfHeight,   halfWidth, _this.height, 400, (int) 0x80000000, (int) 0x80000000); // L-Lower, Black Transparent
         GuiUtil.fillGradient(poseStack, halfWidth, halfHeight, _this.width, _this.height, 400, (int) 0x80FFFFFF, (int) 0x80FFFFFF); // R-Lower, White Transparent
+        */
 
         //renderTex(poseStack, M_TEX, mouseX, mouseY, 98, 14, 128, 16);
     }
@@ -121,23 +121,6 @@ public class TitleScreenMixin {
             ScreenshotUtil.grabWithAlpha(s_minecraft.gameDirectory, "magic.png", s_minecraft.getMainRenderTarget());
         }
     }
-
-    /*
-    // Modify blendFunc before rendering
-    @Redirect(
-        method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
-        at = @At(
-            value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFunc(Lcom/mojang/blaze3d/platform/GlStateManager$SourceFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DestFactor;)V"
-        )
-    )
-    public void RenderSystem_blendFuncRedirect(SourceFactor src, DestFactor dst) {
-        
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-
-    }
-    */
 
     /*
     // Disable all gui components on Title Screen
