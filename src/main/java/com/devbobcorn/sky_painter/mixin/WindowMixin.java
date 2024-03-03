@@ -9,15 +9,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.devbobcorn.sky_painter.client.window.WindowHandle;
+import com.devbobcorn.sky_painter.client.window.IWindow;
+import com.devbobcorn.sky_painter.client.window.WindowUtil;
 import com.mojang.blaze3d.platform.DisplayData;
 import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
+import com.sun.jna.ptr.ByteByReference;
+import com.sun.jna.ptr.IntByReference;
+
 import javax.annotation.Nullable;
 
 @Mixin(Window.class)
-public class WindowMixin implements WindowHandle {
+public class WindowMixin implements IWindow {
 
     @Shadow
     private static Logger LOGGER;
@@ -75,7 +79,37 @@ public class WindowMixin implements WindowHandle {
     }
 
     @Override
-    public long GetGLFWId() {
+    public long getGLFWId() {
         return window;
+    }
+
+    @Override
+    public long getWindowHandle() {
+        return WindowUtil.getWindowHandle(window);
+    }
+
+    @Override
+    public void getLWA(IntByReference pcrKey, ByteByReference pbAlpha, IntByReference pdwFlags) {
+        WindowUtil.getLWA(getWindowHandle(), pcrKey, pbAlpha, pdwFlags);
+    }
+
+    private boolean setupAttempt = false;
+
+    @Override
+    public boolean checkSetupAttempt() {
+        return setupAttempt;
+    }
+
+    @Override
+    public boolean trySetupWindow() {
+        if (!setupAttempt) {
+            setupAttempt = true;
+
+            WindowUtil.setupWindow(getWindowHandle());
+
+            return true;
+        }
+
+        return false;
     }
 }

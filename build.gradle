@@ -169,6 +169,7 @@ dependencies {
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0'
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
