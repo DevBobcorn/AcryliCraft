@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.devbobcorn.sky_painter.client.GuiUtil;
-import com.devbobcorn.sky_painter.client.ScreenshotUtil;
-import com.devbobcorn.sky_painter.client.WindowHandle;
+import com.devbobcorn.sky_painter.client.rendering.GuiUtil;
+import com.devbobcorn.sky_painter.client.rendering.ScreenshotUtil;
+import com.devbobcorn.sky_painter.client.window.WindowHandle;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -63,7 +63,7 @@ public class TitleScreenMixin {
             boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
             float opacity = GLFW.glfwGetWindowOpacity(windowId);
 
-            renderString(poseStack, "GLFW Window Id: " + String.valueOf(windowId), 2, 2);
+            renderString(poseStack, "GLFW Window Id: " + String.valueOf(windowId) + " (" + String.format("%016X", windowId) + ")", 2, 2);
             renderString(poseStack, "TransparentBuffer Enabled: " + String.valueOf(tb), 2, 12);
             renderString(poseStack, "Full-Window Opacity: " + opacity, 2, 22);
         }

@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.client;
+package com.devbobcorn.sky_painter.client.world;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -17,8 +17,9 @@ import net.minecraftforge.client.ISkyRenderHandler;
 
 public class AcrylicSkyRender implements ISkyRenderHandler {
 
-    private static final ResourceLocation END_SKY_LOCATION = new ResourceLocation("textures/environment/end_sky.png");
+    public static final ResourceLocation END_SKY_LOCATION = new ResourceLocation("textures/environment/end_sky.png");
 
+    @SuppressWarnings("null")
     @Override
     public void render(int ticks, float partialTick, PoseStack poseStack, ClientLevel level, Minecraft minecraft) {
         

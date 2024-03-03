@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.client;
+package com.devbobcorn.sky_painter.client.world;
 
 import javax.annotation.Nullable;
 
@@ -42,6 +42,7 @@ public class MicaCloudRender implements ICloudRenderHandler {
 
     private static final Vec3 CLOUD_COLOR = new Vec3(0f, 0f, 0f);
 
+    @SuppressWarnings("null")
     public void render(int ticks, float partialTick, PoseStack poseStack, ClientLevel level, Minecraft minecraft,
             double camX, double camY, double camZ) {
         
@@ -141,6 +142,7 @@ public class MicaCloudRender implements ICloudRenderHandler {
         }
     }
 
+    @SuppressWarnings("null")
     private void buildClouds(BufferBuilder buffer, double posX, double posY, double posZ, Vec3 color) {
         int range = 4; // Default: 4
 
@@ -296,7 +298,7 @@ public class MicaCloudRender implements ICloudRenderHandler {
 
     }
 
-
+    @SuppressWarnings("null")
     private void bobHurt(PoseStack stack, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.getCameraEntity() instanceof LivingEntity) {
@@ -320,6 +322,7 @@ public class MicaCloudRender implements ICloudRenderHandler {
         }
     }
 
+    @SuppressWarnings("null")
     private void bobView(PoseStack stack, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.getCameraEntity() instanceof Player) {

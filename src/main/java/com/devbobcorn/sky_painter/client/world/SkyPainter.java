@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.client;
+package com.devbobcorn.sky_painter.client.world;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +24,7 @@ public class SkyPainter {
     private static ICloudRenderHandler cloudRender = new MicaCloudRender();
     private static ISkyRenderHandler skyRender = new AcrylicSkyRender();
     
+    @SuppressWarnings("null")
     @SubscribeEvent
     public static void onRenderCloud(RenderLevelStageEvent event)
     {
