@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.client.rendering;
+package com.devbobcorn.acrylic.client.rendering;
 
 import java.io.File;
 import org.slf4j.Logger;

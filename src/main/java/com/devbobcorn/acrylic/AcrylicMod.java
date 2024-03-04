@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter;
+package com.devbobcorn.acrylic;
 
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
@@ -11,15 +11,15 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(ExampleMod.MODID)
-public class ExampleMod
+@Mod(AcrylicMod.MODID)
+public class AcrylicMod
 {
-    public static final String MODID = "sky_painter";
+    public static final String MODID = "acrylic";
 
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public ExampleMod()
+    public AcrylicMod()
     {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);

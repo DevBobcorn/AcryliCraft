@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.mixin;
+package com.devbobcorn.acrylic.mixin;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;

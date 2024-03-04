@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.client.window;
+package com.devbobcorn.acrylic.client.window;
 
 import org.lwjgl.glfw.GLFWNativeWin32;
 import org.lwjgl.system.Platform;

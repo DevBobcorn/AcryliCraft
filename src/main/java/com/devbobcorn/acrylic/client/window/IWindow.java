@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.client.window;
+package com.devbobcorn.acrylic.client.window;
 
 // This interface is implemented by WindowMixin, so as to
 // inject new methods into vanilla Window class

@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.mixin;
+package com.devbobcorn.acrylic.mixin;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.devbobcorn.sky_painter.client.rendering.GuiUtil;
-import com.devbobcorn.sky_painter.client.rendering.ScreenshotUtil;
-import com.devbobcorn.sky_painter.client.window.IWindow;
-import com.devbobcorn.sky_painter.client.window.WindowUtil;
+import com.devbobcorn.acrylic.client.rendering.GuiUtil;
+import com.devbobcorn.acrylic.client.rendering.ScreenshotUtil;
+import com.devbobcorn.acrylic.client.window.IWindow;
+import com.devbobcorn.acrylic.client.window.WindowUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlUtil;
 import com.mojang.blaze3d.systems.RenderSystem;

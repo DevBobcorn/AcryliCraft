@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.client.rendering;
+package com.devbobcorn.acrylic.client.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;

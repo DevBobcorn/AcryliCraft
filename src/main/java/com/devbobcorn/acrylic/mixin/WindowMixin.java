@@ -1,4 +1,4 @@
-package com.devbobcorn.sky_painter.mixin;
+package com.devbobcorn.acrylic.mixin;
 
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.devbobcorn.sky_painter.client.window.IWindow;
-import com.devbobcorn.sky_painter.client.window.WindowUtil;
+import com.devbobcorn.acrylic.client.window.IWindow;
+import com.devbobcorn.acrylic.client.window.WindowUtil;
 import com.mojang.blaze3d.platform.DisplayData;
 import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
