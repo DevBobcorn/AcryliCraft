@@ -14,6 +14,7 @@ import com.devbobcorn.sky_painter.client.rendering.ScreenshotUtil;
 import com.devbobcorn.sky_painter.client.window.IWindow;
 import com.devbobcorn.sky_painter.client.window.WindowUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.GlUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -70,10 +71,9 @@ public class TitleScreenMixin {
             boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
             boolean setupAttempt = iWindow.checkSetupAttempt();
 
-            renderString(poseStack, "GLFW Window Id: " + String.valueOf(windowId) + " Window Handle: " +
-                    String.format("%016X", windowHandle), 2, 2);
-            renderString(poseStack, "TransparentBuffer Enabled: " + String.valueOf(tb) +
-                    " Setup Attempt: " + String.valueOf(setupAttempt), 2, 12);
+            renderString(poseStack, "Window Handle: " + String.format("0x%016X", windowHandle) +
+                    " (TransparentBuffer Enabled: " + String.valueOf(tb) + ")", 2, 2);
+            renderString(poseStack, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
 
             if (!setupAttempt) {
                 var result = iWindow.trySetupWindow();
@@ -107,19 +107,4 @@ public class TitleScreenMixin {
             ScreenshotUtil.grabWithAlpha(s_minecraft.gameDirectory, "magic.png", s_minecraft.getMainRenderTarget());
         }
     }
-
-    /*
-    // Disable all gui components on Title Screen
-    @Redirect(
-        method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V",
-        at = @At(
-            value = "INVOKE",
-            ordinal = 1, // Match the 2nd appearance only
-            target = "Lnet/minecraft/util/Mth;ceil(F)I"
-        )
-    )
-    public int Mth_ceilRedirect(float value) {
-        return 0;
-    }
-    */
 }
