@@ -10,8 +10,4 @@ public interface IWindow {
     public long getGLFWId();
 
     public long getWindowHandle();
-
-    public boolean checkSetupAttempt();
-
-    public boolean trySetupWindow();
 }

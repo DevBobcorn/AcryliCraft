@@ -11,6 +11,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.TitleScreen;
 
 @Mixin(RenderTarget.class)
 public class RenderTargetMixin {
@@ -31,8 +32,8 @@ public class RenderTargetMixin {
             s_minecraft = Minecraft.getInstance();
         }
 
-        if (s_minecraft.level != null) {
-            // In-game rendering, set alpha of the whole mainRT to 1
+        if (s_minecraft.screen == null || !(s_minecraft.screen instanceof TitleScreen)) {
+            // Not title screen, set alpha of the whole mainRT to 1
             var _this = (RenderTarget) (Object) this;
 
             GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, _this.frameBufferId);

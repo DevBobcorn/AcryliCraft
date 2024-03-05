@@ -1,5 +1,7 @@
 package com.devbobcorn.acrylic.client.rendering;
 
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -7,7 +9,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GuiUtil {
     @SuppressWarnings("null")
     public static void fillGradient(PoseStack poseStack, int x0, int y0, int x1, int y1, int z, int color0, int color1) {
-        RenderSystem.disableTexture();
+        //RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -27,7 +28,7 @@ public class GuiUtil {
         fillGradient(poseStack.last().pose(), bufferbuilder, x0, y0, x1, y1, z, color0, color1);
         tesselator.end();
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
+        //RenderSystem.enableTexture();
     }
 
     @SuppressWarnings("null")
@@ -71,7 +72,6 @@ public class GuiUtil {
         bufferbuilder.vertex(pose, (float)x1, (float)y1, (float)z).uv(u1, v1).endVertex();
         bufferbuilder.vertex(pose, (float)x1, (float)y0, (float)z).uv(u1, v0).endVertex();
         bufferbuilder.vertex(pose, (float)x0, (float)y0, (float)z).uv(u0, v0).endVertex();
-        bufferbuilder.end();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 }

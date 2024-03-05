@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.devbobcorn.acrylic.AcrylicConfig;
+import com.devbobcorn.acrylic.AcrylicMod;
 import com.devbobcorn.acrylic.client.window.IWindow;
 import com.devbobcorn.acrylic.client.window.WindowUtil;
 import com.mojang.blaze3d.platform.DisplayData;
@@ -16,7 +18,7 @@ import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
 
-import javax.annotation.Nullable;
+import net.minecraft.Util;
 
 @Mixin(Window.class)
 public class WindowMixin implements IWindow {
@@ -69,11 +71,22 @@ public class WindowMixin implements IWindow {
         LOGGER.info("Window hints applied!");
     }
 
-    @Inject(at = @At("RETURN"), method = "<init>")
-    public void constructWindow(WindowEventHandler h, ScreenManager sm, DisplayData displayData,
-            @Nullable String videoMode, String title, CallbackInfo callbackInfo) {
-        
-        LOGGER.info("Window created: " + title);
+    @Inject(method = "<init>", at = @At(value = "TAIL"))
+    private void init(
+        final WindowEventHandler handler, final ScreenManager manager,
+        final DisplayData display, final String videoMode, final String title,
+        final CallbackInfo ci
+    ) {
+        // Check OS
+        if (Util.getPlatform() != Util.OS.WINDOWS) {
+            return;
+        }
+
+        // Store window handle for later use
+        AcrylicMod.setWindowHandle(WindowUtil.getWindowHandle(window));
+
+        // Initialize Acrylic by accessing its instance
+        AcrylicConfig.getInstance();
     }
 
     @Override
@@ -84,25 +97,5 @@ public class WindowMixin implements IWindow {
     @Override
     public long getWindowHandle() {
         return WindowUtil.getWindowHandle(window);
-    }
-
-    private boolean setupAttempt = false;
-
-    @Override
-    public boolean checkSetupAttempt() {
-        return setupAttempt;
-    }
-
-    @Override
-    public boolean trySetupWindow() {
-        if (!setupAttempt) {
-            setupAttempt = true;
-
-            WindowUtil.setupWindow(getWindowHandle());
-
-            return true;
-        }
-
-        return false;
     }
 }

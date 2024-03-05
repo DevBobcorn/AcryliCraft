@@ -9,11 +9,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.devbobcorn.acrylic.client.rendering.GuiUtil;
 import com.devbobcorn.acrylic.client.rendering.ScreenshotUtil;
 import com.devbobcorn.acrylic.client.window.IWindow;
 import com.devbobcorn.acrylic.client.window.WindowUtil;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,7 +19,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.resources.ResourceLocation;
 
 @Mixin(TitleScreen.class)
 public class TitleScreenMixin {
@@ -35,18 +32,6 @@ public class TitleScreenMixin {
 
     @Shadow
     private long fadeInStart;
-
-    @SuppressWarnings("null")
-    public void renderTex(PoseStack poseStack, ResourceLocation tex, int x, int y, int w, int h, int tex_w, int tex_h) {
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-
-        // Will be set by blit() RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, tex);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-        GuiUtil.blit(poseStack, x, y, 0.0F, 0.0F, w, h, tex_w, tex_h);
-    }
 
     @SuppressWarnings("null")
     public void renderString(PoseStack poseStack, String str, int x, int y) {
@@ -69,16 +54,10 @@ public class TitleScreenMixin {
             var windowHandle = WindowUtil.getWindowHandle(windowId);
             // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
             boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
-            boolean setupAttempt = iWindow.checkSetupAttempt();
 
             renderString(poseStack, "Window Handle: " + String.format("0x%016X", windowHandle) +
                     " (TransparentBuffer Enabled: " + String.valueOf(tb) + ")", 2, 2);
             renderString(poseStack, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
-
-            if (!setupAttempt) {
-                var result = iWindow.trySetupWindow();
-                LOGGER.info("Setup up window " + ( result ? "succeeded" : "failed"));
-            }
         }
 
         /*

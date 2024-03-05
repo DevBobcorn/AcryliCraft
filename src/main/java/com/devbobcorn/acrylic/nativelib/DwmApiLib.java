@@ -92,7 +92,7 @@ public interface DwmApiLib extends Library {
         int cbAttribute
     );
 
-    public static void setBooleanWindowAttribute(final long handle, DWM_BOOL_WA attribute, boolean value) {
+    public static void setBooleanWA(final long handle, DWM_BOOL_WA attribute, boolean value) {
 
         final HWND hwnd = new HWND(Pointer.createConstant(handle));
 
@@ -101,7 +101,7 @@ public interface DwmApiLib extends Library {
     }
 
     // "extends" means "implements" here. See https://docs.oracle.com/javase/tutorial/java/generics/bounded.html
-    public static <T extends EnumWAValue> void setEnumWindowAttribute(final long handle, DWM_ENUM_WA attribute, T value) {
+    public static <T extends EnumWAValue> void setEnumWA(final long handle, DWM_ENUM_WA attribute, T value) {
 
         final HWND hwnd = new HWND(Pointer.createConstant(handle));
 

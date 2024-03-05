@@ -16,7 +16,7 @@ public class WindowUtil {
     
     public static void setupWindow(long handle) {
 
-        DwmApiLib.setEnumWindowAttribute(handle, DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
+        DwmApiLib.setEnumWA(handle, DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
                 DWM_SYSTEMBACKDROP_TYPE.DWMSBT_TRANSIENTWINDOW);
     }
 

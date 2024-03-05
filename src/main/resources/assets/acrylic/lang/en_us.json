@@ -1,0 +1,23 @@
+{
+    "acrylic.mod_name": "AcryliCraft",
+
+    "acrylic.unsupported.title": "Unsupported OS",
+    "acrylic.unsupported.description": "Only Windows 11 build 22621 or newer is supported.",
+
+    "acrylic.config": "AcryliCraft Configuration",
+    "acrylic.config.use_immersive_dark_mode": "Immersive Dark Mode",
+    "acrylic.config.use_immersive_dark_mode.description": "Enable dark mode for the window.",
+    "acrylic.config.system_backdrop_type": "Window Material",
+    "acrylic.config.system_backdrop_type.description": "Apply Mica/Acrylic/MicaAlt backdrop to game window.",
+    "acrylic.config.system_backdrop_type.type.auto": "Auto",
+    "acrylic.config.system_backdrop_type.type.none": "None",
+    "acrylic.config.system_backdrop_type.type.mica": "Mica",
+    "acrylic.config.system_backdrop_type.type.acrylic": "Acrylic",
+    "acrylic.config.system_backdrop_type.type.tabbed": "MicaAlt",
+    "acrylic.config.corner_preference": "Window Corner",
+    "acrylic.config.corner_preference.description": "Tweak corner curvature of the window.",
+    "acrylic.config.corner_preference.type.default": "Default",
+    "acrylic.config.corner_preference.type.do_not_round": "Don't Round",
+    "acrylic.config.corner_preference.type.round": "Round",
+    "acrylic.config.corner_preference.type.round_small": "Small Round"
+}
