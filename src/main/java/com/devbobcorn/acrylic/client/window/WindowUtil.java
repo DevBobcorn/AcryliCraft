@@ -3,34 +3,21 @@ package com.devbobcorn.acrylic.client.window;
 import org.lwjgl.glfw.GLFWNativeWin32;
 import org.lwjgl.system.Platform;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.ptr.ByteByReference;
-import com.sun.jna.ptr.IntByReference;
+import com.devbobcorn.acrylic.nativelib.DwmApiLib;
+import com.devbobcorn.acrylic.nativelib.DwmApiLib.DWM_ENUM_WA;
+import com.devbobcorn.acrylic.nativelib.DwmApiLib.DWM_SYSTEMBACKDROP_TYPE;
+
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 // See https://dynamicwallpaper.readthedocs.io/en/docs/dev/make-wallpaper.html
+@OnlyIn(Dist.CLIENT)
 public class WindowUtil {
     
-    public static void getLWA(long handle, IntByReference pcrKey, ByteByReference pbAlpha, IntByReference pdwFlags) {
-        WinDef.HWND hwnd = new WinDef.HWND(new Pointer(handle));
-
-        User32.INSTANCE.GetLayeredWindowAttributes(hwnd, pcrKey, pbAlpha, pdwFlags);
-    }
-
     public static void setupWindow(long handle) {
-        /*
-        WinDef.HWND hwnd = new WinDef.HWND(new Pointer(handle));
 
-        User32.INSTANCE.SetLayeredWindowAttributes(hwnd, 0xFF0000, (byte) 0, WinUser.LWA_COLORKEY);
-
-        BLENDFUNCTION blend = new BLENDFUNCTION();
-        blend.SourceConstantAlpha = (byte) 255;
-        blend.AlphaFormat = WinUser.AC_SRC_ALPHA;
-
-        User32.INSTANCE.UpdateLayeredWindow(hwnd, null, null,
-                null, null, null, 0xFF0000, blend, WinUser.ULW_COLORKEY);
-        */
+        DwmApiLib.setEnumWindowAttribute(handle, DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
+                DWM_SYSTEMBACKDROP_TYPE.DWMSBT_TRANSIENTWINDOW);
     }
 
     // Get window handle (HWND) from GLFW window id
