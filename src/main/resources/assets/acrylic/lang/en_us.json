@@ -14,10 +14,27 @@
     "acrylic.config.system_backdrop_type.type.mica": "Mica",
     "acrylic.config.system_backdrop_type.type.acrylic": "Acrylic",
     "acrylic.config.system_backdrop_type.type.tabbed": "MicaAlt",
-    "acrylic.config.corner_preference": "Window Corner",
-    "acrylic.config.corner_preference.description": "Tweak corner curvature of the window.",
-    "acrylic.config.corner_preference.type.default": "Default",
-    "acrylic.config.corner_preference.type.do_not_round": "Don't Round",
-    "acrylic.config.corner_preference.type.round": "Round",
-    "acrylic.config.corner_preference.type.round_small": "Small Round"
+    "acrylic.config.window_corner_preference": "Window Corner",
+    "acrylic.config.window_corner_preference.description": "Tweak corner curvature of the window.",
+    "acrylic.config.window_corner_preference.type.default": "Default",
+    "acrylic.config.window_corner_preference.type.do_not_round": "Don't Round",
+    "acrylic.config.window_corner_preference.type.round": "Round",
+    "acrylic.config.window_corner_preference.type.round_small": "Small Round",
+
+    "acrylic.config.hide_border": "Hide Border",
+    "acrylic.config.hide_border.description": "Whether to render window border.",
+    "acrylic.config.customize_border": "Customize Border",
+    "acrylic.config.customize_border.description": "Whether to enable window border customization.",
+    "acrylic.config.border_color": "Border Color",
+    "acrylic.config.border_color.description": "Color of window border.",
+
+    "acrylic.config.customize_caption": "Customize Titlebar",
+    "acrylic.config.customize_caption.description": "Whether to recolor titlebar.",
+    "acrylic.config.caption_color": "Titlebar Color",
+    "acrylic.config.caption_color.description": "Color of titlebar.",
+
+    "acrylic.config.customize_text": "Customize Title",
+    "acrylic.config.customize_text.description": "Whether to recolor title text.",
+    "acrylic.config.text_color": "Title Color",
+    "acrylic.config.text_color.description": "Color of title text."
 }

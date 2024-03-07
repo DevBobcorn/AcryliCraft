@@ -6,14 +6,13 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-
 import static net.minecraft.network.chat.Component.translatable;
 
 import com.devbobcorn.acrylic.AcrylicConfig;
+import com.devbobcorn.acrylic.AcrylicMod;
 import com.devbobcorn.acrylic.nativelib.DwmApiLib;
+import com.devbobcorn.acrylic.nativelib.DwmApiLib.EnumWAValue;
 
 /**
  * Mod Config screen
@@ -27,67 +26,62 @@ public final class AcrylicConfigScreen {
             .build().generateScreen(screen);
     }
 
+    private static Option<Boolean> boolOption(String key, boolean defValue) {
+        return Option.<Boolean>createBuilder()
+                .name(translatable(AcrylicMod.MODID + ".config." + key))
+                .description(OptionDescription.of(translatable(AcrylicMod.MODID + ".config." + key + ".description")))
+                .controller(BooleanControllerBuilder::create)
+                .binding(
+                    defValue,
+                    () -> AcrylicConfig.getInstance().getValue(key),
+                    value -> {
+                        AcrylicConfig.getInstance().setValue(key, value);
+                    }
+                )
+                .instant(true)
+                .build();
+    }
+
+    private static <T extends Enum<T>> Option<T> enumOption(String key, Class<T> enumClass, T defValue) {
+        return Option.<T>createBuilder()
+                .name(translatable(AcrylicMod.MODID + ".config." + key))
+                .description(OptionDescription.of(translatable(AcrylicMod.MODID + ".config." + key + ".description")))
+                .controller(option -> EnumControllerBuilder.create((Option<T>) option)
+                    .enumClass(enumClass)
+                    .valueFormatter(type -> {
+                        @SuppressWarnings("unchecked")
+                        var t = (EnumWAValue<T>) type;
+                        return translatable(AcrylicMod.MODID + ".config." + key + ".type." + t.getTranslation());
+                    })
+                )
+                .binding(
+                    defValue,
+                    () -> AcrylicConfig.getInstance().getValue(key),
+                    value -> {
+                        AcrylicConfig.getInstance().setValue(key, value);
+                    }
+                )
+                .instant(true)
+                .build();
+    }
+
     private static ConfigCategory categoryGeneral() {
         return ConfigCategory.createBuilder()
             .name(translatable("acrylic.config"))
 
             // Use Immersive Dark Mode
-            .option(Option.<Boolean>createBuilder()
-                .name(translatable("acrylic.config.use_immersive_dark_mode"))
-                .description(OptionDescription.of(translatable("acrylic.config.use_immersive_dark_mode.description")))
-                .controller(BooleanControllerBuilder::create)
-                .binding(
-                    false,
-                    () -> AcrylicConfig.getInstance().useImmersiveDarkMode.get(),
-                    value -> {
-                        final AcrylicConfig config = AcrylicConfig.getInstance();
-                        config.setConfig(config.useImmersiveDarkMode, value);
-                    }
-                )
-                .instant(true)
-                .build()
-            )
+            .option( boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, false) )
 
             // System Backdrop Type
-            .option(Option.<DwmApiLib.DWM_SYSTEMBACKDROP_TYPE>createBuilder()
-                .name(translatable("acrylic.config.system_backdrop_type"))
-                .description(OptionDescription.of(
-                    translatable("acrylic.config.system_backdrop_type.description")
-                ))
-                .controller(option -> EnumControllerBuilder.create(option).enumClass(DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.class).valueFormatter(type -> {
-                    return translatable("acrylic.config.system_backdrop_type.type." + type.translate);
-                }))
-                .binding(
-                    DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_AUTO,
-                    () -> AcrylicConfig.getInstance().systemBackdropType.get(),
-                    value -> {
-                        final AcrylicConfig config = AcrylicConfig.getInstance();
-                        config.setConfig(config.systemBackdropType, value);
-                    }
-                )
-                .instant(true)
-                .build()
+            .option( enumOption(AcrylicConfig.SYSTEM_BACKDROP_TYPE,
+                        DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.class,
+                        DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_AUTO)
             )
 
             // Window Corner Preference
-            .option(Option.<DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE>createBuilder()
-                .name(translatable("acrylic.config.corner_preference"))
-                .description(OptionDescription.of(
-                    translatable("acrylic.config.corner_preference.description")
-                ))
-                .controller(option -> EnumControllerBuilder.create(option).enumClass(DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.class).valueFormatter(type -> {
-                    return translatable("acrylic.config.corner_preference.type." + type.translate);
-                }))
-                .binding(
-                    DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT,
-                    () -> AcrylicConfig.getInstance().windowCorner.get(),
-                    value -> {
-                        final AcrylicConfig config = AcrylicConfig.getInstance();
-                        config.setConfig(config.windowCorner, value);
-                    }
-                )
-                .instant(true)
-                .build()
+            .option( enumOption(AcrylicConfig.WINDOW_CORNER_PREFERENCE,
+                        DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.class,
+                        DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT)
             )
             
             .build();
