@@ -3,6 +3,7 @@ package com.devbobcorn.acrylic.client.screen;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
+import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
@@ -89,29 +90,37 @@ public final class AcrylicConfigScreen {
         return ConfigCategory.createBuilder()
             .name(translatable("acrylic.config"))
 
-            // Use Immersive Dark Mode
-            .option( boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, false) )
+            .group(OptionGroup.createBuilder()
+                .name(translatable(AcrylicMod.MODID + ".config.window"))
 
-            // System Backdrop Type
-            .option( enumOption(AcrylicConfig.SYSTEM_BACKDROP_TYPE,
+                // Use Immersive Dark Mode
+                .option( boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, false) )
+
+                // System Backdrop Type
+                .option( enumOption(AcrylicConfig.SYSTEM_BACKDROP_TYPE,
                         DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.class,
                         DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_AUTO)
-            )
+                )
 
-            // Window Corner Preference
-            .option( enumOption(AcrylicConfig.WINDOW_CORNER_PREFERENCE,
+                // Window Corner Preference
+                .option( enumOption(AcrylicConfig.WINDOW_CORNER_PREFERENCE,
                         DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.class,
                         DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT)
+                )
+
+                .build()
             )
 
             // Window Border Customization
-            .option( boolOption(AcrylicConfig.HIDE_BORDER, false) )
-            .option( boolOption(AcrylicConfig.CUSTOMIZE_BORDER, false) )
-            .option( colorOption(AcrylicConfig.BORDER_COLOR, DwmApiLib.COLOR_BLACK) )
+            .group(OptionGroup.createBuilder()
+                .name(translatable(AcrylicMod.MODID + ".config.border"))
 
-            // Titlebar Customization
-            //.option( boolOption(AcrylicConfig.CUSTOMIZE_CAPTION, false) )
-            //.option( colorOption(AcrylicConfig.CAPTION_COLOR, DwmApiLib.COLOR_WHITE) )
+                .option( boolOption(AcrylicConfig.HIDE_BORDER, false) )
+                .option( boolOption(AcrylicConfig.CUSTOMIZE_BORDER, false) )
+                .option( colorOption(AcrylicConfig.BORDER_COLOR, DwmApiLib.COLOR_BLACK) )
+
+                .build()
+            )
             
             .build();
     }
