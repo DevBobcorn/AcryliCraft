@@ -6,6 +6,8 @@ import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.ptr.IntByReference;
+
+import java.awt.Color;
 import org.lwjgl.system.NativeType;
 
 // Adapted from https://github.com/LemonCaramel/Mica/blob/master/common/src/main/java/moe/caramel/mica/natives/DwmApi.java
@@ -33,7 +35,6 @@ public interface DwmApiLib extends Library {
 
         final HWND hwnd = new HWND(Pointer.createConstant(handle));
 
-        // DWMWA_USE_IMMERSIVE_DARK_MODE
         INSTANCE.DwmSetWindowAttribute(hwnd, attribute.key, new IntByReference(value ? BOOL_TRUE : BOOL_FALSE), INT_SIZE);
     }
 
@@ -108,7 +109,6 @@ public interface DwmApiLib extends Library {
 
         final HWND hwnd = new HWND(Pointer.createConstant(handle));
 
-        // DWMWA_USE_IMMERSIVE_DARK_MODE
         INSTANCE.DwmSetWindowAttribute(hwnd, attribute.key, new IntByReference(value.getValue()), INT_SIZE);
     }
 
@@ -131,8 +131,8 @@ public interface DwmApiLib extends Library {
     int DWMWA_COLOR_DEFAULT = 0xFFFFFFFF; // Int32 -1
     int DWMWA_COLOR_NONE    = 0xFFFFFFFE; // Int32 -2
 
-    int RGB_BLACK = 0x000000;
-    int RGB_WHITE = 0xFFFFFF;
+    Color COLOR_BLACK = new Color(0x000000);
+    Color COLOR_WHITE = new Color(0xFFFFFF);
 
     // Convert RGB to a COLORREF. See https://learn.microsoft.com/en-us/windows/win32/gdi/colorref
     public static int rgb2ColorRef(final int rgb) {
@@ -155,6 +155,13 @@ public interface DwmApiLib extends Library {
         final int r = colorRef & 0xFF;
 
         return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
+    }
+
+    public static void setIntWA(final long handle, DWM_INT_WA attribute, int value) {
+
+        final HWND hwnd = new HWND(Pointer.createConstant(handle));
+
+        INSTANCE.DwmSetWindowAttribute(hwnd, attribute.key, new IntByReference(value), INT_SIZE);
     }
 
     @NativeType("HRESULT")

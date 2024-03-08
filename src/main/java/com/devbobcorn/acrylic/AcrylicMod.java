@@ -34,7 +34,11 @@ public class AcrylicMod
         return windowHandle;
     }
 
-    public static void setWindowHandle(long handle) {
+    public static void setWindowHandle(long handle) throws IllegalStateException {
+        if (windowHandle != 0) {
+            throw new IllegalStateException("Window handle is already assigned!");
+        }
+        
         windowHandle = handle;
     }
 

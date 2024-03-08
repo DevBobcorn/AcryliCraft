@@ -5,9 +5,13 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
+import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
+
 import net.minecraft.client.gui.screens.Screen;
 import static net.minecraft.network.chat.Component.translatable;
+
+import java.awt.Color;
 
 import com.devbobcorn.acrylic.AcrylicConfig;
 import com.devbobcorn.acrylic.AcrylicMod;
@@ -36,6 +40,22 @@ public final class AcrylicConfigScreen {
                     () -> AcrylicConfig.getInstance().getValue(key),
                     value -> {
                         AcrylicConfig.getInstance().setValue(key, value);
+                    }
+                )
+                .instant(true)
+                .build();
+    }
+
+    private static Option<Color> colorOption(String key, Color defValue) {
+        return Option.<Color>createBuilder()
+                .name(translatable(AcrylicMod.MODID + ".config." + key))
+                .description(OptionDescription.of(translatable(AcrylicMod.MODID + ".config." + key + ".description")))
+                .controller(option -> ColorControllerBuilder.create(option))
+                .binding(
+                    defValue,
+                    () -> new Color( (int) AcrylicConfig.getInstance().getValue(key) ),
+                    value -> {
+                        AcrylicConfig.getInstance().setValue(key, value.getRGB());
                     }
                 )
                 .instant(true)
@@ -83,6 +103,15 @@ public final class AcrylicConfigScreen {
                         DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.class,
                         DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT)
             )
+
+            // Window Border Customization
+            .option( boolOption(AcrylicConfig.HIDE_BORDER, false) )
+            .option( boolOption(AcrylicConfig.CUSTOMIZE_BORDER, false) )
+            .option( colorOption(AcrylicConfig.BORDER_COLOR, DwmApiLib.COLOR_BLACK) )
+
+            // Titlebar Customization
+            //.option( boolOption(AcrylicConfig.CUSTOMIZE_CAPTION, false) )
+            //.option( colorOption(AcrylicConfig.CAPTION_COLOR, DwmApiLib.COLOR_WHITE) )
             
             .build();
     }
