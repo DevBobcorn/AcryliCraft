@@ -6,6 +6,9 @@
 
     "acrylic.config": "AcryliCraft Configuration",
 
+    "acrylic.config.show_debug_info": "Show debug info",
+    "acrylic.config.show_debug_info.description": "Render device and window information on title screen.",
+
     "acrylic.config.window": "Window Settings",
     "acrylic.config.use_immersive_dark_mode": "Immersive Dark Mode",
     "acrylic.config.use_immersive_dark_mode.description": "Enable dark mode for the window.",
