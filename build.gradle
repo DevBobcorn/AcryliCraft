@@ -5,7 +5,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = '1.0'
+version = project.self_version
 group = 'com.devbobcorn.acrylic' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'acrylic'
 
@@ -169,7 +169,7 @@ jar {
                 "Specification-Vendor"    : "acrylicsareus",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Version"  : project.self_version,
                 "Implementation-Vendor"   : "acrylicsareus",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])

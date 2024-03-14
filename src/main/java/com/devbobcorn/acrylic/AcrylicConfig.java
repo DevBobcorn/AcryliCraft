@@ -38,7 +38,56 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
     @SuppressWarnings("null")
     private AcrylicConfig() {
+        
         this(Settings.loadFromFile(CONFIG_PATH));
+
+        if (!AcrylicMod.checkCompatible()) {
+            return;
+        }
+
+        long handle = AcrylicMod.getWindowHandle();
+
+        //User32Lib.TingeWindow(handle, 0x3FBBC539);
+
+        // Apply stored configs
+        DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE,
+                (boolean) configValues.get(USE_IMMERSIVE_DARK_MODE).get());
+
+        DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
+                (DwmApiLib.DWM_SYSTEMBACKDROP_TYPE) configValues.get(SYSTEM_BACKDROP_TYPE).get());
+        
+        DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_WINDOW_CORNER_PREFERENCE,
+                (DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE) configValues.get(WINDOW_CORNER_PREFERENCE).get());
+        
+        var borderHidden = (boolean) getValue(HIDE_BORDER);
+        var customBorder = (boolean) getValue(CUSTOMIZE_BORDER);
+
+        if (borderHidden) {
+            // Window border is hidden
+            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_NONE);
+        } else if (customBorder) {
+            // Window border is visible and customized
+            int borderRgb = (int) getValue(BORDER_COLOR);
+            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.rgb2ColorRef(borderRgb));
+        } else {
+            // Use default border color
+            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
+        }
+
+        /*
+        // Um... it just doesn't look good
+        var customTitlebar = (boolean) getValue(CUSTOMIZE_CAPTION);
+
+        if (customTitlebar) {
+            // Window caption is customized
+            int titlebarRgb = (int) getValue(CAPTION_COLOR);
+            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.rgb2ColorRef(titlebarRgb));
+        } else {
+            // Use default caption color
+            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
+        }
+        */
+
     }
 
     private AcrylicConfig(final Properties properties) {
@@ -92,51 +141,6 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
         configValues.put( TEXT_COLOR,
             this.getMutable(TEXT_COLOR, Integer::parseInt, DwmApiLib.COLOR_BLACK.getRGB())
         );
-        */
-
-        if (!AcrylicMod.checkCompatible()) {
-            return;
-        }
-
-        long handle = AcrylicMod.getWindowHandle();
-
-        // Apply stored configs
-        DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE,
-                (boolean) configValues.get(USE_IMMERSIVE_DARK_MODE).get());
-
-        DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
-                (DwmApiLib.DWM_SYSTEMBACKDROP_TYPE) configValues.get(SYSTEM_BACKDROP_TYPE).get());
-        
-        DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_WINDOW_CORNER_PREFERENCE,
-                (DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE) configValues.get(WINDOW_CORNER_PREFERENCE).get());
-        
-        var borderHidden = (boolean) getValue(HIDE_BORDER);
-        var customBorder = (boolean) getValue(CUSTOMIZE_BORDER);
-
-        if (borderHidden) {
-            // Window border is hidden
-            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_NONE);
-        } else if (customBorder) {
-            // Window border is visible and customized
-            int borderRgb = (int) getValue(BORDER_COLOR);
-            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.rgb2ColorRef(borderRgb));
-        } else {
-            // Use default border color
-            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
-        }
-
-        /*
-        // Um... it just doesn't look good
-        var customTitlebar = (boolean) getValue(CUSTOMIZE_CAPTION);
-
-        if (customTitlebar) {
-            // Window caption is customized
-            int titlebarRgb = (int) getValue(CAPTION_COLOR);
-            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.rgb2ColorRef(titlebarRgb));
-        } else {
-            // Use default caption color
-            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
-        }
         */
     }
 
