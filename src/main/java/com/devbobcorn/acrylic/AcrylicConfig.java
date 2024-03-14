@@ -23,6 +23,8 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
         return instance;
     }
 
+    public static final String SHOW_DEBUG_INFO           = "show_debug_info";
+
     public static final String USE_IMMERSIVE_DARK_MODE   = "use_immersive_dark_mode";
     public static final String SYSTEM_BACKDROP_TYPE      = "system_backdrop_type";
     public static final String WINDOW_CORNER_PREFERENCE  = "window_corner_preference";
@@ -93,6 +95,10 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
     private AcrylicConfig(final Properties properties) {
 
         super(properties);
+
+        configValues.put( SHOW_DEBUG_INFO,
+            this.getMutable(SHOW_DEBUG_INFO, Boolean::parseBoolean, false)
+        );
 
         configValues.put( USE_IMMERSIVE_DARK_MODE,
             this.getMutable(USE_IMMERSIVE_DARK_MODE, Boolean::parseBoolean, false)

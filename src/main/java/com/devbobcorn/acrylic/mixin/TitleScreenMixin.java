@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.devbobcorn.acrylic.AcrylicConfig;
 import com.devbobcorn.acrylic.client.rendering.ScreenshotUtil;
 import com.devbobcorn.acrylic.client.window.IWindow;
 import com.devbobcorn.acrylic.client.window.WindowUtil;
@@ -48,16 +49,19 @@ public class TitleScreenMixin {
             s_minecraft = Minecraft.getInstance();
 
         } else {
-            // Draw debug info
-            var iWindow = (IWindow) (Object) (s_minecraft.getWindow());
-            var windowId = iWindow.getGLFWId();
-            var windowHandle = WindowUtil.getWindowHandle(windowId);
-            // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
-            boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
 
-            renderString(poseStack, "Window Handle: " + String.format("0x%016X", windowHandle) +
-                    " (TransparentBuffer Enabled: " + String.valueOf(tb) + ")", 2, 2);
-            renderString(poseStack, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
+            if ((boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.SHOW_DEBUG_INFO)) {
+                // Draw debug info
+                var iWindow = (IWindow) (Object) (s_minecraft.getWindow());
+                var windowId = iWindow.getGLFWId();
+                var windowHandle = WindowUtil.getWindowHandle(windowId);
+                // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
+                boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
+
+                renderString(poseStack, "Window Handle: " + String.format("0x%016X", windowHandle) +
+                        " (TransparentBuffer Enabled: " + String.valueOf(tb) + ")", 2, 2);
+                renderString(poseStack, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
+            }
         }
 
         /*
