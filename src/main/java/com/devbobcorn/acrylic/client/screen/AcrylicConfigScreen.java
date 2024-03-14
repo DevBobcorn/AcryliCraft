@@ -25,10 +25,13 @@ import com.devbobcorn.acrylic.nativelib.DwmApiLib.EnumWAValue;
 public final class AcrylicConfigScreen {
 
     public static Screen create(final Screen screen) {
-        return YetAnotherConfigLib.createBuilder()
-            .title(translatable("acrylic.mod_name"))
-            .category(categoryGeneral())
-            .build().generateScreen(screen);
+        return YACLScreenWithoutBackground.generateForConfig(
+            YetAnotherConfigLib.createBuilder()
+                .title(translatable("acrylic.mod_name"))
+                .category(categoryGeneral())
+                .build(),
+            screen
+        );
     }
 
     private static Option<Boolean> boolOption(String key, boolean defValue) {
@@ -121,6 +124,9 @@ public final class AcrylicConfigScreen {
 
                 .build()
             )
+
+            // Show debug info
+            .option( boolOption(AcrylicConfig.SHOW_DEBUG_INFO, false) )
             
             .build();
     }

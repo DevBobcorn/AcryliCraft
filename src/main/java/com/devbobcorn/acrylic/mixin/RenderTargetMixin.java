@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.devbobcorn.acrylic.client.screen.YACLScreenWithoutBackground;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -32,7 +33,8 @@ public class RenderTargetMixin {
             s_minecraft = Minecraft.getInstance();
         }
 
-        if (s_minecraft.screen == null || !(s_minecraft.screen instanceof TitleScreen)) {
+        if (s_minecraft.screen == null || !(
+            s_minecraft.screen instanceof TitleScreen || s_minecraft.screen instanceof YACLScreenWithoutBackground)) {
             // Not title screen, set alpha of the whole mainRT to 1
             var _this = (RenderTarget) (Object) this;
 
