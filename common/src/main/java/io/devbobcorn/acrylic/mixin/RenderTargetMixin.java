@@ -1,8 +1,10 @@
 package io.devbobcorn.acrylic.mixin;
 
+import io.devbobcorn.acrylic.client.screen.YACLScreenWithoutBackground;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -16,6 +18,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 @Mixin(RenderTarget.class)
 public class RenderTargetMixin {
 
+    @Unique
     private Minecraft s_minecraft = null;
 
     @Redirect(
@@ -33,8 +36,7 @@ public class RenderTargetMixin {
         }
 
         if (s_minecraft.screen == null || !(
-                s_minecraft.screen instanceof TitleScreen)) {
-        //        s_minecraft.screen instanceof TitleScreen || s_minecraft.screen instanceof YACLScreenWithoutBackground)) {
+                s_minecraft.screen instanceof TitleScreen || s_minecraft.screen instanceof YACLScreenWithoutBackground)) {
             // Not title screen, set alpha of the whole mainRT to 1
             var _this = (RenderTarget) (Object) this;
 

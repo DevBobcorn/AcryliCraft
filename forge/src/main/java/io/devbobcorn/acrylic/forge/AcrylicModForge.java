@@ -11,10 +11,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(AcrylicMod.MOD_ID)
 public class AcrylicModForge {
+
     public AcrylicModForge() {
         // Submit our event bus to let architectury register our content on the right time
         EventBuses.registerModEventBus(AcrylicMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
-        AcrylicMod.init();
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
     }

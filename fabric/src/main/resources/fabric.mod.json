@@ -13,10 +13,10 @@
   },
   "license": "MIT License",
   "icon": "assets/acrylic/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
-    "main": [
-      "io.devbobcorn.acrylic.fabric.AcrylicModFabric"
+    "modmenu": [
+      "io.devbobcorn.acrylic.fabric.ModMenuImpl"
     ]
   },
   "mixins": [
@@ -26,6 +26,7 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.4",
-    "architectury": ">=8.2.89"
+    "architectury": ">=8.2.89",
+    "yet_another_config_lib_v3": ">=3.1.0+1.19.4"
   }
 }

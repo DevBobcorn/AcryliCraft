@@ -11,7 +11,7 @@ authors = "DevBobcorn"
 description = '''
 Apply Fluent Design materials to Minecraft window.
 '''
-#logoFile = ""
+logoFile = "assets/acrylic/acrylicraft.png"
 
 [[dependencies.acrylic]]
 modId = "forge"
