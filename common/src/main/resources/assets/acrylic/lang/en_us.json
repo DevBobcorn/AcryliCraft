@@ -1,0 +1,46 @@
+{
+  "acrylic.mod_name": "AcryliCraft",
+
+  "acrylic.unsupported.title": "Unsupported OS",
+  "acrylic.unsupported.description": "Only Windows 11 build 22621 or newer is supported.",
+
+  "acrylic.config": "AcryliCraft Configuration",
+
+  "acrylic.config.show_debug_info": "Show debug info",
+  "acrylic.config.show_debug_info.description": "Render device and window information on title screen.",
+
+  "acrylic.config.window": "Window Settings",
+  "acrylic.config.use_immersive_dark_mode": "Immersive Dark Mode",
+  "acrylic.config.use_immersive_dark_mode.description": "Enable dark mode for the window.",
+  "acrylic.config.system_backdrop_type": "Window Material",
+  "acrylic.config.system_backdrop_type.description": "Apply Mica/Acrylic/MicaAlt backdrop to game window.",
+  "acrylic.config.system_backdrop_type.type.auto": "Auto",
+  "acrylic.config.system_backdrop_type.type.none": "None",
+  "acrylic.config.system_backdrop_type.type.mica": "Mica",
+  "acrylic.config.system_backdrop_type.type.acrylic": "Acrylic",
+  "acrylic.config.system_backdrop_type.type.tabbed": "MicaAlt",
+  "acrylic.config.window_corner_preference": "Window Corner",
+  "acrylic.config.window_corner_preference.description": "Tweak corner curvature of the window.",
+  "acrylic.config.window_corner_preference.type.default": "Default",
+  "acrylic.config.window_corner_preference.type.do_not_round": "Don't Round",
+  "acrylic.config.window_corner_preference.type.round": "Round",
+  "acrylic.config.window_corner_preference.type.round_small": "Small Round",
+
+  "acrylic.config.border": "Border Settings",
+  "acrylic.config.hide_border": "Hide Border",
+  "acrylic.config.hide_border.description": "Whether to render window border.",
+  "acrylic.config.customize_border": "Customize Border",
+  "acrylic.config.customize_border.description": "Whether to enable window border customization.",
+  "acrylic.config.border_color": "Border Color",
+  "acrylic.config.border_color.description": "Color of window border.",
+
+  "acrylic.config.caption": "Titlebar Settings",
+  "acrylic.config.customize_caption": "Customize Titlebar",
+  "acrylic.config.customize_caption.description": "Whether to recolor titlebar.",
+  "acrylic.config.caption_color": "Titlebar Color",
+  "acrylic.config.caption_color.description": "Color of titlebar.",
+  "acrylic.config.customize_text": "Customize Title",
+  "acrylic.config.customize_text.description": "Whether to recolor title text.",
+  "acrylic.config.text_color": "Title Color",
+  "acrylic.config.text_color.description": "Color of title text."
+}

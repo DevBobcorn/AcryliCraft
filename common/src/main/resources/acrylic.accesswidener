@@ -1,0 +1,6 @@
+accessWidener   v2  named
+
+# See https://fabricmc.net/wiki/tutorial:accesswideners
+
+# Gain access to renderable screen widgets
+accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;

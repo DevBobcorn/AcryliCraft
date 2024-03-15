@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "acrylic",
+  "version": "${version}",
+  "name": "AcryliCraft",
+  "description": "Apply Fluent Design materials to Minecraft window.",
+  "authors": [
+    "DevBobcorn"
+  ],
+  "contact": {
+    "homepage": "https://github.com/DevBobcorn",
+    "sources": "https://github.com/DevBobcorn/AcryliCraft"
+  },
+  "license": "MIT License",
+  "icon": "assets/acrylic/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.devbobcorn.acrylic.fabric.AcrylicModFabric"
+    ]
+  },
+  "mixins": [
+    "acrylic.mixins.json",
+    "acrylic-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19.4",
+    "architectury": ">=8.2.89"
+  }
+}

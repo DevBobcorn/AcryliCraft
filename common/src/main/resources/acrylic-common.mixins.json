@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "io.devbobcorn.acrylic.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "WindowMixin",
+    "TitleScreenMixin",
+    "PanoramaRendererMixin",
+    "RenderTargetMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
