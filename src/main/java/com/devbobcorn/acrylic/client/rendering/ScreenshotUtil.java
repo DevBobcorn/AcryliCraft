@@ -23,7 +23,6 @@ public class ScreenshotUtil {
         NativeImage nativeimage = new NativeImage(w, h, false);
         RenderSystem.bindTexture(rt.getColorTextureId());
 
-        //nativeimage.downloadTexture(0, true);
         // The second parameter fills all alpha values to 255
         nativeimage.downloadTexture(0, false);
 
@@ -32,21 +31,12 @@ public class ScreenshotUtil {
         return nativeimage;
     }
 
-    @SuppressWarnings("null")
     public static void grabWithAlpha(File mcDir, String name, RenderTarget rt) {
         NativeImage nativeimage = takeScreenshotWithAlpha(rt);
         File file1 = new File(mcDir, "screenshots");
         file1.mkdir();
-        File file2;
-        
-        file2 = new File(file1, name);
 
-        var event = net.minecraftforge.client.ForgeHooksClient.onScreenshot(nativeimage, file2);
-        if (event.isCanceled()) {
-            return;
-        }
-        
-        final File target = event.getScreenshotFile();
+        final File target = new File(file1, name);
 
         Util.ioPool().execute(() -> {
             try {

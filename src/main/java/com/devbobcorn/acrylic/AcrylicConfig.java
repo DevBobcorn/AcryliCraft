@@ -11,7 +11,7 @@ import net.minecraft.server.dedicated.Settings;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 public class AcrylicConfig extends Settings<AcrylicConfig> {
-    public static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get().resolve(AcrylicMod.MODID + ".ini");
+    public static final Path CONFIG_PATH = FMLPaths.CONFIGDIR.get().resolve(AcrylicMod.MOD_ID + ".ini");
     
     private static AcrylicConfig instance;
 
@@ -40,7 +40,7 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
     @SuppressWarnings("null")
     private AcrylicConfig() {
-        
+
         this(Settings.loadFromFile(CONFIG_PATH));
 
         if (!AcrylicMod.checkCompatible()) {
@@ -57,10 +57,10 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
         DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
                 (DwmApiLib.DWM_SYSTEMBACKDROP_TYPE) configValues.get(SYSTEM_BACKDROP_TYPE).get());
-        
+
         DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_WINDOW_CORNER_PREFERENCE,
                 (DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE) configValues.get(WINDOW_CORNER_PREFERENCE).get());
-        
+
         var borderHidden = (boolean) getValue(HIDE_BORDER);
         var customBorder = (boolean) getValue(CUSTOMIZE_BORDER);
 
@@ -69,26 +69,12 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
             DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_NONE);
         } else if (customBorder) {
             // Window border is visible and customized
-            int borderRgb = (int) getValue(BORDER_COLOR);
+            var borderRgb = (int) getValue(BORDER_COLOR);
             DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.rgb2ColorRef(borderRgb));
         } else {
             // Use default border color
             DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
         }
-
-        /*
-        // Um... it just doesn't look good
-        var customTitlebar = (boolean) getValue(CUSTOMIZE_CAPTION);
-
-        if (customTitlebar) {
-            // Window caption is customized
-            int titlebarRgb = (int) getValue(CAPTION_COLOR);
-            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.rgb2ColorRef(titlebarRgb));
-        } else {
-            // Use default caption color
-            DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
-        }
-        */
 
     }
 
@@ -97,57 +83,41 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
         super(properties);
 
         configValues.put( SHOW_DEBUG_INFO,
-            this.getMutable(SHOW_DEBUG_INFO, Boolean::parseBoolean, false)
+                this.getMutable(SHOW_DEBUG_INFO, Boolean::parseBoolean, false)
         );
 
         configValues.put( USE_IMMERSIVE_DARK_MODE,
-            this.getMutable(USE_IMMERSIVE_DARK_MODE, Boolean::parseBoolean, false)
+                this.getMutable(USE_IMMERSIVE_DARK_MODE, Boolean::parseBoolean, false)
         );
-        
+
         configValues.put( SYSTEM_BACKDROP_TYPE,
-            this.getMutable(SYSTEM_BACKDROP_TYPE, value -> {
-                try { return DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.valueOf(value); }
-                catch (final IllegalArgumentException ignored) {
-                    return DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_AUTO;
-                }
-            }, DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_AUTO)
+                this.getMutable(SYSTEM_BACKDROP_TYPE, value -> {
+                    try { return DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.valueOf(value); }
+                    catch (final IllegalArgumentException ignored) {
+                        return DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_TRANSIENTWINDOW;
+                    }
+                }, DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_TRANSIENTWINDOW)
         );
 
         configValues.put( WINDOW_CORNER_PREFERENCE,
-            this.getMutable(WINDOW_CORNER_PREFERENCE, value -> {
-                try { return DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.valueOf(value); }
-                catch (final IllegalArgumentException ignored) {
-                    return DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT;
-                }
-            }, DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT)
+                this.getMutable(WINDOW_CORNER_PREFERENCE, value -> {
+                    try { return DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.valueOf(value); }
+                    catch (final IllegalArgumentException ignored) {
+                        return DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT;
+                    }
+                }, DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT)
         );
 
         configValues.put( CUSTOMIZE_BORDER,
-            this.getMutable(CUSTOMIZE_BORDER, Boolean::parseBoolean, false)
+                this.getMutable(CUSTOMIZE_BORDER, Boolean::parseBoolean, false)
         );
         configValues.put( HIDE_BORDER,
-            this.getMutable(HIDE_BORDER, Boolean::parseBoolean, false)
+                this.getMutable(HIDE_BORDER, Boolean::parseBoolean, false)
         );
         configValues.put( BORDER_COLOR,
-            this.getMutable(BORDER_COLOR, Integer::parseInt, DwmApiLib.COLOR_BLACK.getRGB())
+                this.getMutable(BORDER_COLOR, Integer::parseInt, DwmApiLib.COLOR_BLACK.getRGB())
         );
 
-        /*
-        // Um... it just doesn't look good
-        configValues.put( CUSTOMIZE_CAPTION,
-            this.getMutable(CUSTOMIZE_CAPTION, Boolean::parseBoolean, false)
-        );
-        configValues.put( CAPTION_COLOR,
-            this.getMutable(CAPTION_COLOR, Integer::parseInt, DwmApiLib.COLOR_WHITE.getRGB())
-        );
-
-        configValues.put( CUSTOMIZE_TEXT,
-            this.getMutable(CUSTOMIZE_TEXT, Boolean::parseBoolean, false)
-        );
-        configValues.put( TEXT_COLOR,
-            this.getMutable(TEXT_COLOR, Integer::parseInt, DwmApiLib.COLOR_BLACK.getRGB())
-        );
-        */
     }
 
     /* ======================================== */
@@ -177,55 +147,38 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
         // Then reflect value changes on the window
         long handle = AcrylicMod.getWindowHandle();
-        
-        if (key == USE_IMMERSIVE_DARK_MODE) {
+
+        if (key.equals(USE_IMMERSIVE_DARK_MODE)) {
             DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE, (boolean) value);
         }
 
-        if (key == SYSTEM_BACKDROP_TYPE) {
+        if (key.equals(SYSTEM_BACKDROP_TYPE)) {
             DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
                     (DwmApiLib.DWM_SYSTEMBACKDROP_TYPE) value);
         }
 
-        if (key == WINDOW_CORNER_PREFERENCE) {
+        if (key.equals(WINDOW_CORNER_PREFERENCE)) {
             DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_WINDOW_CORNER_PREFERENCE,
                     (DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE) value);
         }
 
-        if (key == HIDE_BORDER || key == CUSTOMIZE_BORDER || key == BORDER_COLOR) {
+        if (key.equals(HIDE_BORDER) || key.equals(CUSTOMIZE_BORDER) || key.equals(BORDER_COLOR)) {
 
-            var borderHidden = (boolean) ( key == HIDE_BORDER ? value : getValue(HIDE_BORDER) );
-            var customBorder = (boolean) ( key == CUSTOMIZE_BORDER ? value : getValue(CUSTOMIZE_BORDER) );
+            var borderHidden = (boolean) (key.equals(HIDE_BORDER) ? value : getValue(HIDE_BORDER) );
+            var customBorder = (boolean) (key.equals(CUSTOMIZE_BORDER) ? value : getValue(CUSTOMIZE_BORDER) );
 
             if (borderHidden) {
                 // Window border is hidden
                 DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_NONE);
             } else if (customBorder) {
                 // Window border is visible and customized
-                int borderRgb = (int) ( key == BORDER_COLOR ? value : getValue(BORDER_COLOR) );
+                int borderRgb = (int) (key.equals(BORDER_COLOR) ? value : getValue(BORDER_COLOR) );
                 DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.rgb2ColorRef(borderRgb));
             } else {
                 // Use default border color
                 DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
             }
         }
-
-        /*
-        // Um... it just doesn't look good
-        if (key == CUSTOMIZE_CAPTION || key == CAPTION_COLOR) {
-
-            var customTitlebar = (boolean) ( key == CUSTOMIZE_CAPTION ? value : getValue(CUSTOMIZE_CAPTION) );
-
-            if (customTitlebar) {
-                // Window caption is customized
-                int titlebarRgb = (int) ( key == CAPTION_COLOR ? value : getValue(CAPTION_COLOR) );
-                DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.rgb2ColorRef(titlebarRgb));
-            } else {
-                // Use default caption color
-                DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_CAPTION_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
-            }
-        }
-        */
 
     }
 }

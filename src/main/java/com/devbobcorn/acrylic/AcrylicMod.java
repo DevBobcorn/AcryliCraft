@@ -1,6 +1,6 @@
 package com.devbobcorn.acrylic;
 
-import com.devbobcorn.acrylic.client.screen.AcrylicConfigScreen;
+import com.devbobcorn.acrylic.client.screen.ConfigScreenUtil;
 import com.devbobcorn.acrylic.nativelib.NtDllLib;
 import com.sun.jna.ptr.IntByReference;
 
@@ -20,10 +20,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(AcrylicMod.MODID)
+@Mod(AcrylicMod.MOD_ID)
 public class AcrylicMod
 {
-    public static final String MODID = "acrylic";
+    public static final String MOD_ID = "acrylic";
 
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -88,6 +88,6 @@ public class AcrylicMod
         }
 
         // Create Mod Config screen
-        return AcrylicConfigScreen.create(screen);
+        return ConfigScreenUtil.create(screen);
     }
 }

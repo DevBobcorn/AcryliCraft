@@ -20,9 +20,9 @@ import com.devbobcorn.acrylic.nativelib.DwmApiLib;
 import com.devbobcorn.acrylic.nativelib.DwmApiLib.EnumWAValue;
 
 /**
- * Mod Config screen
+ * Mod Config screen helper
  */
-public final class AcrylicConfigScreen {
+public final class ConfigScreenUtil {
 
     public static Screen create(final Screen screen) {
         return YACLScreenWithoutBackground.generateForConfig(
@@ -36,8 +36,8 @@ public final class AcrylicConfigScreen {
 
     private static Option<Boolean> boolOption(String key, boolean defValue) {
         return Option.<Boolean>createBuilder()
-                .name(translatable(AcrylicMod.MODID + ".config." + key))
-                .description(OptionDescription.of(translatable(AcrylicMod.MODID + ".config." + key + ".description")))
+                .name(translatable(AcrylicMod.MOD_ID + ".config." + key))
+                .description(OptionDescription.of(translatable(AcrylicMod.MOD_ID + ".config." + key + ".description")))
                 .controller(BooleanControllerBuilder::create)
                 .binding(
                     defValue,
@@ -52,9 +52,9 @@ public final class AcrylicConfigScreen {
 
     private static Option<Color> colorOption(String key, Color defValue) {
         return Option.<Color>createBuilder()
-                .name(translatable(AcrylicMod.MODID + ".config." + key))
-                .description(OptionDescription.of(translatable(AcrylicMod.MODID + ".config." + key + ".description")))
-                .controller(option -> ColorControllerBuilder.create(option))
+                .name(translatable(AcrylicMod.MOD_ID + ".config." + key))
+                .description(OptionDescription.of(translatable(AcrylicMod.MOD_ID + ".config." + key + ".description")))
+                .controller(ColorControllerBuilder::create)
                 .binding(
                     defValue,
                     () -> new Color( (int) AcrylicConfig.getInstance().getValue(key) ),
@@ -68,14 +68,14 @@ public final class AcrylicConfigScreen {
 
     private static <T extends Enum<T>> Option<T> enumOption(String key, Class<T> enumClass, T defValue) {
         return Option.<T>createBuilder()
-                .name(translatable(AcrylicMod.MODID + ".config." + key))
-                .description(OptionDescription.of(translatable(AcrylicMod.MODID + ".config." + key + ".description")))
+                .name(translatable(AcrylicMod.MOD_ID + ".config." + key))
+                .description(OptionDescription.of(translatable(AcrylicMod.MOD_ID + ".config." + key + ".description")))
                 .controller(option -> EnumControllerBuilder.create((Option<T>) option)
                     .enumClass(enumClass)
                     .valueFormatter(type -> {
                         @SuppressWarnings("unchecked")
                         var t = (EnumWAValue<T>) type;
-                        return translatable(AcrylicMod.MODID + ".config." + key + ".type." + t.getTranslation());
+                        return translatable(AcrylicMod.MOD_ID + ".config." + key + ".type." + t.getTranslation());
                     })
                 )
                 .binding(
@@ -94,7 +94,7 @@ public final class AcrylicConfigScreen {
             .name(translatable("acrylic.config"))
 
             .group(OptionGroup.createBuilder()
-                .name(translatable(AcrylicMod.MODID + ".config.window"))
+                .name(translatable(AcrylicMod.MOD_ID + ".config.window"))
 
                 // Use Immersive Dark Mode
                 .option( boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, false) )
@@ -116,7 +116,7 @@ public final class AcrylicConfigScreen {
 
             // Window Border Customization
             .group(OptionGroup.createBuilder()
-                .name(translatable(AcrylicMod.MODID + ".config.border"))
+                .name(translatable(AcrylicMod.MOD_ID + ".config.border"))
 
                 .option( boolOption(AcrylicConfig.HIDE_BORDER, false) )
                 .option( boolOption(AcrylicConfig.CUSTOMIZE_BORDER, false) )
