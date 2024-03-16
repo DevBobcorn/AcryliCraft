@@ -1,8 +1,10 @@
 package io.devbobcorn.acrylic.forge;
 
+import com.mojang.blaze3d.platform.ScreenManager;
 import dev.architectury.platform.forge.EventBuses;
 import io.devbobcorn.acrylic.AcrylicMod;
 import io.devbobcorn.acrylic.client.screen.ConfigScreenUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;

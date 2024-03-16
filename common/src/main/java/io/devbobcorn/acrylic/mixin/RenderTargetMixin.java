@@ -1,6 +1,6 @@
 package io.devbobcorn.acrylic.mixin;
 
-import io.devbobcorn.acrylic.client.screen.YACLScreenWithoutBackground;
+import io.devbobcorn.acrylic.AcrylicMod;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,9 +18,6 @@ import net.minecraft.client.gui.screens.TitleScreen;
 @Mixin(RenderTarget.class)
 public class RenderTargetMixin {
 
-    @Unique
-    private Minecraft s_minecraft = null;
-
     @Redirect(
             method = "_blitToScreen(IIZ)V",
             at = @At(
@@ -31,13 +28,8 @@ public class RenderTargetMixin {
     )
     private void GlStateManager_colorMaskRedirect(boolean r, boolean g, boolean b, boolean a) {
 
-        if (s_minecraft == null) {
-            s_minecraft = Minecraft.getInstance();
-        }
+        if (AcrylicMod.getFillMainRTAlpha()) {
 
-        if (s_minecraft.screen == null || !(
-                s_minecraft.screen instanceof TitleScreen || s_minecraft.screen instanceof YACLScreenWithoutBackground)) {
-            // Not title screen, set alpha of the whole mainRT to 1
             var _this = (RenderTarget) (Object) this;
 
             GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, _this.frameBufferId);

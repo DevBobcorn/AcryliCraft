@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
-import io.devbobcorn.acrylic.client.rendering.ScreenshotUtil;
 import io.devbobcorn.acrylic.client.window.IWindow;
 import io.devbobcorn.acrylic.client.window.WindowUtil;
 
@@ -31,9 +30,6 @@ public class TitleScreenMixin {
 
     @Shadow
     private static Logger LOGGER;
-
-    @Shadow
-    private long fadeInStart;
 
     @SuppressWarnings("null")
     public void renderString(PoseStack poseStack, String str, int x, int y) {
@@ -80,6 +76,7 @@ public class TitleScreenMixin {
         //renderTex(poseStack, M_TEX, mouseX, mouseY, 98, 14, 128, 16);
     }
 
+    /*
     private int renderedFrames = 0;
 
     // Grab the main framebuffer with transparency after rendering some frames
@@ -91,4 +88,6 @@ public class TitleScreenMixin {
             ScreenshotUtil.grabWithAlpha(s_minecraft.gameDirectory, "magic.png", s_minecraft.getMainRenderTarget());
         }
     }
+
+     */
 }

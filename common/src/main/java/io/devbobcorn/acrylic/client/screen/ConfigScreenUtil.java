@@ -50,14 +50,11 @@ public final class ConfigScreenUtil {
         return create(screen);
     }
 
-    public static Screen create(final Screen screen) {
-        return YACLScreenWithoutBackground.generateForConfig(
-                YetAnotherConfigLib.createBuilder()
-                        .title(translatable("acrylic.mod_name"))
-                        .category(categoryGeneral())
-                        .build(),
-                screen
-        );
+    public static Screen create(final Screen parent) {
+        return YetAnotherConfigLib.createBuilder()
+                .title(translatable("acrylic.mod_name"))
+                .category(categoryGeneral())
+                .build().generateScreen(parent);
     }
 
     private static Option<Boolean> boolOption(String key, boolean defValue) {
