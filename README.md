@@ -9,11 +9,7 @@ This mod requires **Windows 11 Version 22H2** (OS build 22621) or above to funct
 
 ## Mod Dependencies
 
-Acrylic depends on the following mods:
-* [YetAnotherConfigLib](https://modrinth.com/mod/yacl)
-* [Architectury API](https://modrinth.com/mod/architectury-api)
-
-Additionally, you will need [Mod Menu](https://modrinth.com/mod/modmenu) placed in your mods folder to access mod config if using Fabric.
+Acrylic depends on [YetAnotherConfigLib](https://modrinth.com/mod/yacl) as its configuration library. Additionally, you will need [Mod Menu](https://modrinth.com/mod/modmenu) placed in your mods folder to access mod config if using Fabric.
 
 ## Known Issues
 

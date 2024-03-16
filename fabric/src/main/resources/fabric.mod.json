@@ -26,7 +26,6 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.4",
-    "architectury": ">=8.2.89",
     "yet_another_config_lib_v3": ">=3.1.0+1.19.4"
   }
 }

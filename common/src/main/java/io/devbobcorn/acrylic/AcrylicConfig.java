@@ -1,10 +1,10 @@
 package io.devbobcorn.acrylic;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import dev.architectury.platform.Platform;
 import io.devbobcorn.acrylic.nativelib.DwmApiLib;
 
 import io.devbobcorn.acrylic.nativelib.NtDllLib;
@@ -13,7 +13,9 @@ import net.minecraft.server.dedicated.Settings;
 import org.jetbrains.annotations.NotNull;
 
 public class AcrylicConfig extends Settings<AcrylicConfig> {
-    public static final Path CONFIG_PATH = Platform.getConfigFolder().resolve(AcrylicMod.MOD_ID + ".ini");
+    // We are not using Platform.getConfigFolder() provided by Architectury API
+    // because we don't want to depend on the api just for this
+    public static final Path CONFIG_PATH = new File("./config/" + AcrylicMod.MOD_ID + ".ini").toPath();
 
     private static AcrylicConfig instance;
 
