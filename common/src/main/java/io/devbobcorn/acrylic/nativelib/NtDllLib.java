@@ -15,7 +15,7 @@ public interface NtDllLib extends Library {
     /**
      * Check whether current OS is supported.
      *
-     * @return config screen
+     * @return True if compatible, otherwise false
      */
     static boolean checkCompatibility() {
         var major = new IntByReference();
