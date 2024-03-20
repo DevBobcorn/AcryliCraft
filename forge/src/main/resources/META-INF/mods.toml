@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "[47,)"
 #issueTrackerURL = ""
 license = "MIT License"
 
@@ -16,20 +16,20 @@ logoFile = "assets/acrylic/acrylicraft.png"
 [[dependencies.acrylic]]
 modId = "forge"
 mandatory = true
-versionRange = "[45,)"
+versionRange = "[47,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.acrylic]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.4,)"
+versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.acrylic]]
 modId="yet_another_config_lib_v3"
 mandatory=true
-versionRange="[3.1.0,)"
+versionRange="[3.2.2,)"
 ordering="AFTER"
 side="CLIENT"

@@ -1,5 +1,7 @@
 package io.devbobcorn.acrylic.mixin;
 
+import io.devbobcorn.acrylic.client.rendering.ScreenshotUtil;
+import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.slf4j.Logger;
@@ -15,10 +17,8 @@ import io.devbobcorn.acrylic.client.window.WindowUtil;
 
 import com.mojang.blaze3d.platform.GlUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.TitleScreen;
 
 @Mixin(TitleScreen.class)
@@ -32,12 +32,12 @@ public class TitleScreenMixin {
     private static Logger LOGGER;
 
     @SuppressWarnings("null")
-    public void renderString(PoseStack poseStack, String str, int x, int y) {
-        GuiComponent.drawString(poseStack, s_minecraft.font, str, x, y, 16777215);
+    public void renderString(GuiGraphics guiGraphics, String str, int x, int y) {
+        guiGraphics.drawString(s_minecraft.font, str, x, y, 16777215);
     }
 
-    @Inject(at = @At("HEAD"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V", cancellable = true)
-    public void renderHead(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
+    @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", cancellable = true)
+    public void renderHead(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
 
         RenderSystem.clearColor(0.0f, 0.0f, 0.0f, 0.0f);
         RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, Minecraft.ON_OSX);
@@ -55,9 +55,9 @@ public class TitleScreenMixin {
                 // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
                 boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
 
-                renderString(poseStack, "Window Handle: " + String.format("0x%016X", windowHandle) +
+                renderString(guiGraphics, "Window Handle: " + String.format("0x%016X", windowHandle) +
                         " (TransparentBuffer Enabled: " + String.valueOf(tb) + ")", 2, 2);
-                renderString(poseStack, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
+                renderString(guiGraphics, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
             }
         }
 
@@ -76,12 +76,11 @@ public class TitleScreenMixin {
         //renderTex(poseStack, M_TEX, mouseX, mouseY, 98, 14, 128, 16);
     }
 
-    /*
     private int renderedFrames = 0;
 
     // Grab the main framebuffer with transparency after rendering some frames
-    @Inject(at = @At("RETURN"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V", cancellable = true)
-    public void renderReturn(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
+    @Inject(at = @At("RETURN"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", cancellable = true)
+    public void renderReturn(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
         renderedFrames += 1;
 
         if (renderedFrames == 150) {
@@ -89,5 +88,4 @@ public class TitleScreenMixin {
         }
     }
 
-     */
 }
