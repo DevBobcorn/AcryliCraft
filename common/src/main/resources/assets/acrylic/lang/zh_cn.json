@@ -1,0 +1,36 @@
+{
+  "acrylic.mod_name": "AcryliCraft",
+
+  "acrylic.unsupported.title": "操作系统不受支持",
+  "acrylic.unsupported.description": "仅Windows 11 22H2(build 22621)及以上版本才能够使用本模组。",
+
+  "acrylic.config": "AcryliCraft配置选项",
+
+  "acrylic.config.show_debug_info": "显示调试信息",
+  "acrylic.config.show_debug_info.description": "是否在主菜单界面上显示关于设备和窗口的调试信息。",
+
+  "acrylic.config.window": "窗口设置",
+  "acrylic.config.use_immersive_dark_mode": "黑暗模式",
+  "acrylic.config.use_immersive_dark_mode.description": "是否给窗口启用黑暗模式。",
+  "acrylic.config.system_backdrop_type": "窗口材质",
+  "acrylic.config.system_backdrop_type.description": "给窗口更换亚克力或云母材质。",
+  "acrylic.config.system_backdrop_type.type.auto": "自动",
+  "acrylic.config.system_backdrop_type.type.none": "无背景",
+  "acrylic.config.system_backdrop_type.type.mica": "云母",
+  "acrylic.config.system_backdrop_type.type.acrylic": "亚克力",
+  "acrylic.config.system_backdrop_type.type.tabbed": "云母变体",
+  "acrylic.config.window_corner_preference": "窗口圆角",
+  "acrylic.config.window_corner_preference.description": "调整窗口圆角的类型。",
+  "acrylic.config.window_corner_preference.type.default": "默认",
+  "acrylic.config.window_corner_preference.type.do_not_round": "无圆角",
+  "acrylic.config.window_corner_preference.type.round": "圆角",
+  "acrylic.config.window_corner_preference.type.round_small": "小圆角",
+
+  "acrylic.config.border": "边框设置",
+  "acrylic.config.hide_border": "隐藏边框",
+  "acrylic.config.hide_border.description": "是否渲染窗口边框。",
+  "acrylic.config.customize_border": "自定义边框",
+  "acrylic.config.customize_border.description": "是否启用边框自定义。",
+  "acrylic.config.border_color": "边框颜色",
+  "acrylic.config.border_color.description": "窗口边框的颜色。"
+}
