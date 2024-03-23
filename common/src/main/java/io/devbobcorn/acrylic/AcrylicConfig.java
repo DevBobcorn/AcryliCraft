@@ -28,6 +28,7 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
     }
 
     public static final String SHOW_DEBUG_INFO           = "show_debug_info";
+    public static final String TRANSPARENT_WINDOW        = "transparent_window";
 
     public static final String USE_IMMERSIVE_DARK_MODE   = "use_immersive_dark_mode";
     public static final String SYSTEM_BACKDROP_TYPE      = "system_backdrop_type";
@@ -46,6 +47,14 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
     private AcrylicConfig() {
 
         this(Settings.loadFromFile(CONFIG_PATH));
+
+    }
+
+    /**
+     * Apply all Win11-Specific config to the game window.
+     * Called once after the window is created.
+     */
+    public void ApplyWin11Specific() {
 
         if (!NtDllLib.checkCompatibility()) {
             return;
@@ -79,7 +88,6 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
             // Use default border color
             DwmApiLib.setIntWA(handle, DwmApiLib.DWM_INT_WA.DWMWA_BORDER_COLOR, DwmApiLib.DWMWA_COLOR_DEFAULT);
         }
-
     }
 
     private AcrylicConfig(final Properties properties) {
@@ -88,6 +96,10 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
         configValues.put( SHOW_DEBUG_INFO,
                 this.getMutable(SHOW_DEBUG_INFO, Boolean::parseBoolean, false)
+        );
+
+        configValues.put( TRANSPARENT_WINDOW,
+                this.getMutable(TRANSPARENT_WINDOW, Boolean::parseBoolean, true)
         );
 
         configValues.put( USE_IMMERSIVE_DARK_MODE,

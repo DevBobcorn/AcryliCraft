@@ -1,13 +1,17 @@
 {
   "acrylic.mod_name": "AcryliCraft",
 
-  "acrylic.unsupported.title": "Unsupported OS",
-  "acrylic.unsupported.description": "Only Windows 11 22H2 (build 22621) or newer is supported.",
+  "acrylic.config.unsupported": "Unsupported OS >_<",
+  "acrylic.config.unsupported.win11_only": "Only Windows 11 22H2 (build 22621) or newer is supported.",
 
-  "acrylic.config": "AcryliCraft Configuration",
+  "acrylic.config.general": "General Config",
 
   "acrylic.config.show_debug_info": "Show debug info",
   "acrylic.config.show_debug_info.description": "Render device and window information on title screen.",
+  "acrylic.config.transparent_window": "Transparent background",
+  "acrylic.config.transparent_window.description": "Whether to enable transparent game window. This is required if you want use backdrops such as Acrylic for the whole window. (Changes will take effect after a restart.)",
+
+  "acrylic.config.win11_specific": "Win11-Specific Config",
 
   "acrylic.config.window": "Window Settings",
   "acrylic.config.use_immersive_dark_mode": "Immersive Dark Mode",
@@ -25,7 +29,6 @@
   "acrylic.config.window_corner_preference.type.do_not_round": "Don't Round",
   "acrylic.config.window_corner_preference.type.round": "Round",
   "acrylic.config.window_corner_preference.type.round_small": "Small Round",
-
   "acrylic.config.border": "Border Settings",
   "acrylic.config.hide_border": "Hide Border",
   "acrylic.config.hide_border.description": "Whether to render window border.",

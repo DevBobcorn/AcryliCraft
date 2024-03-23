@@ -4,7 +4,6 @@ import io.devbobcorn.acrylic.AcrylicMod;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -13,7 +12,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.TitleScreen;
 
 @Mixin(RenderTarget.class)
 public class RenderTargetMixin {
@@ -28,10 +26,17 @@ public class RenderTargetMixin {
     )
     private void GlStateManager_colorMaskRedirect(boolean r, boolean g, boolean b, boolean a) {
 
+        if (!AcrylicMod.getTransparencyEnabled()) {
+            // Window transparency is not enabled, don't change vanilla behaviour
+            GlStateManager._colorMask(r, g, b, a);
+
+            return;
+        }
+
         if (AcrylicMod.getFillMainRTAlpha()) {
 
+            // Fill alpha channel for main render target (this buffer)
             var _this = (RenderTarget) (Object) this;
-
             GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, _this.frameBufferId);
 
             RenderSystem.colorMask(false, false, false, true);
@@ -44,6 +49,5 @@ public class RenderTargetMixin {
 
         // Enable alpha when blitting
         GlStateManager._colorMask(r, g, b, true);
-
     }
 }

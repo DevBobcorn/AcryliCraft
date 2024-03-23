@@ -18,6 +18,6 @@ public class AcrylicModForge {
     private void clientSetup(final FMLCommonSetupEvent event) {
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
                 () -> new ConfigScreenHandler.ConfigScreenFactory(
-                        (client, screen) -> ConfigScreenUtil.createIfCompatible(screen)));
+                        (client, screen) -> ConfigScreenUtil.create(screen)));
     }
 }

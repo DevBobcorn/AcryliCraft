@@ -6,6 +6,23 @@ public class AcrylicMod {
 
     private static long windowHandle = 0;
 
+    private static boolean transparencyEnabled = false;
+
+    /**
+     *  Check whether window transparency is enabled.
+     */
+    public static boolean getTransparencyEnabled() {
+        return transparencyEnabled;
+    }
+
+    /**
+     *  Record whether window transparency is enabled.
+     *  This is supposed to be called only once, upon window creation.
+     */
+    public static void setTransparencyEnabled(boolean transparent) {
+        transparencyEnabled = transparent;
+    }
+
     /**
      *  Get the handle to the game window.
      */

@@ -66,8 +66,11 @@ public class WindowMixin implements IWindow {
         // 0x22006            1 (GLFW_TRUE)
         // GLFW_AUTO_ICONIFY  0x1
 
-        // Magic!
-        GLFW.glfwWindowHint(GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_TRUE);
+        // Initialize Acrylic by accessing its instance
+        if (AcrylicConfig.getInstance().getValue(AcrylicConfig.TRANSPARENT_WINDOW)) {
+            // Magic! (This also works on macOS and linux)
+            GLFW.glfwWindowHint(GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_TRUE);
+        }
 
         LOGGER.info("Window hints applied!");
     }
@@ -78,6 +81,12 @@ public class WindowMixin implements IWindow {
             final DisplayData display, final String videoMode, final String title,
             final CallbackInfo ci
     ) {
+        // Check if transparent frame buffer is enabled
+        // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
+        var transparent = GLFW.glfwGetWindowAttrib(window, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
+
+        AcrylicMod.setTransparencyEnabled(transparent);
+
         // Check OS
         if (Util.getPlatform() != Util.OS.WINDOWS) {
             return;
@@ -86,8 +95,8 @@ public class WindowMixin implements IWindow {
         // Store window handle for later use
         AcrylicMod.setWindowHandle(WindowUtil.getWindowHandle(window));
 
-        // Initialize Acrylic by accessing its instance
-        AcrylicConfig.getInstance();
+        // Apply Win11-Specific window setup
+        AcrylicConfig.getInstance().ApplyWin11Specific();
     }
 
     @Override

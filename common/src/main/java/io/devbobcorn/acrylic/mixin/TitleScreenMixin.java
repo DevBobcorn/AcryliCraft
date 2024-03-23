@@ -1,8 +1,8 @@
 package io.devbobcorn.acrylic.mixin;
 
+import io.devbobcorn.acrylic.AcrylicMod;
 import io.devbobcorn.acrylic.client.rendering.ScreenshotUtil;
 import net.minecraft.client.gui.GuiGraphics;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -52,11 +52,9 @@ public class TitleScreenMixin {
                 var iWindow = (IWindow) (Object) (s_minecraft.getWindow());
                 var windowId = iWindow.getGLFWId();
                 var windowHandle = WindowUtil.getWindowHandle(windowId);
-                // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
-                boolean tb = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
 
                 renderString(guiGraphics, "Window Handle: " + String.format("0x%016X", windowHandle) +
-                        " (TransparentBuffer Enabled: " + String.valueOf(tb) + ")", 2, 2);
+                        " (Transparency Enabled: " + AcrylicMod.getTransparencyEnabled() + ")", 2, 2);
                 renderString(guiGraphics, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
             }
         }

@@ -1,13 +1,17 @@
 {
   "acrylic.mod_name": "AcryliCraft",
 
-  "acrylic.unsupported.title": "操作系统不受支持",
-  "acrylic.unsupported.description": "仅Windows 11 22H2(build 22621)及以上版本才能够使用本模组。",
+  "acrylic.config.unsupported": "操作系统不受支持 >_<",
+  "acrylic.config.unsupported.win11_only": "仅Windows 11 22H2(build 22621)及以上版本才能够使用这些设置。",
 
-  "acrylic.config": "AcryliCraft配置选项",
+  "acrylic.config.general": "通用配置",
 
   "acrylic.config.show_debug_info": "显示调试信息",
   "acrylic.config.show_debug_info.description": "是否在主菜单界面上显示关于设备和窗口的调试信息。",
+  "acrylic.config.transparent_window": "使用透明背景",
+  "acrylic.config.transparent_window.description": "是否启用透明窗口背景，如果要使用全窗口的亚克力等背景则必须开启此项。（更改后重启游戏生效。）",
+
+  "acrylic.config.win11_specific": "Win11独有配置",
 
   "acrylic.config.window": "窗口设置",
   "acrylic.config.use_immersive_dark_mode": "黑暗模式",
@@ -25,7 +29,6 @@
   "acrylic.config.window_corner_preference.type.do_not_round": "无圆角",
   "acrylic.config.window_corner_preference.type.round": "圆角",
   "acrylic.config.window_corner_preference.type.round_small": "小圆角",
-
   "acrylic.config.border": "边框设置",
   "acrylic.config.hide_border": "隐藏边框",
   "acrylic.config.hide_border.description": "是否渲染窗口边框。",

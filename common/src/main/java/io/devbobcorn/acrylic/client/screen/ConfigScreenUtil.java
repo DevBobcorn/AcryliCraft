@@ -1,18 +1,12 @@
 package io.devbobcorn.acrylic.client.screen;
 
-import dev.isxander.yacl3.api.ConfigCategory;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
-import dev.isxander.yacl3.api.OptionGroup;
-import dev.isxander.yacl3.api.YetAnotherConfigLib;
+import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 
 import io.devbobcorn.acrylic.nativelib.NtDllLib;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.AlertScreen;
 import net.minecraft.client.gui.screens.Screen;
 import static net.minecraft.network.chat.Component.translatable;
 
@@ -32,29 +26,16 @@ public final class ConfigScreenUtil {
     /**
      * Create a config screen.
      *
-     * @param screen previous screen
+     * @param parent previous screen
      * @return config screen
      */
-    @SuppressWarnings("null")
-    public static Screen createIfCompatible(final Screen screen) {
-
-        // Check OS compatibility
-        if (!NtDllLib.checkCompatibility()) {
-            return new AlertScreen(
-                    () -> Minecraft.getInstance().setScreen(screen),
-                    translatable("acrylic.unsupported.title").withStyle(ChatFormatting.BOLD, ChatFormatting.RED),
-                    translatable("acrylic.unsupported.description")
-            );
-        }
-
-        // Create Mod Config screen
-        return create(screen);
-    }
-
     public static Screen create(final Screen parent) {
         return YetAnotherConfigLib.createBuilder()
                 .title(translatable("acrylic.mod_name"))
+
                 .category(categoryGeneral())
+                .category(categoryWin11Specific())
+
                 .build().generateScreen(parent);
     }
 
@@ -73,6 +54,13 @@ public final class ConfigScreenUtil {
                 )
                 .instant(true)
                 .available(available)
+                .build();
+    }
+
+    private static LabelOption labelOption(String key) {
+        return LabelOption.createBuilder()
+                .line(translatable(AcrylicMod.MOD_ID + ".config." + key))
+
                 .build();
     }
 
@@ -122,6 +110,36 @@ public final class ConfigScreenUtil {
 
     private static ConfigCategory categoryGeneral() {
 
+        return ConfigCategory.createBuilder()
+                .name(translatable("acrylic.config.general"))
+
+                // Show debug info
+                .option( boolOption(AcrylicConfig.SHOW_DEBUG_INFO, false, true, (val) -> { }) )
+
+                // Show debug info
+                .option( boolOption(AcrylicConfig.TRANSPARENT_WINDOW, true, true, (val) -> { }) )
+
+                .build();
+    }
+
+    private static ConfigCategory categoryWin11Specific() {
+
+        // Check OS compatibility
+        if (!NtDllLib.checkCompatibility()) {
+
+            return ConfigCategory.createBuilder()
+                    .name(translatable("acrylic.config.win11_specific"))
+
+                    .group(OptionGroup.createBuilder()
+                            .name(translatable("acrylic.config.unsupported")
+                                    .withStyle(ChatFormatting.BOLD, ChatFormatting.RED))
+
+                            .option( labelOption("unsupported.win11_only") )
+
+                            .build()
+                    ).build();
+        }
+
         final Option<Color> borderColorOption = colorOption(AcrylicConfig.BORDER_COLOR, DwmApiLib.COLOR_BLACK,
                 AcrylicConfig.getInstance().getValue(AcrylicConfig.CUSTOMIZE_BORDER), (val) -> { });
 
@@ -130,7 +148,7 @@ public final class ConfigScreenUtil {
                 borderColorOption::setAvailable);
 
         return ConfigCategory.createBuilder()
-                .name(translatable("acrylic.config"))
+                .name(translatable("acrylic.config.win11_specific"))
 
                 .group(OptionGroup.createBuilder()
                         .name(translatable(AcrylicMod.MOD_ID + ".config.window"))
@@ -170,9 +188,6 @@ public final class ConfigScreenUtil {
 
                         .build()
                 )
-
-                // Show debug info
-                .option( boolOption(AcrylicConfig.SHOW_DEBUG_INFO, false, true, (val) -> { }) )
 
                 .build();
     }
