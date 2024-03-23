@@ -2,7 +2,7 @@
   "acrylic.mod_name": "AcryliCraft",
 
   "acrylic.unsupported.title": "Unsupported OS",
-  "acrylic.unsupported.description": "Only Windows 11 build 22621 or newer is supported.",
+  "acrylic.unsupported.description": "Only Windows 11 22H2 (build 22621) or newer is supported.",
 
   "acrylic.config": "AcryliCraft Configuration",
 
@@ -32,15 +32,5 @@
   "acrylic.config.customize_border": "Customize Border",
   "acrylic.config.customize_border.description": "Whether to enable window border customization.",
   "acrylic.config.border_color": "Border Color",
-  "acrylic.config.border_color.description": "Color of window border.",
-
-  "acrylic.config.caption": "Titlebar Settings",
-  "acrylic.config.customize_caption": "Customize Titlebar",
-  "acrylic.config.customize_caption.description": "Whether to recolor titlebar.",
-  "acrylic.config.caption_color": "Titlebar Color",
-  "acrylic.config.caption_color.description": "Color of titlebar.",
-  "acrylic.config.customize_text": "Customize Title",
-  "acrylic.config.customize_text.description": "Whether to recolor title text.",
-  "acrylic.config.text_color": "Title Color",
-  "acrylic.config.text_color.description": "Color of title text."
+  "acrylic.config.border_color.description": "Color of window border."
 }
