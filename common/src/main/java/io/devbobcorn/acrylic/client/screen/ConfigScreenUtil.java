@@ -17,6 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import static net.minecraft.network.chat.Component.translatable;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
@@ -57,7 +58,7 @@ public final class ConfigScreenUtil {
                 .build().generateScreen(parent);
     }
 
-    private static Option<Boolean> boolOption(String key, boolean defValue) {
+    private static Option<Boolean> boolOption(String key, boolean defValue, boolean available, Consumer<Boolean> valueCallback) {
         return Option.<Boolean>createBuilder()
                 .name(translatable(AcrylicMod.MOD_ID + ".config." + key))
                 .description(OptionDescription.of(translatable(AcrylicMod.MOD_ID + ".config." + key + ".description")))
@@ -67,33 +68,38 @@ public final class ConfigScreenUtil {
                         () -> AcrylicConfig.getInstance().getValue(key),
                         value -> {
                             AcrylicConfig.getInstance().setValue(key, value);
+                            valueCallback.accept(value);
                         }
                 )
                 .instant(true)
+                .available(available)
                 .build();
     }
 
-    private static Option<Color> colorOption(String key, Color defValue) {
+    private static Option<Color> colorOption(String key, Color defValue, boolean available, Consumer<Color> valueCallback) {
         return Option.<Color>createBuilder()
                 .name(translatable(AcrylicMod.MOD_ID + ".config." + key))
                 .description(OptionDescription.of(translatable(AcrylicMod.MOD_ID + ".config." + key + ".description")))
                 .controller(ColorControllerBuilder::create)
                 .binding(
                         defValue,
-                        () -> new Color( (int) AcrylicConfig.getInstance().getValue(key) ),
+                        () -> new Color( AcrylicConfig.getInstance().getValue(key) ),
                         value -> {
                             AcrylicConfig.getInstance().setValue(key, value.getRGB());
+                            valueCallback.accept(value);
                         }
                 )
                 .instant(true)
+                .available(available)
                 .build();
     }
 
-    private static <T extends Enum<T>> Option<T> enumOption(String key, Class<T> enumClass, T defValue) {
+    private static <T extends Enum<T>> Option<T> enumOption(String key, Class<T> enumClass, T defValue, boolean available, Consumer<T> valueCallback) {
+
         return Option.<T>createBuilder()
                 .name(translatable(AcrylicMod.MOD_ID + ".config." + key))
                 .description(OptionDescription.of(translatable(AcrylicMod.MOD_ID + ".config." + key + ".description")))
-                .controller(option -> EnumControllerBuilder.create((Option<T>) option)
+                .controller(option -> EnumControllerBuilder.create(option)
                         .enumClass(enumClass)
                         .valueFormatter(type -> {
                             @SuppressWarnings("unchecked")
@@ -106,13 +112,23 @@ public final class ConfigScreenUtil {
                         () -> AcrylicConfig.getInstance().getValue(key),
                         value -> {
                             AcrylicConfig.getInstance().setValue(key, value);
+                            valueCallback.accept(value);
                         }
                 )
                 .instant(true)
+                .available(available)
                 .build();
     }
 
     private static ConfigCategory categoryGeneral() {
+
+        final Option<Color> borderColorOption = colorOption(AcrylicConfig.BORDER_COLOR, DwmApiLib.COLOR_BLACK,
+                AcrylicConfig.getInstance().getValue(AcrylicConfig.CUSTOMIZE_BORDER), (val) -> { });
+
+        final Option<Boolean> customBorderOption = boolOption(AcrylicConfig.CUSTOMIZE_BORDER, false,
+                !(boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.HIDE_BORDER),
+                borderColorOption::setAvailable);
+
         return ConfigCategory.createBuilder()
                 .name(translatable("acrylic.config"))
 
@@ -120,18 +136,22 @@ public final class ConfigScreenUtil {
                         .name(translatable(AcrylicMod.MOD_ID + ".config.window"))
 
                         // Use Immersive Dark Mode
-                        .option( boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, false) )
+                        .option( boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, false, true, (val) -> { }) )
 
                         // System Backdrop Type
                         .option( enumOption(AcrylicConfig.SYSTEM_BACKDROP_TYPE,
                                 DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.class,
-                                DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_AUTO)
+                                DwmApiLib.DWM_SYSTEMBACKDROP_TYPE.DWMSBT_AUTO,
+                                true,
+                                (val) -> { })
                         )
 
                         // Window Corner Preference
                         .option( enumOption(AcrylicConfig.WINDOW_CORNER_PREFERENCE,
                                 DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.class,
-                                DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT)
+                                DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_DEFAULT,
+                                true,
+                                (val) -> { })
                         )
 
                         .build()
@@ -141,15 +161,18 @@ public final class ConfigScreenUtil {
                 .group(OptionGroup.createBuilder()
                         .name(translatable(AcrylicMod.MOD_ID + ".config.border"))
 
-                        .option( boolOption(AcrylicConfig.HIDE_BORDER, false) )
-                        .option( boolOption(AcrylicConfig.CUSTOMIZE_BORDER, false) )
-                        .option( colorOption(AcrylicConfig.BORDER_COLOR, DwmApiLib.COLOR_BLACK) )
+                        .option( boolOption(AcrylicConfig.HIDE_BORDER, false, true, (val) -> {
+                                    customBorderOption.setAvailable(!val);
+                                    borderColorOption.setAvailable(!val && (boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.CUSTOMIZE_BORDER));
+                                }) )
+                        .option( customBorderOption )
+                        .option( borderColorOption )
 
                         .build()
                 )
 
                 // Show debug info
-                .option( boolOption(AcrylicConfig.SHOW_DEBUG_INFO, false) )
+                .option( boolOption(AcrylicConfig.SHOW_DEBUG_INFO, false, true, (val) -> { }) )
 
                 .build();
     }
