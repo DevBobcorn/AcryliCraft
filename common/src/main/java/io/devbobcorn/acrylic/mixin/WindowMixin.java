@@ -2,6 +2,7 @@ package io.devbobcorn.acrylic.mixin;
 
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,9 +25,11 @@ import net.minecraft.Util;
 @Mixin(Window.class)
 public class WindowMixin implements IWindow {
 
+    @Final
     @Shadow
     private static Logger LOGGER;
 
+    @Final
     @Shadow
     // GLFW Window id
     private long window;
@@ -100,12 +103,8 @@ public class WindowMixin implements IWindow {
     }
 
     @Override
-    public long getGLFWId() {
+    public long acrylic_mod$getGLFWId() {
         return window;
     }
 
-    @Override
-    public long getWindowHandle() {
-        return WindowUtil.getWindowHandle(window);
-    }
 }

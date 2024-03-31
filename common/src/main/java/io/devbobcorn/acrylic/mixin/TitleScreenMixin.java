@@ -3,9 +3,8 @@ package io.devbobcorn.acrylic.mixin;
 import io.devbobcorn.acrylic.AcrylicMod;
 import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.opengl.GL11;
-import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,13 +24,12 @@ public class TitleScreenMixin {
 
     //private static final ResourceLocation M_TEX = new ResourceLocation("textures/gui/title/edition.png");
 
+    @Unique
     private Minecraft s_minecraft = null;
 
-    @Shadow
-    private static Logger LOGGER;
-
+    @Unique
     @SuppressWarnings("null")
-    public void renderString(GuiGraphics guiGraphics, String str, int x, int y) {
+    public void acrylic_mod$renderString(GuiGraphics guiGraphics, String str, int x, int y) {
         guiGraphics.drawString(s_minecraft.font, str, x, y, 16777215);
     }
 
@@ -49,12 +47,12 @@ public class TitleScreenMixin {
             if ((boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.SHOW_DEBUG_INFO)) {
                 // Draw debug info
                 var iWindow = (IWindow) (Object) (s_minecraft.getWindow());
-                var windowId = iWindow.getGLFWId();
+                var windowId = iWindow.acrylic_mod$getGLFWId();
                 var windowHandle = WindowUtil.getWindowHandle(windowId);
 
-                renderString(guiGraphics, "Window Handle: " + String.format("0x%016X", windowHandle) +
+                acrylic_mod$renderString(guiGraphics, "Window Handle: " + String.format("0x%016X", windowHandle) +
                         " (Transparency Enabled: " + AcrylicMod.getTransparencyEnabled() + ")", 2, 2);
-                renderString(guiGraphics, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
+                acrylic_mod$renderString(guiGraphics, GlUtil.getRenderer() + ", OpenGL " + GlUtil.getOpenGLVersion(), 2, 12);
             }
         }
 
