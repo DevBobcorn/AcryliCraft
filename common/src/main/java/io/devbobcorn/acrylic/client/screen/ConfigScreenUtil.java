@@ -5,7 +5,6 @@ import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 
-import io.devbobcorn.acrylic.nativelib.NtDllLib;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import static net.minecraft.network.chat.Component.translatable;
@@ -15,6 +14,7 @@ import java.util.function.Consumer;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
+import io.devbobcorn.acrylic.nativelib.NtDllLib;
 import io.devbobcorn.acrylic.nativelib.DwmApiLib;
 import io.devbobcorn.acrylic.nativelib.DwmApiLib.EnumWAValue;
 
@@ -116,7 +116,7 @@ public final class ConfigScreenUtil {
                 // Show debug info
                 .option( boolOption(AcrylicConfig.SHOW_DEBUG_INFO, false, true, (val) -> { }) )
 
-                // Show debug info
+                // Transparent window
                 .option( boolOption(AcrylicConfig.TRANSPARENT_WINDOW, true, true, (val) -> { }) )
 
                 .build();

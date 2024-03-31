@@ -1,7 +1,6 @@
 package io.devbobcorn.acrylic.mixin;
 
 import io.devbobcorn.acrylic.AcrylicMod;
-import io.devbobcorn.acrylic.client.rendering.ScreenshotUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.opengl.GL11;
 import org.slf4j.Logger;
@@ -36,7 +35,7 @@ public class TitleScreenMixin {
         guiGraphics.drawString(s_minecraft.font, str, x, y, 16777215);
     }
 
-    @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V")
     public void renderHead(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
 
         RenderSystem.clearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -72,18 +71,6 @@ public class TitleScreenMixin {
         */
 
         //renderTex(poseStack, M_TEX, mouseX, mouseY, 98, 14, 128, 16);
-    }
-
-    private int renderedFrames = 0;
-
-    // Grab the main framebuffer with transparency after rendering some frames
-    @Inject(at = @At("RETURN"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", cancellable = true)
-    public void renderReturn(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
-        renderedFrames += 1;
-
-        if (renderedFrames == 150) {
-            ScreenshotUtil.grabWithAlpha(s_minecraft.gameDirectory, "magic.png", s_minecraft.getMainRenderTarget());
-        }
     }
 
 }
