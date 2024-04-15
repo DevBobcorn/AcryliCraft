@@ -9,7 +9,7 @@
   "acrylic.config.show_debug_info": "Show debug info",
   "acrylic.config.show_debug_info.description": "Render device and window information on title screen.",
   "acrylic.config.transparent_window": "Transparent background",
-  "acrylic.config.transparent_window.description": "Whether to enable transparent game window. This is required if you want use backdrops such as Acrylic for the whole window. (Changes will take effect after a restart.)",
+  "acrylic.config.transparent_window.description": "Whether to enable transparent game window and remove background panorama. This is required if you want use backdrops such as Acrylic for the whole window. (Enabling this will take effect after a restart.)",
 
   "acrylic.config.win11_specific": "Win11-Specific Config",
 

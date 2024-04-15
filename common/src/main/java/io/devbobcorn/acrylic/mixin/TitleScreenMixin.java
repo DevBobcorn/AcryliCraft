@@ -36,8 +36,11 @@ public class TitleScreenMixin {
     @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V")
     public void renderHead(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
 
-        RenderSystem.clearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, Minecraft.ON_OSX);
+        if ((boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.TRANSPARENT_WINDOW)) {
+            // Clear whatever that has been rendered in the background
+            RenderSystem.clearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            RenderSystem.clear(GL11.GL_COLOR_BUFFER_BIT, Minecraft.ON_OSX);
+        }
 
         if (s_minecraft == null) {
             s_minecraft = Minecraft.getInstance();
@@ -46,9 +49,7 @@ public class TitleScreenMixin {
 
             if ((boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.SHOW_DEBUG_INFO)) {
                 // Draw debug info
-                var iWindow = (IWindow) (Object) (s_minecraft.getWindow());
-                var windowId = iWindow.acrylic_mod$getGLFWId();
-                var windowHandle = WindowUtil.getWindowHandle(windowId);
+                var windowHandle = AcrylicMod.getWindowHandle();
 
                 acrylic_mod$renderString(guiGraphics, "Window Handle: " + String.format("0x%016X", windowHandle) +
                         " (Transparency Enabled: " + AcrylicMod.getTransparencyEnabled() + ")", 2, 2);
