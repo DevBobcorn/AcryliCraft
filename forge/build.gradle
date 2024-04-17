@@ -19,6 +19,10 @@ loom {
     }
 }
 
+base {
+    archivesName = rootProject.archives_base_name + "-forge"
+}
+
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.

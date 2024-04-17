@@ -11,6 +11,10 @@ loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 
+base {
+    archivesName = rootProject.archives_base_name + "-fabric"
+}
+
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
