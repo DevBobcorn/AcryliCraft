@@ -8,6 +8,7 @@ modId = "acrylic"
 version = "${version}"
 displayName = "AcryliCraft"
 authors = "DevBobcorn"
+displayURL="https://modrinth.com/mod/acrylicraft"
 description = '''
 Apply Fluent Design materials to Minecraft window.
 '''
