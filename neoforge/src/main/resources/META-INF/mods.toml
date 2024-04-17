@@ -1,0 +1,42 @@
+modLoader = "javafml"
+# NeoForge reset this loader version
+loaderVersion = "[1,)"
+#issueTrackerURL = ""
+license = "MIT License"
+
+[[mods]]
+modId = "acrylic"
+version = "${version}"
+displayName = "AcryliCraft"
+authors = "DevBobcorn"
+displayURL="https://modrinth.com/mod/acrylicraft"
+description = '''
+Apply Fluent Design materials to Minecraft window.
+'''
+logoFile = "assets/acrylic/acrylicraft.png"
+
+[[mixins]]
+config = "acrylic-common.mixins.json"
+[[mixins]]
+config = "acrylic.mixins.json"
+
+[[dependencies.acrylic]]
+modId="neoforge"
+mandatory=true
+versionRange="[20.1,)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.acrylic]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.acrylic]]
+modId="yet_another_config_lib_v3"
+mandatory=true
+versionRange="[3.2.1,)"
+ordering="AFTER"
+side="CLIENT"
