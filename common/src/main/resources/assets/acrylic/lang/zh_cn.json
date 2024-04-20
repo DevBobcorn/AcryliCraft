@@ -11,13 +11,15 @@
   "acrylic.config.transparent_window": "使用透明背景",
   "acrylic.config.transparent_window.description": "是否启用透明窗口并且移除原本的全景图，如果要使用全窗口的亚克力等背景则必须开启此项。（启用后重启游戏生效。）",
 
-  "acrylic.config.win11_specific": "Win11独有配置",
+  "acrylic.config.win11_specific": "Win11相关配置",
 
   "acrylic.config.window": "窗口设置",
+  "acrylic.config.sync_with_os_theme": "同步系统主题",
+  "acrylic.config.sync_with_os_theme.description": "是否与系统黑暗模式保持同步。",
   "acrylic.config.use_immersive_dark_mode": "黑暗模式",
   "acrylic.config.use_immersive_dark_mode.description": "是否给窗口启用黑暗模式。",
   "acrylic.config.system_backdrop_type": "窗口材质",
-  "acrylic.config.system_backdrop_type.description": "给窗口更换亚克力或云母材质。",
+  "acrylic.config.system_backdrop_type.description": "给窗口更换流畅设计材质。",
   "acrylic.config.system_backdrop_type.type.auto": "自动",
   "acrylic.config.system_backdrop_type.type.none": "无背景",
   "acrylic.config.system_backdrop_type.type.mica": "云母",

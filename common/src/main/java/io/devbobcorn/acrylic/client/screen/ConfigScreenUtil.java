@@ -140,6 +140,9 @@ public final class ConfigScreenUtil {
                     ).build();
         }
 
+        final Option<Boolean> useImmersiveDarkModeOption = boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, true,
+                !(boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.SYNC_WITH_OS_THEME), (val) -> { });
+
         final Option<Color> borderColorOption = colorOption(AcrylicConfig.BORDER_COLOR, DwmApiLib.COLOR_BLACK,
                 AcrylicConfig.getInstance().getValue(AcrylicConfig.CUSTOMIZE_BORDER), (val) -> { });
 
@@ -153,8 +156,13 @@ public final class ConfigScreenUtil {
                 .group(OptionGroup.createBuilder()
                         .name(translatable(AcrylicMod.MOD_ID + ".config.window"))
 
+                        // Sync with OS Theme
+                        .option( boolOption(AcrylicConfig.SYNC_WITH_OS_THEME, true, true, (val) -> {
+                                    useImmersiveDarkModeOption.setAvailable(!val);
+                                }) )
+
                         // Use Immersive Dark Mode
-                        .option( boolOption(AcrylicConfig.USE_IMMERSIVE_DARK_MODE, false, true, (val) -> { }) )
+                        .option( useImmersiveDarkModeOption )
 
                         // System Backdrop Type
                         .option( enumOption(AcrylicConfig.SYSTEM_BACKDROP_TYPE,

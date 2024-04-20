@@ -4,10 +4,12 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Hashtable;
 import java.util.Properties;
+import java.util.function.Consumer;
 
 import io.devbobcorn.acrylic.nativelib.DwmApiLib;
 
 import io.devbobcorn.acrylic.nativelib.NtDllLib;
+import io.devbobcorn.acrylic.themectl.WindowsThemeDetector;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.dedicated.Settings;
 import org.jetbrains.annotations.NotNull;
@@ -27,10 +29,21 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
         return instance;
     }
 
+    private static WindowsThemeDetector themeDetector;
+
+    private static WindowsThemeDetector getThemeDetector() {
+        if (themeDetector == null) {
+            themeDetector = new WindowsThemeDetector();
+        }
+
+        return themeDetector;
+    }
+
     public static final String SHOW_DEBUG_INFO           = "show_debug_info";
     public static final String TRANSPARENT_WINDOW        = "transparent_window";
 
     public static final String USE_IMMERSIVE_DARK_MODE   = "use_immersive_dark_mode";
+    public static final String SYNC_WITH_OS_THEME        = "sync_with_os_theme";
     public static final String SYSTEM_BACKDROP_TYPE      = "system_backdrop_type";
     public static final String WINDOW_CORNER_PREFERENCE  = "window_corner_preference";
     public static final String CUSTOMIZE_BORDER          = "customize_border";
@@ -50,6 +63,11 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
     }
 
+    private static final Consumer<Boolean> systemThemeChangeHandler = (dark) -> {
+        final long handle = AcrylicMod.getWindowHandle();
+        DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE, dark);
+    };
+
     /**
      * Apply all Win11-Specific config to the game window.
      * Called once after the window is created.
@@ -62,17 +80,25 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
         long handle = AcrylicMod.getWindowHandle();
 
-        //User32Lib.TingeWindow(handle, 0x3FBBC539);
-
         // Apply stored configs
-        DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE,
-                (boolean) configValues.get(USE_IMMERSIVE_DARK_MODE).get());
+        var syncDarkMode = (boolean) getValue(SYNC_WITH_OS_THEME);
+
+        if (syncDarkMode) {
+            var detector = getThemeDetector();
+            // First sync current theme
+            DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE, detector.isDark());
+            // Then register a listener for changes
+            detector.registerListener(systemThemeChangeHandler);
+        } else {
+            DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE,
+                    getValue(USE_IMMERSIVE_DARK_MODE));
+        }
 
         DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_SYSTEMBACKDROP_TYPE,
-                (DwmApiLib.DWM_SYSTEMBACKDROP_TYPE) configValues.get(SYSTEM_BACKDROP_TYPE).get());
+                (DwmApiLib.DWM_SYSTEMBACKDROP_TYPE) getValue(SYSTEM_BACKDROP_TYPE));
 
         DwmApiLib.setEnumWA(handle, DwmApiLib.DWM_ENUM_WA.DWMWA_WINDOW_CORNER_PREFERENCE,
-                (DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE) configValues.get(WINDOW_CORNER_PREFERENCE).get());
+                (DwmApiLib.DWM_WINDOW_CORNER_PREFERENCE) getValue(WINDOW_CORNER_PREFERENCE));
 
         var borderHidden = (boolean) getValue(HIDE_BORDER);
         var customBorder = (boolean) getValue(CUSTOMIZE_BORDER);
@@ -100,6 +126,10 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
         configValues.put( TRANSPARENT_WINDOW,
                 this.getMutable(TRANSPARENT_WINDOW, Boolean::parseBoolean, true)
+        );
+
+        configValues.put( SYNC_WITH_OS_THEME,
+                this.getMutable(SYNC_WITH_OS_THEME, Boolean::parseBoolean, true)
         );
 
         configValues.put( USE_IMMERSIVE_DARK_MODE,
@@ -164,8 +194,22 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
         // Then reflect value changes on the window
         long handle = AcrylicMod.getWindowHandle();
 
-        if (key.equals(USE_IMMERSIVE_DARK_MODE)) {
-            DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE, (boolean) value);
+        if (key.equals(SYNC_WITH_OS_THEME) || key.equals(USE_IMMERSIVE_DARK_MODE)) {
+
+            var syncDarkMode = (boolean) (key.equals(SYNC_WITH_OS_THEME) ? value : getValue(SYNC_WITH_OS_THEME) );
+            var detector = getThemeDetector();
+
+            if (syncDarkMode) {
+                // First sync current theme
+                DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE, detector.isDark());
+                // Then register a listener for changes
+                detector.registerListener(systemThemeChangeHandler);
+            } else {
+                var darkMode = (boolean) (key.equals(USE_IMMERSIVE_DARK_MODE) ? value : getValue(USE_IMMERSIVE_DARK_MODE) );
+                DwmApiLib.setBoolWA(handle, DwmApiLib.DWM_BOOL_WA.DWMWA_USE_IMMERSIVE_DARK_MODE, darkMode);
+                // Remove listener for changes
+                detector.removeListener(systemThemeChangeHandler);
+            }
         }
 
         if (key.equals(SYSTEM_BACKDROP_TYPE)) {
