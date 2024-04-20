@@ -1,5 +1,6 @@
 package io.devbobcorn.acrylic.mixin.fabric;
 
+import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,7 +18,8 @@ public class MinecraftMixin {
 
         if (newScreen instanceof TitleScreen) {
             // Preserve mainRT alpha values
-            AcrylicMod.setFillMainRTAlpha(false);
+            AcrylicMod.setFillMainRTAlpha(!(boolean) AcrylicConfig.getInstance()
+                    .getValue(AcrylicConfig.TRANSPARENT_WINDOW));
         } else {
             // Set alpha of the whole mainRT to 1
             AcrylicMod.setFillMainRTAlpha(true);
