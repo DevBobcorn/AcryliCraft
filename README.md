@@ -16,3 +16,9 @@ For Forge 1.20 and above, it is also necessary to disable FML splash screen for 
 ## Known Issues
 
 Some NVIDIA graphics cards don't render translucency properly for Minecraft's window (or any other GLFW window), in which case the window background would appear black. This is likely an issue with their drivers and is unfortunately not solveable on my end. Switching to another graphics card should make it work, if you happen to have one installed on your machine.
+
+## Credits
+
+This mod was inspired by some other open source projects. Here's a list of them:
+* [Mica](https://modrinth.com/mod/mica): Minecraft Mod / Enable Mica, Acrylic on Windows 11 21H2 22000 or later.
+* [jSystemThemeDetector](https://github.com/Dansoftowner/jSystemThemeDetector): Java library for detecting that the (desktop) operating system uses dark UI theme or not
