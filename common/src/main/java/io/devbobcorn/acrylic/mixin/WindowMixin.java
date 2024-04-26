@@ -34,20 +34,17 @@ public class WindowMixin implements IWindow {
     // GLFW Window id
     private long window;
 
-    @Redirect(
+    @Inject(
             method = "<init>",
             remap = false, // Don't remap method name for constructors
             at = @At(
                     value = "INVOKE",
                     target = "Lorg/lwjgl/glfw/GLFW;glfwDefaultWindowHints()V",
-                    remap = false // Don't remap method name for native methods
+                    remap = false, // Don't remap method name for native methods
+                    shift = At.Shift.AFTER
             )
     )
-    public void glfwWindowHintRedirect() {
-
-        LOGGER.info("Applying default window hints...");
-
-        GLFW.glfwDefaultWindowHints();
+    public void glfwWindowHintInject(WindowEventHandler windowEventHandler, ScreenManager screenManager, DisplayData displayData, String string, String string2, CallbackInfo ci) {
 
         // Window hints applied to vanilla window:
 
