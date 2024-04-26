@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "acrylic",
-  "version": "0.0.0",
+  "version": "1.5.1",
   "name": "AcryliCraft",
   "description": "Apply Fluent Design materials to Minecraft window.",
   "authors": [
