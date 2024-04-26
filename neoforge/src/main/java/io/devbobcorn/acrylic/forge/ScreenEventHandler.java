@@ -2,27 +2,24 @@ package io.devbobcorn.acrylic.forge;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
-import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
-@Mod.EventBusSubscriber(modid = AcrylicMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@EventBusSubscriber(modid = AcrylicMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class ScreenEventHandler {
+
+    private static Minecraft s_minecraft;
 
     @SubscribeEvent
     public static void onScreenOpen(ScreenEvent.Opening event) {
 
-        var newScreen = event.getNewScreen();
-
-        if (newScreen instanceof TitleScreen) {
-            // Preserve mainRT alpha values
-            AcrylicMod.setFillMainRTAlpha(!(boolean) AcrylicConfig.getInstance()
-                    .getValue(AcrylicConfig.TRANSPARENT_WINDOW));
-        } else {
-            // Set alpha of the whole mainRT to 1
-            AcrylicMod.setFillMainRTAlpha(true);
+        if (s_minecraft == null) {
+            s_minecraft = Minecraft.getInstance();
         }
+
+        AcrylicConfig.getInstance().updateTransparencyStatus(s_minecraft.level == null);
     }
 }

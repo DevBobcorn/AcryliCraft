@@ -82,7 +82,7 @@ public class WindowMixin implements IWindow {
     private void init(
             final WindowEventHandler handler, final ScreenManager manager,
             final DisplayData display, final String videoMode, final String title,
-            final CallbackInfo ci
+            final CallbackInfo callback
     ) {
         // Check if transparent frame buffer is enabled
         // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency

@@ -17,7 +17,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     //modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
-    modImplementation "dev.isxander.yacl:yet-another-config-lib-common:${rootProject.yacl_version}"
+    //modImplementation "dev.isxander.yet-another-config-lib:${rootProject.yacl_version}"
 }
 
 publishing {

@@ -10,6 +10,8 @@ import io.devbobcorn.acrylic.nativelib.DwmApiLib;
 
 import io.devbobcorn.acrylic.nativelib.NtDllLib;
 import io.devbobcorn.acrylic.themectl.WindowsThemeDetector;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.dedicated.Settings;
 import org.jetbrains.annotations.NotNull;
@@ -192,6 +194,12 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
         ( (MutableValue<T>) configValues.get(key) ).update(null, value);
 
         // Then reflect value changes on the window
+        if (key.equals(TRANSPARENT_WINDOW)) {
+            // Update global transparency status (this can be changed in-game)
+            var mc = Minecraft.getInstance();
+            updateTransparencyStatus(mc.level == null, (boolean) value);
+        }
+
         long handle = AcrylicMod.getWindowHandle();
 
         if (key.equals(SYNC_WITH_OS_THEME) || key.equals(USE_IMMERSIVE_DARK_MODE)) {
@@ -240,5 +248,20 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
             }
         }
 
+    }
+
+    public void updateTransparencyStatus(boolean noLevelPresent) {
+        boolean tr = getValue(AcrylicConfig.TRANSPARENT_WINDOW);
+        updateTransparencyStatus(noLevelPresent, tr);
+    }
+
+    private void updateTransparencyStatus(boolean noLevelPresent, boolean transparency) {
+        if (noLevelPresent) {
+            // Preserve mainRT alpha values
+            AcrylicMod.setFillMainRTAlpha(!transparency);
+        } else {
+            // Set alpha of the whole mainRT to 1
+            AcrylicMod.setFillMainRTAlpha(true);
+        }
     }
 }

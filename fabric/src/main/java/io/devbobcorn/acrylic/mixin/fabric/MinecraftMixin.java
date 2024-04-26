@@ -1,11 +1,11 @@
 package io.devbobcorn.acrylic.mixin.fabric;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
-import io.devbobcorn.acrylic.AcrylicMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,16 +13,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
 
+    @Shadow
+    public ClientLevel level;
+
     @Inject(at = @At("HEAD"), method = "setScreen(Lnet/minecraft/client/gui/screens/Screen;)V")
     public void setScreenHead(Screen newScreen, CallbackInfo callback) {
 
-        if (newScreen instanceof TitleScreen) {
-            // Preserve mainRT alpha values
-            AcrylicMod.setFillMainRTAlpha(!(boolean) AcrylicConfig.getInstance()
-                    .getValue(AcrylicConfig.TRANSPARENT_WINDOW));
-        } else {
-            // Set alpha of the whole mainRT to 1
-            AcrylicMod.setFillMainRTAlpha(true);
-        }
+        AcrylicConfig.getInstance().updateTransparencyStatus(level == null);
     }
 }
