@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "io.devbobcorn.acrylic.mixin.forge",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
   ],
