@@ -186,12 +186,12 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
     @SuppressWarnings({ "null", "unchecked" })
     public <T> void setValue(String key, T value) {
 
-        if (!NtDllLib.checkCompatibility()) {
-            return;
-        }
-
         // Update the value in config
         ( (MutableValue<T>) configValues.get(key) ).update(null, value);
+
+        if (!NtDllLib.checkCompatibility()) {
+            return; // Don't apply Win11 specific items
+        }
 
         // Then reflect value changes on the window
         if (key.equals(TRANSPARENT_WINDOW)) {
