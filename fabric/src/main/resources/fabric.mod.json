@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "acrylic",
-  "version": "1.5.1",
+  "version": "${version}",
   "name": "AcryliCraft",
   "description": "Apply Fluent Design materials to Minecraft window.",
   "authors": [
@@ -25,7 +25,7 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.20.5",
+    "minecraft": ">=1.20.6",
     "yet_another_config_lib_v3": "*"
   }
 }

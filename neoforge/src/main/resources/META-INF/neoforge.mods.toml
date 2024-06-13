@@ -23,20 +23,20 @@ config = "acrylic.mixins.json"
 [[dependencies.acrylic]]
 modId="neoforge"
 mandatory=true
-versionRange="[20.1,)"
+versionRange="[20.6,)"
 ordering="NONE"
 side="CLIENT"
 
 [[dependencies.acrylic]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1,)"
+versionRange = "[1.20.6,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.acrylic]]
 modId="yet_another_config_lib_v3"
 mandatory=true
-versionRange="[3.2.1,)"
+versionRange="[3.4.4,)"
 ordering="AFTER"
 side="CLIENT"
