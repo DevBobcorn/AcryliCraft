@@ -11,12 +11,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 @Mod(AcrylicMod.MOD_ID)
 public class AcrylicModNeoForge {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     public AcrylicModNeoForge(IEventBus bus) {
         bus.addListener(this::clientSetup);
@@ -35,8 +32,6 @@ public class AcrylicModNeoForge {
         ModLoadingContext.get().registerExtensionPoint(
                 IConfigScreenFactory.class,
                 AcrylicConfigScreenFactory::new);
-
-        LOGGER.info("Config screen registered.");
 
     }
 }
