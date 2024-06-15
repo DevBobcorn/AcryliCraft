@@ -19,7 +19,7 @@ Some NVIDIA graphics cards don't render translucency properly for Minecraft's wi
 
 ## License
 
-This project is opern source under the MIT License, you can view it [here](https://opensource.org/license/mit).
+This project is open source under the MIT License, you can view it [here](https://opensource.org/license/mit).
 
 ## Credits
 
