@@ -13,6 +13,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.GameRenderer;
 
 public class GuiUtil {
+
     @SuppressWarnings("null")
     public static void fillGradient(PoseStack poseStack, int x0, int y0, int x1, int y1, int z, int color0, int color1) {
         //RenderSystem.disableTexture();
@@ -20,28 +21,27 @@ public class GuiUtil {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         fillGradient(poseStack.last().pose(), bufferbuilder, x0, y0, x1, y1, z, color0, color1);
-        tesselator.end();
+        bufferbuilder.build();
         RenderSystem.disableBlend();
         //RenderSystem.enableTexture();
     }
 
     @SuppressWarnings("null")
     public static void fillGradient(Matrix4f pose, BufferBuilder builder, int x0, int y0, int x1, int y1, int z, int color0, int color1) {
-        float a0 = (float)(color0 >> 24 & 255) / 255.0F;
-        float r0 = (float)(color0 >> 16 & 255) / 255.0F;
-        float g0 = (float)(color0 >> 8 & 255) / 255.0F;
-        float b0 = (float)(color0 & 255) / 255.0F;
-        float a1 = (float)(color1 >> 24 & 255) / 255.0F;
-        float r1 = (float)(color1 >> 16 & 255) / 255.0F;
-        float g1 = (float)(color1 >> 8 & 255) / 255.0F;
-        float b1 = (float)(color1 & 255) / 255.0F;
-        builder.vertex(pose, (float)x1, (float)y0, (float)z).color(r0, g0, b0, a0).endVertex();
-        builder.vertex(pose, (float)x0, (float)y0, (float)z).color(r0, g0, b0, a0).endVertex();
-        builder.vertex(pose, (float)x0, (float)y1, (float)z).color(r1, g1, b1, a1).endVertex();
-        builder.vertex(pose, (float)x1, (float)y1, (float)z).color(r1, g1, b1, a1).endVertex();
+        float a0 = (float) (color0 >> 24 & 255) / 255.0F;
+        float r0 = (float) (color0 >> 16 & 255) / 255.0F;
+        float g0 = (float) (color0 >> 8 & 255) / 255.0F;
+        float b0 = (float) (color0 & 255) / 255.0F;
+        float a1 = (float) (color1 >> 24 & 255) / 255.0F;
+        float r1 = (float) (color1 >> 16 & 255) / 255.0F;
+        float g1 = (float) (color1 >> 8 & 255) / 255.0F;
+        float b1 = (float) (color1 & 255) / 255.0F;
+        builder.addVertex(pose, (float)x1, (float)y0, (float)z).setColor(r0, g0, b0, a0);
+        builder.addVertex(pose, (float)x0, (float)y0, (float)z).setColor(r0, g0, b0, a0);
+        builder.addVertex(pose, (float)x0, (float)y1, (float)z).setColor(r1, g1, b1, a1);
+        builder.addVertex(pose, (float)x1, (float)y1, (float)z).setColor(r1, g1, b1, a1);
     }
 
     public static void blit(PoseStack poseStack, int x0, int y0, int z, float u0, float v0, int w, int h, int tex_w, int tex_h) {
@@ -63,12 +63,11 @@ public class GuiUtil {
     @SuppressWarnings("null")
     private static void innerBlit(Matrix4f pose, int x0, int x1, int y0, int y1, int z, float u0, float u1, float v0, float v1) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex(pose, (float)x0, (float)y1, (float)z).uv(u0, v1).endVertex();
-        bufferbuilder.vertex(pose, (float)x1, (float)y1, (float)z).uv(u1, v1).endVertex();
-        bufferbuilder.vertex(pose, (float)x1, (float)y0, (float)z).uv(u1, v0).endVertex();
-        bufferbuilder.vertex(pose, (float)x0, (float)y0, (float)z).uv(u0, v0).endVertex();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.addVertex(pose, (float)x0, (float)y1, (float)z).setUv(u0, v1);
+        bufferbuilder.addVertex(pose, (float)x1, (float)y1, (float)z).setUv(u1, v1);
+        bufferbuilder.addVertex(pose, (float)x1, (float)y0, (float)z).setUv(u1, v0);
+        bufferbuilder.addVertex(pose, (float)x0, (float)y0, (float)z).setUv(u0, v0);
+        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
     }
 }
