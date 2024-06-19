@@ -15,8 +15,7 @@ public class WindowUtil {
     }
 
     private static long innerGetWindowHandle(long windowId) {
-        long handle = GLFWNativeWin32.glfwGetWin32Window(windowId);
-
-        return handle;
+        return GLFWNativeWin32.glfwGetWin32Window(windowId);
     }
+
 }
