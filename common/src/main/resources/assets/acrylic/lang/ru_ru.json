@@ -1,0 +1,46 @@
+{
+  "acrylic.mod_name": "AcryliCraft",
+
+  "acrylic.config.unsupported": "Неподдерживаемая ОС >_<",
+  "acrylic.config.unsupported.win11_only": "Поддерживается только Windows 11 22H2 (сборка 22621) или более новая версия.",
+
+  "acrylic.config.general": "Общий",
+
+  "acrylic.config.show_debug_info": "Показать отладочную информацию",
+  "acrylic.config.show_debug_info.description": "Рендеринг информацию об устройстве и окне на экране главного меню.",
+  "acrylic.config.transparent_window": "Прозрачный фон",
+  "acrylic.config.transparent_window.description": "Включить ли прозрачное окно игры и удалить фоновую панораму. Это необходимо, если вы хотите использовать фон, например, акриловый, для всего окна. Включение этого параметра вступит в силу после перезапуска.",
+  "acrylic.config.remove_screen_background": "Удалить фон экрана",
+  "acrylic.config.remove_screen_background.description": "Убирать ли темный фон на экранах, когда включено «прозрачный фон».",
+
+  "acrylic.config.win11_specific": "Специфический для Windows 11",
+
+  "acrylic.config.window": "Окно",
+  "acrylic.config.sync_with_os_theme": "Следуйте за темой ОС",
+  "acrylic.config.sync_with_os_theme.description": "Следите за темным режимом ОС",
+  "acrylic.config.use_immersive_dark_mode": "Темный режим с эффектом погружения",
+  "acrylic.config.use_immersive_dark_mode.description": "Включите темный режим для окна.",
+  "acrylic.config.system_backdrop_type": "Материал окна",
+  "acrylic.config.system_backdrop_type.description": "Примените фоны Fluent Design к игровому окну.",
+  "acrylic.config.system_backdrop_type.type.auto": "Автоматический",
+  "acrylic.config.system_backdrop_type.type.none": "Нет",
+  "acrylic.config.system_backdrop_type.type.mica": "Слюды",
+  "acrylic.config.system_backdrop_type.type.acrylic": "Акрил",
+  "acrylic.config.system_backdrop_type.type.tabbed": "СлюдаАльт",
+  "acrylic.config.window_corner_preference": "Угол окна",
+  "acrylic.config.window_corner_preference.description": "Настройте кривизну углов окна.",
+  "acrylic.config.window_corner_preference.type.default": "По умолчанию",
+  "acrylic.config.window_corner_preference.type.do_not_round": "Квадратные",
+  "acrylic.config.window_corner_preference.type.round": "Круглый",
+  "acrylic.config.window_corner_preference.type.round_small": "Маленький круглый",
+  "acrylic.config.border": "Граница",
+  "acrylic.config.hide_border": "Скрыть границу",
+  "acrylic.config.hide_border.description": "Рендеринг границы окна.",
+  "acrylic.config.customize_border": "Персонализировать границу",
+  "acrylic.config.customize_border.description": "Включать ли персонализацию границ окна.",
+  "acrylic.config.border_color": "Цвет границы",
+  "acrylic.config.border_color.description": "Цвет границы окна.",
+
+  "acrylic.hint.transparency_init_failure": "Не удалось инициализировать. Убедитесь, что FML «earlyWindowControl» отключен.",
+  "acrylic.hint.restart_for_transparency": "Перезапустите игру для включения «Прозрачный фон»."
+}
