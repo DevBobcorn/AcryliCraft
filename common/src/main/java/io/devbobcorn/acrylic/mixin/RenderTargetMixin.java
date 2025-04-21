@@ -1,7 +1,7 @@
 package io.devbobcorn.acrylic.mixin;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL32C;
+import com.mojang.blaze3d.textures.GpuTexture;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 
 import io.devbobcorn.acrylic.AcrylicMod;
@@ -23,10 +22,13 @@ import io.devbobcorn.acrylic.AcrylicMod;
 public class RenderTargetMixin {
 
     @Shadow
-    public int frameBufferId;
+    protected GpuTexture colorTexture;
 
-    @Inject(method = "blitToScreen(II)V", at = @At("HEAD"))
-    public void blitToScreen(int width, int height, CallbackInfo ci) {
+    @Shadow
+    protected GpuTexture depthTexture;
+
+    @Inject(method = "blitToScreen()V", at = @At("HEAD"))
+    public void blitToScreen(CallbackInfo ci) {
 
         if (!AcrylicMod.getTransparencyEnabled()) {
             // Window transparency is not enabled, don't change vanilla behaviour
@@ -35,6 +37,7 @@ public class RenderTargetMixin {
 
         if (AcrylicMod.getFillMainRTAlpha()) { // For the final main RT blit, disableBlend is always true
             if ((Object) this == Minecraft.getInstance().getMainRenderTarget()) {
+                /*
                 // Fill alpha channel for main render target
                 GL32C.glBindFramebuffer(GL32C.GL_DRAW_FRAMEBUFFER, this.frameBufferId);
                 // Use GLStateManager to make sure cached current color mask is updated
@@ -45,6 +48,7 @@ public class RenderTargetMixin {
 
                 // Reset GL Clear color in case Sodium replaces the blit procedure
                 GlStateManager._colorMask(true, true, true, true);
+                 */
             }
         }
     }
