@@ -38,7 +38,7 @@ public class TitleScreenMixin {
         guiGraphics.drawString(s_minecraft.font, cp, x, y, color);
     }
 
-    @Inject(at = @At("TAIL"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V")
+    @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V")
     public void renderHead(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
 
         if (s_minecraft == null) {
