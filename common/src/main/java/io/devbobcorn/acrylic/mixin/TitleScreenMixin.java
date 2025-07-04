@@ -1,5 +1,6 @@
 package io.devbobcorn.acrylic.mixin;
 
+import net.minecraft.util.ARGB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +29,7 @@ public class TitleScreenMixin {
     @Unique
     @SuppressWarnings("null")
     public void acrylic_mod$renderString(GuiGraphics guiGraphics, String str, int x, int y) {
-        guiGraphics.drawString(s_minecraft.font, str, x, y, 16777215);
+        guiGraphics.drawString(s_minecraft.font, str, x, y, ARGB.color(1.0F, -1));
     }
 
     @Unique
@@ -37,7 +38,7 @@ public class TitleScreenMixin {
         guiGraphics.drawString(s_minecraft.font, cp, x, y, color);
     }
 
-    @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V")
+    @Inject(at = @At("TAIL"), method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V")
     public void renderHead(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback) {
 
         if (s_minecraft == null) {
