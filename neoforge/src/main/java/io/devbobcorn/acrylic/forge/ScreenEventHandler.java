@@ -8,7 +8,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
-@EventBusSubscriber(modid = AcrylicMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = AcrylicMod.MOD_ID, value = Dist.CLIENT)
 public class ScreenEventHandler {
 
     private static Minecraft s_minecraft;
