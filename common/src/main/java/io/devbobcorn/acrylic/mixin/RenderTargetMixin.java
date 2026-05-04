@@ -15,6 +15,10 @@ import net.minecraft.client.Minecraft;
 
 import io.devbobcorn.acrylic.AcrylicMod;
 
+// Set priority to 800 to make sure this injection is called before
+// the one in Sodium's RenderTargetMixin does, their mixin then does
+// an optimized screen blit and cancels blitToScreen call.
+// https://github.com/CaffeineMC/sodium-fabric/blob/dev/common/src/main/java/net/caffeinemc/mods/sodium/mixin/features/render/compositing/RenderTargetMixin.java
 @Mixin(value = RenderTarget.class, priority = 800)
 public class RenderTargetMixin {
 
