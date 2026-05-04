@@ -24,7 +24,6 @@
     "acrylic-common.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
     "minecraft": ">=1.21.6",
     "yet_another_config_lib_v3": "*"
   }

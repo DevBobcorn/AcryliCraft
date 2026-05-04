@@ -24,7 +24,7 @@ public class RenderTargetMixin {
     @Shadow
     protected GpuTexture depthTexture;
 
-    @Inject(method = "blitToScreen()V", at = @At("HEAD"))
+    @Inject(method = "blitToScreen", at = @At("HEAD"))
     public void blitToScreen(CallbackInfo ci) {
 
         if (!AcrylicMod.getTransparencyEnabled()) {

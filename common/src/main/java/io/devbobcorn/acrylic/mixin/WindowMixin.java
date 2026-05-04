@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
@@ -15,9 +16,9 @@ import io.devbobcorn.acrylic.client.window.IWindow;
 import io.devbobcorn.acrylic.client.window.WindowUtil;
 
 import com.mojang.blaze3d.platform.DisplayData;
-import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
+import com.mojang.blaze3d.systems.GpuBackend;
 
 import net.minecraft.util.Util;
 
@@ -31,19 +32,19 @@ public class WindowMixin implements IWindow {
     @Final
     @Shadow
     // GLFW Window id
-    private long window;
+    private long handle;
 
     @Inject(
-            method = "<init>",
-            remap = false, // Don't remap method name for constructors
+            method = "createGlfwWindow",
+            remap = false,
             at = @At(
                     value = "INVOKE",
-                    target = "Lorg/lwjgl/glfw/GLFW;glfwDefaultWindowHints()V",
-                    remap = false, // Don't remap method name for native methods
+                    target = "Lcom/mojang/blaze3d/systems/GpuBackend;setWindowHints()V",
+                    remap = false,
                     shift = At.Shift.AFTER
             )
     )
-    public void glfwWindowHintInject(WindowEventHandler windowEventHandler, ScreenManager screenManager, DisplayData displayData, String string, String string2, CallbackInfo ci) {
+    private static void glfwWindowHintInject(int width, int height, String title, long monitor, GpuBackend gpuBackend, CallbackInfoReturnable<Long> cir) {
 
         // Window hints applied to vanilla window:
 
@@ -76,13 +77,14 @@ public class WindowMixin implements IWindow {
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     private void init(
-            final WindowEventHandler handler, final ScreenManager manager,
+            final WindowEventHandler handler,
             final DisplayData display, final String videoMode, final String title,
+            final GpuBackend gpuBackend,
             final CallbackInfo callback
     ) {
         // Check if transparent frame buffer is enabled
         // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
-        var transparent = GLFW.glfwGetWindowAttrib(window, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
+        var transparent = GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
 
         AcrylicMod.setTransparencyEnabled(transparent);
 
@@ -96,7 +98,7 @@ public class WindowMixin implements IWindow {
         // Check OS
         if (Util.getPlatform() == Util.OS.WINDOWS) {
             // Store window handle for later use
-            AcrylicMod.setWindowHandle(WindowUtil.getWindowHandle(window));
+            AcrylicMod.setWindowHandle(WindowUtil.getWindowHandle(handle));
 
             // Apply Win11-Specific window setup
             config.ApplyWin11Specific();
@@ -105,7 +107,7 @@ public class WindowMixin implements IWindow {
 
     @Override
     public long acrylic_mod$getGLFWId() {
-        return window;
+        return handle;
     }
 
 }

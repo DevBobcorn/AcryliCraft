@@ -7,19 +7,17 @@ import com.mojang.blaze3d.textures.GpuTexture;
 import io.devbobcorn.acrylic.client.rendering.IGlCommandEncoder;
 import net.minecraft.util.ARGB;
 import org.lwjgl.opengl.GL11;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 @Mixin(targets = "com.mojang.blaze3d.opengl.GlCommandEncoder")
 public class GlCommandEncoderMixin implements IGlCommandEncoder {
 
     @Shadow
     private boolean inRenderPass;
-
-    @Final
-    @Shadow
-    private Object device;
 
     @Override
     public void acrylic_mod$fillColorAlphaAndDepth(GpuTexture colorTexture, int i, GpuTexture depthTexture, double d) {
@@ -35,7 +33,12 @@ public class GlCommandEncoderMixin implements IGlCommandEncoder {
             throw new IllegalStateException("Depth texture is closed");
         } else {
             try {
-                DirectStateAccess dsa = (DirectStateAccess) device.getClass().getMethod("directStateAccess").invoke(device);
+                Field deviceField = this.getClass().getDeclaredField("device");
+                deviceField.setAccessible(true);
+                Object device = deviceField.get(this);
+                Method dsaMethod = device.getClass().getMethod("directStateAccess");
+                DirectStateAccess dsa = (DirectStateAccess) dsaMethod.invoke(device);
+
                 int j = ((GlTexture)colorTexture).getFbo(dsa, depthTexture);
                 GlStateManager._glBindFramebuffer(36160, j);
                 GlStateManager._disableScissorTest();
