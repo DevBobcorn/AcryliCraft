@@ -19,7 +19,7 @@ import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 
 @Mixin(Window.class)
 public class WindowMixin implements IWindow {

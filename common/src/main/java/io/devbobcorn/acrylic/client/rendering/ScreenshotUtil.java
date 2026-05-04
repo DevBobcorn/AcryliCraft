@@ -12,7 +12,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 
 public class ScreenshotUtil {
 

@@ -1,7 +1,6 @@
 package io.devbobcorn.acrylic.mixin;
 
-import com.mojang.blaze3d.opengl.GlCommandEncoder;
-import com.mojang.blaze3d.opengl.GlDevice;
+import com.mojang.blaze3d.opengl.DirectStateAccess;
 import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.opengl.GlTexture;
 import com.mojang.blaze3d.textures.GpuTexture;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(GlCommandEncoder.class)
+@Mixin(targets = "com.mojang.blaze3d.opengl.GlCommandEncoder")
 public class GlCommandEncoderMixin implements IGlCommandEncoder {
 
     @Shadow
@@ -20,7 +19,7 @@ public class GlCommandEncoderMixin implements IGlCommandEncoder {
 
     @Final
     @Shadow
-    private GlDevice device;
+    private Object device;
 
     @Override
     public void acrylic_mod$fillColorAlphaAndDepth(GpuTexture colorTexture, int i, GpuTexture depthTexture, double d) {
@@ -35,16 +34,21 @@ public class GlCommandEncoderMixin implements IGlCommandEncoder {
         } else if (depthTexture.isClosed()) {
             throw new IllegalStateException("Depth texture is closed");
         } else {
-            int j = ((GlTexture)colorTexture).getFbo(this.device.directStateAccess(), depthTexture);
-            GlStateManager._glBindFramebuffer(36160, j);
-            GlStateManager._disableScissorTest();
-            GL11.glClearDepth(d);
-            GL11.glClearColor(ARGB.redFloat(i), ARGB.greenFloat(i), ARGB.blueFloat(i), ARGB.alphaFloat(i));
-            GlStateManager._depthMask(true);
-            GlStateManager._colorMask(false, false, false, true);
-            GlStateManager._clear(16640);
-            GlStateManager._glBindFramebuffer(36160, 0);
-            GlStateManager._colorMask(true, true, true, true);
+            try {
+                DirectStateAccess dsa = (DirectStateAccess) device.getClass().getMethod("directStateAccess").invoke(device);
+                int j = ((GlTexture)colorTexture).getFbo(dsa, depthTexture);
+                GlStateManager._glBindFramebuffer(36160, j);
+                GlStateManager._disableScissorTest();
+                GL11.glClearDepth(d);
+                GL11.glClearColor(ARGB.redFloat(i), ARGB.greenFloat(i), ARGB.blueFloat(i), ARGB.alphaFloat(i));
+                GlStateManager._depthMask(true);
+                GlStateManager._colorMask(8);
+                GlStateManager._clear(16640);
+                GlStateManager._glBindFramebuffer(36160, 0);
+                GlStateManager._colorMask(15);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to access GlDevice.directStateAccess()", e);
+            }
         }
     }
 }
