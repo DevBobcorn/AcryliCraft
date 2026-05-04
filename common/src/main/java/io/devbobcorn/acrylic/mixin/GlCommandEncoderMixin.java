@@ -4,20 +4,31 @@ import com.mojang.blaze3d.opengl.DirectStateAccess;
 import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.opengl.GlTexture;
 import com.mojang.blaze3d.textures.GpuTexture;
-import io.devbobcorn.acrylic.client.rendering.IGlCommandEncoder;
-import net.minecraft.util.ARGB;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import net.minecraft.util.ARGB;
+import io.devbobcorn.acrylic.client.rendering.IGlCommandEncoder;
 
 @Mixin(targets = "com.mojang.blaze3d.opengl.GlCommandEncoder")
 public class GlCommandEncoderMixin implements IGlCommandEncoder {
 
     @Shadow
     private boolean inRenderPass;
+
+    @Unique
+    private static Field acrylic_mod$deviceField;
+
+    @Unique
+    private static Method acrylic_mod$dsaMethod;
+
+    @Unique
+    private static boolean acrylic_mod$reflectionInitialized;
 
     @Override
     public void acrylic_mod$fillColorAlphaAndDepth(GpuTexture colorTexture, int i, GpuTexture depthTexture, double d) {
@@ -33,13 +44,17 @@ public class GlCommandEncoderMixin implements IGlCommandEncoder {
             throw new IllegalStateException("Depth texture is closed");
         } else {
             try {
-                Field deviceField = this.getClass().getDeclaredField("device");
-                deviceField.setAccessible(true);
-                Object device = deviceField.get(this);
-                Method dsaMethod = device.getClass().getMethod("directStateAccess");
-                DirectStateAccess dsa = (DirectStateAccess) dsaMethod.invoke(device);
+                if (!acrylic_mod$reflectionInitialized) {
+                    acrylic_mod$deviceField = this.getClass().getDeclaredField("device");
+                    acrylic_mod$deviceField.setAccessible(true);
+                    acrylic_mod$dsaMethod = acrylic_mod$deviceField.getType().getMethod("directStateAccess");
+                    acrylic_mod$reflectionInitialized = true;
+                }
 
-                int j = ((GlTexture)colorTexture).getFbo(dsa, depthTexture);
+                Object device = acrylic_mod$deviceField.get(this);
+                DirectStateAccess dsa = (DirectStateAccess) acrylic_mod$dsaMethod.invoke(device);
+
+                int j = ((GlTexture) colorTexture).getFbo(dsa, depthTexture);
                 GlStateManager._glBindFramebuffer(36160, j);
                 GlStateManager._disableScissorTest();
                 GL11.glClearDepth(d);

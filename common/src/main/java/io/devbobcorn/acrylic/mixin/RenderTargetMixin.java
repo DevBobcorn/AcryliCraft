@@ -2,17 +2,21 @@ package io.devbobcorn.acrylic.mixin;
 
 import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.textures.GpuTexture;
-import io.devbobcorn.acrylic.client.rendering.IGlCommandEncoder;
+import com.mojang.logging.LogUtils;
+
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import net.minecraft.client.Minecraft;
 
+import io.devbobcorn.acrylic.client.rendering.IGlCommandEncoder;
 import io.devbobcorn.acrylic.AcrylicMod;
 
 // Set priority to 800 to make sure this injection is called before
@@ -21,6 +25,9 @@ import io.devbobcorn.acrylic.AcrylicMod;
 // https://github.com/CaffeineMC/sodium-fabric/blob/dev/common/src/main/java/net/caffeinemc/mods/sodium/mixin/features/render/compositing/RenderTargetMixin.java
 @Mixin(value = RenderTarget.class, priority = 800)
 public class RenderTargetMixin {
+
+    @Unique
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     @Shadow
     protected GpuTexture colorTexture;
@@ -48,10 +55,13 @@ public class RenderTargetMixin {
                 GlStateManager._colorMask(8);
 
                 var cmdEncoder = RenderSystem.getDevice().createCommandEncoder();
+                var backend = ((CommandEncoderAccessor) cmdEncoder).acrylic_mod$getBackend();
 
-                if (cmdEncoder instanceof IGlCommandEncoder) {
-                    // TODO: Find a better way?
-                    ((IGlCommandEncoder) cmdEncoder).acrylic_mod$fillColorAlphaAndDepth(colorTexture, 0xFF000000, depthTexture, 1);
+                if (backend instanceof IGlCommandEncoder) {
+                    ((IGlCommandEncoder) backend).acrylic_mod$fillColorAlphaAndDepth(colorTexture, 0xFF000000, depthTexture, 1);
+                } else {
+                    LOGGER.warn("[Acrylic] CommandEncoder backend is not an IGlCommandEncoder: {}",
+                            backend == null ? "null" : backend.getClass().getName());
                 }
             }
         }
