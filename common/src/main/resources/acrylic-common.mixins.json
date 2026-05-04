@@ -9,7 +9,8 @@
     "ScreenMixin",
     "PanoramaRendererMixin",
     "RenderTargetMixin",
-    "GlCommandEncoderMixin"
+    "GlCommandEncoderMixin",
+    "LevelRendererMixin"
   ],
   "mixins": [
   ],

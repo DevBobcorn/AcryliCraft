@@ -39,6 +39,13 @@ public class RenderTargetMixin {
             return;
         }
 
+        /*
+        if (colorTexture != Minecraft.getInstance().getMainRenderTarget().getColorTexture())
+        {
+            return;
+        }
+        */
+
         if (AcrylicMod.getFillMainRTAlpha()) { // For the final main RT blit, disableBlend is always true
             if ((Object) this == Minecraft.getInstance().getMainRenderTarget()) {
                 GlStateManager._colorMask(false, false, false, true);
