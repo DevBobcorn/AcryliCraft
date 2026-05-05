@@ -36,31 +36,44 @@ public class RenderTargetMixin {
     @Shadow
     protected GpuTexture depthTexture;
 
+    @Unique
+    private static Minecraft s_minecraft;
+
+    @Unique
+    private static AcrylicConfig s_config;
+
+    @Unique
+    private static boolean s_fillAlpha;
+
+    @Unique
+    private static Object s_level;
+
+    @Unique
+    private static boolean s_transparentWindow;
+
     @Inject(method = "blitToScreen", at = @At("HEAD"))
     public void blitToScreen(CallbackInfo ci) {
 
         if (!AcrylicMod.getTransparencyEnabled()) {
-            // Window transparency is not enabled, don't change vanilla behaviour
             return;
         }
 
-        /*
-        if (colorTexture != Minecraft.getInstance().getMainRenderTarget().getColorTexture())
-        {
-            return;
+        if (s_minecraft == null) {
+            s_minecraft = Minecraft.getInstance();
+            s_config = AcrylicConfig.getInstance();
         }
-        */
 
-        var mc = Minecraft.getInstance();
-        var config = AcrylicConfig.getInstance();
-        boolean levelIsNull = mc.level == null;
-        boolean usingTransparentWindow = (boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW);
-        boolean fillAlpha = !levelIsNull && usingTransparentWindow;
-        
-        LOGGER.info("[Acrylic] blitToScreen called. levelIsNull={}, usingTransparentWindow={}, fillAlpha={}, mainRT={}", levelIsNull, usingTransparentWindow, fillAlpha, (Object) this == mc.getMainRenderTarget());
+        Object level = s_minecraft.level;
+        boolean transparentWindow = (boolean) s_config.getValue(AcrylicConfig.TRANSPARENT_WINDOW);
 
-        if (fillAlpha) { // For the final main RT blit, disableBlend is always true
-            if ((Object) this == mc.getMainRenderTarget()) {
+        if (level != s_level || transparentWindow != s_transparentWindow) {
+            s_level = level;
+            s_transparentWindow = transparentWindow;
+            s_fillAlpha = level != null && transparentWindow;
+        }
+
+        if (s_fillAlpha) {
+            if ((Object) this == s_minecraft.getMainRenderTarget()) {
                 GlStateManager._colorMask(8);
 
                 var cmdEncoder = RenderSystem.getDevice().createCommandEncoder();
