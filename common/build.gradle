@@ -8,3 +8,11 @@ dependencies {
     // Do NOT use other classes from Fabric Loader.
     implementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 }
+
+publishing {
+    publications {
+        mavenJava {
+            from components.java
+        }
+    }
+}
