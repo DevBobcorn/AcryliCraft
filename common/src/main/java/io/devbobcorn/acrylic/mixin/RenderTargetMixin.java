@@ -53,8 +53,11 @@ public class RenderTargetMixin {
 
         var mc = Minecraft.getInstance();
         var config = AcrylicConfig.getInstance();
-        boolean fillAlpha = mc.level == null
-                && !(boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW);
+        boolean levelIsNull = mc.level == null;
+        boolean usingTransparentWindow = (boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW);
+        boolean fillAlpha = !levelIsNull && usingTransparentWindow;
+        
+        LOGGER.info("[Acrylic] blitToScreen called. levelIsNull={}, usingTransparentWindow={}, fillAlpha={}, mainRT={}", levelIsNull, usingTransparentWindow, fillAlpha, (Object) this == mc.getMainRenderTarget());
 
         if (fillAlpha) { // For the final main RT blit, disableBlend is always true
             if ((Object) this == mc.getMainRenderTarget()) {
