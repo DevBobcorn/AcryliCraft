@@ -59,28 +59,4 @@ public class AcrylicMod {
         windowHandle = handle;
     }
 
-    /**
-     * Whether alpha channel of main render target should be
-     * filled with 1 (fully opaque).
-     * This is required to render alpha-blended frames properly
-     * when transparent window is enabled.
-     */
-    private static boolean fillMainRTAlpha = true;
-
-    /**
-     * Get the flag indicating whether main render
-     * target should be filled opaque.
-     */
-    public static boolean getFillMainRTAlpha() {
-        return fillMainRTAlpha;
-    }
-
-    /**
-     * Set the flag indicating whether main render
-     * target should be filled opaque.
-     */
-    public static void setFillMainRTAlpha(boolean fill) {
-        fillMainRTAlpha = fill;
-    }
-
 }

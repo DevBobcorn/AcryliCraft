@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.Minecraft;
 
 import io.devbobcorn.acrylic.client.rendering.IGlCommandEncoder;
+import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
 
 // Set priority to 800 to make sure this injection is called before
@@ -50,8 +51,13 @@ public class RenderTargetMixin {
         }
         */
 
-        if (AcrylicMod.getFillMainRTAlpha()) { // For the final main RT blit, disableBlend is always true
-            if ((Object) this == Minecraft.getInstance().getMainRenderTarget()) {
+        var mc = Minecraft.getInstance();
+        var config = AcrylicConfig.getInstance();
+        boolean fillAlpha = mc.level == null
+                && !(boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW);
+
+        if (fillAlpha) { // For the final main RT blit, disableBlend is always true
+            if ((Object) this == mc.getMainRenderTarget()) {
                 GlStateManager._colorMask(8);
 
                 var cmdEncoder = RenderSystem.getDevice().createCommandEncoder();
