@@ -12,6 +12,10 @@
   "acrylic.config.transparent_window.description": "Whether to enable transparent game window and remove background panorama. This is required if you want to use backdrops such as acrylic for the whole window. Enabling this will take effect after a restart.",
   "acrylic.config.remove_screen_background": "Remove screen background",
   "acrylic.config.remove_screen_background.description": "Whether to remove dark background on screens when transparent window is enabled.",
+  "acrylic.config.background_color_rgb": "Background Colour",
+  "acrylic.config.background_color_rgb.description": "RGB part of the background colour when transparent window is enabled.",
+  "acrylic.config.background_color_alpha": "Background Alpha",
+  "acrylic.config.background_color_alpha.description": "Alpha (transparency) of the background colour (0-255).",
 
   "acrylic.config.win11_specific": "Win11-Specific Config",
 

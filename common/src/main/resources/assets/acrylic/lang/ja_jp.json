@@ -12,6 +12,10 @@
   "acrylic.config.transparent_window.description": "透明なゲームウィンドウを有効にして、背景のパノラマを削除するかどうか。ウィンドウ全体にアクリルなどの背景を使用する場合は、これが必要です。これを有効にすると、再起動後に有効になります。",
   "acrylic.config.remove_screen_background": "画面の背景を削除する",
   "acrylic.config.remove_screen_background.description": "透明ウィンドウが有効な場合に、画面の暗い背景を削除するかどうか。",
+  "acrylic.config.background_color_rgb": "背景の色",
+  "acrylic.config.background_color_rgb.description": "透明ウィンドウが有効な場合の背景色のRGB部分。",
+  "acrylic.config.background_color_alpha": "背景の透明度",
+  "acrylic.config.background_color_alpha.description": "背景色のアルファ（透明度）（0-255）。",
 
   "acrylic.config.win11_specific": "Win11 固有の設定",
 

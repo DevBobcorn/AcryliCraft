@@ -4,9 +4,11 @@ import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
+import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import static net.minecraft.network.chat.Component.translatable;
 
 import java.awt.Color;
@@ -69,9 +71,9 @@ public final class ConfigScreenUtil {
                 .controller(ColorControllerBuilder::create)
                 .stateManager(StateManager.createInstant(
                         defValue,
-                        () -> new Color( AcrylicConfig.getInstance().getValue(key) ),
+                        () -> new Color( (int) AcrylicConfig.getInstance().getValue(key) ),
                         value -> {
-                            AcrylicConfig.getInstance().setValue(key, value.getRGB());
+                            AcrylicConfig.getInstance().setValue(key, value.getRGB() & 0x00FFFFFF);
                             valueCallback.accept(value);
                         }))
                 .available(available)
@@ -104,9 +106,37 @@ public final class ConfigScreenUtil {
 
     private static ConfigCategory categoryGeneral() {
 
+        final boolean transparentWindowEnabled = (boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.TRANSPARENT_WINDOW);
+
+        final Option<Color> backgroundColorRgbOption = colorOption(AcrylicConfig.BACKGROUND_COLOR_RGB, new Color(0xFFFFFF),
+                transparentWindowEnabled, (val) -> { });
+
+        final Option<Integer> backgroundColorAlphaOption = Option.<Integer>createBuilder()
+                .name(translatable(AcrylicMod.MOD_ID + ".config." + AcrylicConfig.BACKGROUND_COLOR_ALPHA))
+                .description(OptionDescription.of(translatable(AcrylicMod.MOD_ID + ".config." + AcrylicConfig.BACKGROUND_COLOR_ALPHA + ".description")))
+                .controller(option -> IntegerSliderControllerBuilder.create(option)
+                        .range(0, 255)
+                        .step(1)
+                        .formatValue(val -> Component.literal(val + ""))
+                )
+                .stateManager(StateManager.createInstant(
+                        0,
+                        () -> (int) AcrylicConfig.getInstance().getValue(AcrylicConfig.BACKGROUND_COLOR_ALPHA),
+                        value -> AcrylicConfig.getInstance().setValue(AcrylicConfig.BACKGROUND_COLOR_ALPHA, value)
+                ))
+                .available(transparentWindowEnabled)
+                .build();
+
         final Option<Boolean> removeScreenBackgroundOption = boolOption(AcrylicConfig.REMOVE_SCREEN_BACKGROUND, false,
-                AcrylicConfig.getInstance().getValue(AcrylicConfig.TRANSPARENT_WINDOW),
+                transparentWindowEnabled,
                 (val) -> { });
+
+        final Option<Boolean> transparentWindowOption = boolOption(AcrylicConfig.TRANSPARENT_WINDOW, true, true,
+                (val) -> {
+                    removeScreenBackgroundOption.setAvailable(val);
+                    backgroundColorRgbOption.setAvailable(val);
+                    backgroundColorAlphaOption.setAvailable(val);
+                });
 
         return ConfigCategory.createBuilder()
                 .name(translatable("acrylic.config.general"))
@@ -115,10 +145,16 @@ public final class ConfigScreenUtil {
                 .option( boolOption(AcrylicConfig.SHOW_DEBUG_INFO, false, true, (val) -> { }) )
 
                 // Transparent window
-                .option( boolOption(AcrylicConfig.TRANSPARENT_WINDOW, true, true, removeScreenBackgroundOption::setAvailable) )
+                .option( transparentWindowOption )
 
                 // Remove screen background
                 .option( removeScreenBackgroundOption )
+
+                // Background color RGB
+                .option( backgroundColorRgbOption )
+
+                // Background color Alpha
+                .option( backgroundColorAlphaOption )
 
                 .build();
     }

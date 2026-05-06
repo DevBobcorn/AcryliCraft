@@ -12,6 +12,10 @@
   "acrylic.config.transparent_window.description": "Включить ли прозрачное окно игры и удалить фоновую панораму. Это необходимо, если вы хотите использовать фон, например, акриловый, для всего окна. Включение этого параметра вступит в силу после перезапуска.",
   "acrylic.config.remove_screen_background": "Удалить фон экрана",
   "acrylic.config.remove_screen_background.description": "Убирать ли темный фон на экранах, когда включено «прозрачный фон».",
+  "acrylic.config.background_color_rgb": "Цвет фона",
+  "acrylic.config.background_color_rgb.description": "RGB-часть цвета фона при включенном прозрачном окне.",
+  "acrylic.config.background_color_alpha": "Прозрачность фона",
+  "acrylic.config.background_color_alpha.description": "Альфа-канал (прозрачность) цвета фона (0-255).",
 
   "acrylic.config.win11_specific": "Специфический для Windows 11",
 

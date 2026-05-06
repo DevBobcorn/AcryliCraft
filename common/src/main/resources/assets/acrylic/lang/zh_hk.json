@@ -12,6 +12,10 @@
   "acrylic.config.transparent_window.description": "系否啟用透明視窗同埋移除原本嘅全景圖，如果要用全視窗嘅亞加力等背景就要開啟呢個項目。啟用之後重啟遊戲生效。",
   "acrylic.config.remove_screen_background": "移除介面背景",
   "acrylic.config.remove_screen_background.description": "使用透明視窗時，系否移除介面上嘅深色背景。",
+  "acrylic.config.background_color_rgb": "背景顏色",
+  "acrylic.config.background_color_rgb.description": "使用透明視窗時嘅背景顏色（RGB部分）。",
+  "acrylic.config.background_color_alpha": "背景透明度",
+  "acrylic.config.background_color_alpha.description": "背景顏色嘅透明度（0-255）。",
 
   "acrylic.config.win11_specific": "Win11 相關設定",
 

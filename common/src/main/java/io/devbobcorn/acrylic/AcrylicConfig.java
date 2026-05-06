@@ -44,6 +44,8 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
     public static final String TRANSPARENT_WINDOW        = "transparent_window";
     public static final String REMOVE_SCREEN_BACKGROUND  = "remove_screen_background";
     public static final String REMOVE_IN_GAME_SKYBOX     = "remove_in_game_skybox";
+    public static final String BACKGROUND_COLOR_RGB       = "background_color_rgb";
+    public static final String BACKGROUND_COLOR_ALPHA     = "background_color_alpha";
 
     public static final String USE_IMMERSIVE_DARK_MODE   = "use_immersive_dark_mode";
     public static final String SYNC_WITH_OS_THEME        = "sync_with_os_theme";
@@ -129,6 +131,14 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
         configValues.put( REMOVE_SCREEN_BACKGROUND,
                 this.getMutable(REMOVE_SCREEN_BACKGROUND, Boolean::parseBoolean, true)
+        );
+
+        configValues.put( BACKGROUND_COLOR_RGB,
+                this.getMutable(BACKGROUND_COLOR_RGB, Integer::parseInt, 0xFFFFFF)
+        );
+
+        configValues.put( BACKGROUND_COLOR_ALPHA,
+                this.getMutable(BACKGROUND_COLOR_ALPHA, Integer::parseInt, 0)
         );
 
         if (Platform.get() == Platform.WINDOWS && NtDllLib.checkCompatibility())
