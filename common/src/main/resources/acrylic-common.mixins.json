@@ -10,7 +10,8 @@
     "PanoramaRendererMixin",
     "GpuSurfaceMixin",
     "GlCommandEncoderMixin",
-    "CommandEncoderAccessor"
+    "CommandEncoderAccessor",
+    "VulkanGpuSurfaceMixin"
   ],
   "mixins": [
   ],
