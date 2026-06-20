@@ -8,7 +8,7 @@
     "TitleScreenMixin",
     "ScreenMixin",
     "PanoramaRendererMixin",
-    "RenderTargetMixin",
+    "GpuSurfaceMixin",
     "GlCommandEncoderMixin",
     "CommandEncoderAccessor"
   ],

@@ -3,7 +3,7 @@ package io.devbobcorn.acrylic.client.rendering;
 import java.io.File;
 import java.util.function.Consumer;
 
-import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.textures.GpuTexture;
 import org.slf4j.Logger;
 
@@ -26,16 +26,15 @@ public class ScreenshotUtil {
             throw new IllegalStateException("Tried to capture screenshot of an incomplete framebuffer");
         } else {
             var gpuBuffer = RenderSystem.getDevice().createBuffer(() -> "Alpha Screenshot buffer",
-                    9, w * h * gpuTexture.getFormat().pixelSize());
-            var commandEncoder = RenderSystem.getDevice().createCommandEncoder();
+                    9, w * h * gpuTexture.getFormat().blockSize());
 
             RenderSystem.getDevice().createCommandEncoder().copyTextureToBuffer(gpuTexture, gpuBuffer, 0, () -> {
-                try (GpuBuffer.MappedView mappedView = commandEncoder.mapBuffer(gpuBuffer, true, false)) {
+                try (GpuBufferSlice.MappedView mappedView = gpuBuffer.map(true, false)) {
                     var nativeImage = new NativeImage(w, h, false);
 
                     for(int y = 0; y < h; ++y) {
                         for(int x = 0; x < w; ++x) {
-                            int m = mappedView.data().getInt((x + y * w) * gpuTexture.getFormat().pixelSize());
+                            int m = mappedView.data().getInt((x + y * w) * gpuTexture.getFormat().blockSize());
                             nativeImage.setPixelABGR(x, h - y - 1, m/* | -16777216*/); // Don't fill alpha channel
                         }
                     }

@@ -16,6 +16,7 @@ import io.devbobcorn.acrylic.client.window.IWindow;
 import io.devbobcorn.acrylic.client.window.WindowUtil;
 
 import com.mojang.blaze3d.platform.DisplayData;
+import com.mojang.blaze3d.platform.MonitorManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
 import com.mojang.blaze3d.systems.GpuBackend;
@@ -78,8 +79,8 @@ public class WindowMixin implements IWindow {
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     private void init(
             final WindowEventHandler handler,
-            final DisplayData display, final String videoMode, final String title,
-            final GpuBackend gpuBackend,
+            final DisplayData display, final String videoMode, final boolean fullscreen, final String title,
+            final MonitorManager monitorManager, final GpuBackend gpuBackend,
             final CallbackInfo callback
     ) {
         // Check if transparent frame buffer is enabled

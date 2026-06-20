@@ -55,8 +55,9 @@ public class TitleScreenMixin {
 
                 acrylic_mod$renderString(guiGraphicsExtractor, "Window Handle: " + String.format("0x%016X", windowHandle), 2, textPos);
                 textPos += 10;
-                acrylic_mod$renderString(guiGraphicsExtractor, gpuDevice.getRenderer() + " / " +
-                        String.format(Locale.ROOT, "%s %s", gpuDevice.getBackendName(), gpuDevice.getVersion()), 2, textPos);
+                var deviceInfo = gpuDevice.getDeviceInfo();
+                acrylic_mod$renderString(guiGraphicsExtractor, deviceInfo.name() + " / " +
+                        String.format(Locale.ROOT, "%s %s", deviceInfo.backendName(), deviceInfo.driverInfo()), 2, textPos);
                 textPos += 10;
             }
 

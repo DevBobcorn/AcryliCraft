@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.Panorama;
 public class PanoramaRendererMixin {
 
     @Inject(at = @At("HEAD"), method = "extractRenderState", cancellable = true)
-    public void extractRenderState(GuiGraphicsExtractor guiGraphicsExtractor, int i, int j, boolean bl, CallbackInfo callback) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphicsExtractor, int i, int j, CallbackInfo callback) {
         if ((boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.TRANSPARENT_WINDOW)) {
             callback.cancel();
 
