@@ -66,7 +66,9 @@ public final class AlphaFillRenderer {
                 () -> "Acrylic Alpha Fill", colorView, Optional.empty())) {
             pass.setPipeline(renderPipeline);
             pass.setVertexBuffer(0, vertices);
-            pass.draw(0, FULLSCREEN_QUAD.length / 3, 0, 1);
+            // RenderPass#draw maps straight onto vkCmdDraw, i.e.
+            // draw(vertexCount, instanceCount, firstVertex, firstInstance).
+            pass.draw(FULLSCREEN_QUAD.length / 3, 1, 0, 0);
         }
     }
 
@@ -80,6 +82,11 @@ public final class AlphaFillRenderer {
                     .withFragmentShader(SHADER)
                     .withVertexBinding(0, DefaultVertexFormat.POSITION)
                     .withPrimitiveTopology(PrimitiveTopology.TRIANGLES)
+                    // Disable face culling. The builder defaults culling to ON, and the
+                    // full-screen triangles' winding is front-facing under OpenGL clip
+                    // space but back-facing on the Vulkan backend (flipped clip-space Y),
+                    // which would silently cull every fragment so the draw writes nothing.
+                    .withCull(false)
                     .withColorTargetState(new ColorTargetState(Optional.empty(), format, ColorTargetState.WRITE_ALPHA))
                     .build();
             pipelineFormat = format;
