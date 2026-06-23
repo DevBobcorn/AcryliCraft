@@ -46,5 +46,6 @@
   "acrylic.config.border_color.description": "Color of window border.",
 
   "acrylic.hint.transparency_init_failure": "Failed to initialize. Make sure FML earlyWindowControl is turned off.",
+  "acrylic.hint.transparency_x11_vulkan": "Transparency needs OpenGL or native Wayland (not X11/XWayland + Vulkan).",
   "acrylic.hint.restart_for_transparency": "Please restart the game to enable transparent window."
 }

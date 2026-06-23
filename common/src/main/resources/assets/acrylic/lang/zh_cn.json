@@ -46,5 +46,6 @@
   "acrylic.config.border_color.description": "窗口边框的颜色。",
 
   "acrylic.hint.transparency_init_failure": "未能成功初始化，请确保 FML 的 earlyWindowControl 已关闭。",
+  "acrylic.hint.transparency_x11_vulkan": "透明窗口需 OpenGL 或原生 Wayland（X11/XWayland + Vulkan 不支持）。",
   "acrylic.hint.restart_for_transparency": "请重启游戏以使透明窗口生效。"
 }

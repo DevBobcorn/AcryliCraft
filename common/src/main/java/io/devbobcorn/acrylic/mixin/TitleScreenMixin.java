@@ -63,7 +63,7 @@ public class TitleScreenMixin {
 
             // Check if transparency failed to initialize, and display a hint if this is the case
             if (AcrylicMod.getTransparencyInitFailed()) {
-                var hint = translatable(AcrylicMod.MOD_ID + ".hint.transparency_init_failure");
+                var hint = translatable(AcrylicMod.getTransparencyInitFailureHintKey());
                 acrylic_mod$renderString(guiGraphicsExtractor, hint, 2, textPos, 0xFFFF0000);
             } else if ((boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW) && !AcrylicMod.getTransparencyEnabled()) {
                 var hint = translatable(AcrylicMod.MOD_ID + ".hint.restart_for_transparency");

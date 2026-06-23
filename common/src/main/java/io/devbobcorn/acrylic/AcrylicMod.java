@@ -11,6 +11,13 @@ public class AcrylicMod {
     private static boolean transparencyInitFailed = false;
 
     /**
+     *  Translation key for the message shown when transparency initialization
+     *  failed. Defaults to the generic hint and may be refined to a more
+     *  specific reason (e.g. the X11/Vulkan limitation) upon window creation.
+     */
+    private static String transparencyInitFailureHintKey = MOD_ID + ".hint.transparency_init_failure";
+
+    /**
      *  Check whether window transparency is enabled.
      */
     public static boolean getTransparencyEnabled() {
@@ -38,6 +45,21 @@ public class AcrylicMod {
      */
     public static void setTransparencyInitFailed(boolean failed) {
         transparencyInitFailed = failed;
+    }
+
+    /**
+     *  Get the translation key describing why transparency initialization failed.
+     */
+    public static String getTransparencyInitFailureHintKey() {
+        return transparencyInitFailureHintKey;
+    }
+
+    /**
+     *  Set the translation key describing why transparency initialization failed.
+     *  This is supposed to be called only once, upon window creation.
+     */
+    public static void setTransparencyInitFailureHintKey(String key) {
+        transparencyInitFailureHintKey = key;
     }
 
     /**

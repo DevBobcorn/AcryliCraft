@@ -46,5 +46,6 @@
   "acrylic.config.border_color.description": "ウィンドウボーダーの色。",
 
   "acrylic.hint.transparency_init_failure": "初期化に失敗しました。FML earlyWindowControl がオフになっていることを確認してください。",
+  "acrylic.hint.transparency_x11_vulkan": "透明化には OpenGL かネイティブ Wayland が必要です（X11/XWayland + Vulkan は不可）。",
   "acrylic.hint.restart_for_transparency": "透明ウィンドウを有効にするには、ゲームを再起動してください。"
 }

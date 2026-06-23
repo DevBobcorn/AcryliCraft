@@ -46,5 +46,6 @@
   "acrylic.config.border_color.description": "Цвет границы окна.",
 
   "acrylic.hint.transparency_init_failure": "Не удалось инициализировать. Убедитесь, что FML «earlyWindowControl» отключен.",
+  "acrylic.hint.transparency_x11_vulkan": "Прозрачность требует OpenGL или нативного Wayland (не X11/XWayland + Vulkan).",
   "acrylic.hint.restart_for_transparency": "Перезапустите игру для включения «Прозрачный фон»."
 }
