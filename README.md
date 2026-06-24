@@ -18,7 +18,7 @@ For Forge/NeoForge 1.20 and later, it is also necessary to disable the FML splas
 
 Some NVIDIA graphics cards don't render translucency properly for Minecraft's window (or any other GLFW window), in which case the window background would appear black. This is likely an issue with their drivers and is unfortunately not solveable on my end. Switching to another graphics card should make it work, if you happen to have one installed on your machine.
 
-For Minecraft 26.2+, there is a known issue with window transparency when using Vulkan backend. This is likely a problem with how the LWJGL GLFW library bundled with Minecraft handles X11 visual(Wayland is also affected because it then goes through XWayland), and is not currently addressable. Consider switching to OpenGL if you encounter this.
+For Minecraft 26.2+, there is a known issue with window transparency when using Vulkan backend on Linux. This is due to Minecraft defaulting to X11(and XWayland for Wayland) for GLFW. The mod solves this issue by forcing Wayland initialization hint when it is available, and this fix seems to work so far. That said, it is not a guaranteed fix for everyone. If you encounter any problem, feel free to report it on the [Github page](https://github.com/DevBobcorn/AcryliCraft/issues).
 
 ## License
 
