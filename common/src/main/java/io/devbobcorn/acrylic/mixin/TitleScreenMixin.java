@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
+import io.devbobcorn.acrylic.client.window.WindowUtil;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -54,6 +55,8 @@ public class TitleScreenMixin {
                 var windowHandle = AcrylicMod.getWindowHandle();
 
                 acrylic_mod$renderString(guiGraphicsExtractor, "Window Handle: " + String.format("0x%016X", windowHandle), 2, textPos);
+                textPos += 10;
+                acrylic_mod$renderString(guiGraphicsExtractor, "GLFW Platform: " + WindowUtil.getGlfwPlatformName(), 2, textPos);
                 textPos += 10;
                 var deviceInfo = gpuDevice.getDeviceInfo();
                 acrylic_mod$renderString(guiGraphicsExtractor, deviceInfo.name() + " / " +
