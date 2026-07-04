@@ -18,6 +18,7 @@
   "acrylic.config.background_color_alpha.description": "Альфа-канал (прозрачность) цвета фона (0-255).",
 
   "acrylic.config.win11_specific": "Специфический для Windows 11",
+  "acrylic.config.linux_specific": "Специфический для Linux",
 
   "acrylic.config.window": "Окно",
   "acrylic.config.sync_with_os_theme": "Следуйте за темой ОС",
@@ -44,6 +45,9 @@
   "acrylic.config.customize_border.description": "Включать ли персонализацию границ окна.",
   "acrylic.config.border_color": "Цвет границы",
   "acrylic.config.border_color.description": "Цвет границы окна.",
+
+  "acrylic.config.prefer_wayland": "Предпочитать нативный Wayland",
+  "acrylic.config.prefer_wayland.description": "Использовать нативный бэкенд Wayland GLFW, когда он доступен, вместо отката к X11 через XWayland. Улучшает поддержку прозрачных окон с GPU-бэкендами, отличными от OpenGL. Вступает в силу после перезапуска.",
 
   "acrylic.hint.transparency_init_failure": "Не удалось инициализировать. Убедитесь, что FML «earlyWindowControl» отключен.",
   "acrylic.hint.transparency_x11_vulkan": "Прозрачность требует OpenGL или нативного Wayland (не X11/XWayland + Vulkan).",

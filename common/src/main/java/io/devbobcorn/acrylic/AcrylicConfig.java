@@ -55,6 +55,8 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
     public static final String HIDE_BORDER               = "hide_border";
     public static final String BORDER_COLOR              = "border_color";
 
+    public static final String PREFER_WAYLAND            = "prefer_wayland";
+
     private final Hashtable<String, Settings<AcrylicConfig>.MutableValue<?>> configValues = new Hashtable<>();
 
     @SuppressWarnings("null")
@@ -179,6 +181,12 @@ public class AcrylicConfig extends Settings<AcrylicConfig> {
 
             configValues.put( BORDER_COLOR,
                     this.getMutable(BORDER_COLOR, Integer::parseInt, DwmApiLib.COLOR_BLACK.getRGB())
+            );
+        }
+
+        if (Platform.get() == Platform.LINUX) {
+            configValues.put( PREFER_WAYLAND,
+                    this.getMutable(PREFER_WAYLAND, Boolean::parseBoolean, true)
             );
         }
     }

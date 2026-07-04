@@ -18,6 +18,7 @@
   "acrylic.config.background_color_alpha.description": "背景颜色的透明度（0-255）。",
 
   "acrylic.config.win11_specific": "Win11 相关配置",
+  "acrylic.config.linux_specific": "Linux 相关配置",
 
   "acrylic.config.window": "窗口设置",
   "acrylic.config.sync_with_os_theme": "同步系统主题",
@@ -44,6 +45,9 @@
   "acrylic.config.customize_border.description": "是否启用自定义边框。",
   "acrylic.config.border_color": "边框颜色",
   "acrylic.config.border_color.description": "窗口边框的颜色。",
+
+  "acrylic.config.prefer_wayland": "优先使用原生 Wayland",
+  "acrylic.config.prefer_wayland.description": "在可用时使用 GLFW 的原生 Wayland 后端，而不是通过 XWayland 回退到 X11。这可以改善非 OpenGL GPU 后端的透明窗口支持。重启游戏后生效。",
 
   "acrylic.hint.transparency_init_failure": "未能成功初始化，请确保 FML 的 earlyWindowControl 已关闭。",
   "acrylic.hint.transparency_x11_vulkan": "透明窗口需 OpenGL 或原生 Wayland（X11/XWayland + Vulkan 不支持）。",

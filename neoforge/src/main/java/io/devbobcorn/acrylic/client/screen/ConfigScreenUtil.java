@@ -37,7 +37,7 @@ public final class ConfigScreenUtil {
                 .title(translatable("acrylic.mod_name"))
 
                 .category(categoryGeneral())
-                .category(categoryWin11Specific())
+                .category(categoryPlatformSpecific())
 
                 .build().generateScreen(parent);
     }
@@ -155,6 +155,29 @@ public final class ConfigScreenUtil {
 
                 // Background color Alpha
                 .option( backgroundColorAlphaOption )
+
+                .build();
+    }
+
+    private static ConfigCategory categoryPlatformSpecific() {
+        if (Platform.get() == Platform.LINUX) {
+            return categoryLinuxSpecific();
+        }
+
+        return categoryWin11Specific();
+    }
+
+    private static ConfigCategory categoryLinuxSpecific() {
+        return ConfigCategory.createBuilder()
+                .name(translatable("acrylic.config.linux_specific"))
+
+                .group(OptionGroup.createBuilder()
+                        .name(translatable(AcrylicMod.MOD_ID + ".config.window"))
+
+                        .option( boolOption(AcrylicConfig.PREFER_WAYLAND, true, true, (val) -> { }) )
+
+                        .build()
+                )
 
                 .build();
     }

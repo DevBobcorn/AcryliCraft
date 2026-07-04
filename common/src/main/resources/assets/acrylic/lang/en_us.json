@@ -18,6 +18,7 @@
   "acrylic.config.background_color_alpha.description": "Alpha (transparency) of the background color (0-255).",
 
   "acrylic.config.win11_specific": "Win11-Specific Config",
+  "acrylic.config.linux_specific": "Linux-Specific Config",
 
   "acrylic.config.window": "Window Settings",
   "acrylic.config.sync_with_os_theme": "Sync with OS Theme",
@@ -44,6 +45,9 @@
   "acrylic.config.customize_border.description": "Whether to enable window border customization.",
   "acrylic.config.border_color": "Border Color",
   "acrylic.config.border_color.description": "Color of window border.",
+
+  "acrylic.config.prefer_wayland": "Prefer native Wayland",
+  "acrylic.config.prefer_wayland.description": "Use GLFW's native Wayland backend when available instead of falling back to X11 via XWayland. This improves transparent window support with non-OpenGL GPU backends. Takes effect after a restart.",
 
   "acrylic.hint.transparency_init_failure": "Failed to initialize. Make sure FML earlyWindowControl is turned off.",
   "acrylic.hint.transparency_x11_vulkan": "Transparency needs OpenGL or native Wayland (not X11/XWayland + Vulkan).",

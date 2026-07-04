@@ -18,6 +18,7 @@
   "acrylic.config.background_color_alpha.description": "背景色のアルファ（透明度）（0-255）。",
 
   "acrylic.config.win11_specific": "Win11 固有の設定",
+  "acrylic.config.linux_specific": "Linux 固有の設定",
 
   "acrylic.config.window": "ウィンドウの設定",
   "acrylic.config.sync_with_os_theme": "OS テーマとの同期",
@@ -44,6 +45,9 @@
   "acrylic.config.customize_border.description": "ウィンドウボーダーのカスタマイズを有効にするかどうか。",
   "acrylic.config.border_color": "ボーダーの色",
   "acrylic.config.border_color.description": "ウィンドウボーダーの色。",
+
+  "acrylic.config.prefer_wayland": "ネイティブ Wayland を優先",
+  "acrylic.config.prefer_wayland.description": "利用可能な場合、XWayland 経由の X11 へのフォールバックではなく、GLFW のネイティブ Wayland バックエンドを使用します。OpenGL 以外の GPU バックエンドでの透明ウィンドウのサポートが向上します。再起動後に有効になります。",
 
   "acrylic.hint.transparency_init_failure": "初期化に失敗しました。FML earlyWindowControl がオフになっていることを確認してください。",
   "acrylic.hint.transparency_x11_vulkan": "透明化には OpenGL かネイティブ Wayland が必要です（X11/XWayland + Vulkan は不可）。",

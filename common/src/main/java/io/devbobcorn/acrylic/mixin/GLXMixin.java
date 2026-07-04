@@ -1,7 +1,9 @@
 package io.devbobcorn.acrylic.mixin;
 
 import com.mojang.blaze3d.platform.GLX;
+import io.devbobcorn.acrylic.AcrylicConfig;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.Platform;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,6 +30,14 @@ public abstract class GLXMixin {
             remap = false
     )
     private static void acrylic_mod$preferWaylandPlatform(CallbackInfoReturnable<LongSupplier> cir) {
+        if (Platform.get() != Platform.LINUX) {
+            return;
+        }
+
+        if (!(boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.PREFER_WAYLAND)) {
+            return;
+        }
+
         if (GLFW.glfwPlatformSupported(GLFW.GLFW_PLATFORM_WAYLAND)) {
             GLFW.glfwInitHint(GLFW.GLFW_PLATFORM, GLFW.GLFW_PLATFORM_WAYLAND);
         }
