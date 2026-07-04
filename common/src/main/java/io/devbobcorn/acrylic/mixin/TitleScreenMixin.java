@@ -11,6 +11,7 @@ import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
 import io.devbobcorn.acrylic.client.window.WindowUtil;
 
+import com.mojang.blaze3d.opengl.GlBackend;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -53,8 +54,10 @@ public class TitleScreenMixin {
             if ((boolean) config.getValue(AcrylicConfig.SHOW_DEBUG_INFO)) {
                 // Draw debug info
                 var windowHandle = AcrylicMod.getWindowHandle();
+                var glfwWindowId = s_minecraft.getWindow().handle();
 
-                acrylic_mod$renderString(guiGraphicsExtractor, "Window Handle: " + String.format("0x%016X", windowHandle), 2, textPos);
+                acrylic_mod$renderString(guiGraphicsExtractor, "Window Handle: " + String.format("0x%016X", windowHandle)
+                        + " / GLFW Window: " + String.format("0x%016X", glfwWindowId), 2, textPos);
                 textPos += 10;
                 acrylic_mod$renderString(guiGraphicsExtractor, "GLFW Platform: " + WindowUtil.getGlfwPlatformName(), 2, textPos);
                 textPos += 10;
@@ -66,7 +69,15 @@ public class TitleScreenMixin {
 
             // Check if transparency failed to initialize, and display a hint if this is the case
             if (AcrylicMod.getTransparencyInitFailed()) {
-                var hint = translatable(AcrylicMod.getTransparencyInitFailureHintKey());
+                var hintKey = AcrylicMod.getTransparencyInitFailureHintKey();
+
+                // A discarded Vulkan window may have set this before OpenGL fallback succeeded.
+                if (hintKey.equals(AcrylicMod.MOD_ID + ".hint.transparency_x11_vulkan")
+                        && s_minecraft.getWindow().backend() instanceof GlBackend) {
+                    hintKey = AcrylicMod.MOD_ID + ".hint.transparency_init_failure";
+                }
+
+                var hint = translatable(hintKey);
                 acrylic_mod$renderString(guiGraphicsExtractor, hint, 2, textPos, 0xFFFF0000);
             } else if ((boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW) && !AcrylicMod.getTransparencyEnabled()) {
                 var hint = translatable(AcrylicMod.MOD_ID + ".hint.restart_for_transparency");

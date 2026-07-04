@@ -16,6 +16,7 @@ import io.devbobcorn.acrylic.AcrylicMod;
 import io.devbobcorn.acrylic.client.window.IWindow;
 import io.devbobcorn.acrylic.client.window.WindowUtil;
 
+import com.mojang.blaze3d.opengl.GlBackend;
 import com.mojang.blaze3d.platform.DisplayData;
 import com.mojang.blaze3d.platform.MonitorManager;
 import com.mojang.blaze3d.platform.Window;
@@ -92,10 +93,15 @@ public class WindowMixin implements IWindow {
 
         var config = AcrylicConfig.getInstance();
 
-        // Check if transparent framebuffer requested but failed to initialize
-        if ((boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW) && !transparent) {
-            AcrylicMod.setTransparencyInitFailed(true);
-            acrylic_mod$diagnoseTransparencyFailure();
+        // Re-evaluate on every window creation (e.g. Vulkan may fall back to OpenGL).
+        if ((boolean) config.getValue(AcrylicConfig.TRANSPARENT_WINDOW)) {
+            if (transparent) {
+                AcrylicMod.setTransparencyInitFailed(false);
+                AcrylicMod.setTransparencyInitFailureHintKey(AcrylicMod.MOD_ID + ".hint.transparency_init_failure");
+            } else {
+                AcrylicMod.setTransparencyInitFailed(true);
+                acrylic_mod$diagnoseTransparencyFailure(gpuBackend);
+            }
         }
 
         // Check OS
@@ -121,13 +127,13 @@ public class WindowMixin implements IWindow {
      * backend (system GLFW 3.4+ via -Dorg.lwjgl.glfw.libname), do not have this problem.
      */
     @Unique
-    private void acrylic_mod$diagnoseTransparencyFailure() {
+    private void acrylic_mod$diagnoseTransparencyFailure(GpuBackend gpuBackend) {
         final int platform = GLFW.glfwGetPlatform();
 
         // A NO_API window means a non-OpenGL backend (e.g. Minecraft 26.2's Vulkan backend).
         final boolean noApiWindow = GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_CLIENT_API) == GLFW.GLFW_NO_API;
 
-        if (platform == GLFW.GLFW_PLATFORM_X11 && noApiWindow) {
+        if (platform == GLFW.GLFW_PLATFORM_X11 && noApiWindow && !(gpuBackend instanceof GlBackend)) {
             AcrylicMod.setTransparencyInitFailureHintKey(AcrylicMod.MOD_ID + ".hint.transparency_x11_vulkan");
             LOGGER.warn("Acrylic: transparent framebuffer unavailable. GLFW is using the X11 backend "
                     + "(this includes XWayland on a Wayland session) together with a non-OpenGL GPU backend "
@@ -135,6 +141,7 @@ public class WindowMixin implements IWindow {
                     + "windows on X11. Switch to the OpenGL backend, or run on GLFW's native Wayland backend "
                     + "(system GLFW 3.4+ via -Dorg.lwjgl.glfw.libname).");
         } else {
+            AcrylicMod.setTransparencyInitFailureHintKey(AcrylicMod.MOD_ID + ".hint.transparency_init_failure");
             LOGGER.warn("Acrylic: failed to initialize transparent framebuffer (GLFW platform={}, GLFW_NO_API window={}).",
                     platform, noApiWindow);
         }
