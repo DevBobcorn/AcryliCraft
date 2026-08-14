@@ -13,7 +13,7 @@ displayURL="https://modrinth.com/mod/acrylicraft"
 description = '''
 Apply Fluent Design materials to Minecraft window.
 '''
-logoFile = "assets/acrylic/acrylicraft.png"
+bannerFile = "assets/acrylic/acrylicraft.png"
 
 [[mixins]]
 config = "acrylic-common.mixins.json"
