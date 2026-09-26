@@ -61,7 +61,10 @@ public class WindowMixin implements IWindow {
         return flags;
     }
 
-    @Inject(method = "<init>", at = @At(value = "TAIL"))
+    @Inject(
+            method = "<init>(Lcom/mojang/blaze3d/platform/WindowEventHandler;Lcom/mojang/blaze3d/platform/DisplayData;Ljava/lang/String;ZLjava/lang/String;Lcom/mojang/blaze3d/platform/MonitorManager;Lcom/mojang/renderpearl/api/device/GpuBackend;I)V",
+            at = @At(value = "TAIL")
+    )
     private void init(
             final WindowEventHandler handler,
             final DisplayData display, final String videoMode, final boolean fullscreen, final String title,
