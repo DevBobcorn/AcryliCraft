@@ -1,6 +1,7 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-in vec3 Position;
+layout(location = 0) in vec3 Position;
 
 void main() {
     // Position is already supplied in normalized device coordinates,
