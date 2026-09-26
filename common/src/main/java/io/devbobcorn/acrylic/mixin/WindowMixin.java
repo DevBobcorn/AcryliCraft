@@ -1,6 +1,6 @@
 package io.devbobcorn.acrylic.mixin;
 
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLVideo;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,20 +8,20 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
 import io.devbobcorn.acrylic.client.window.IWindow;
 import io.devbobcorn.acrylic.client.window.WindowUtil;
 
-import com.mojang.blaze3d.opengl.GlBackend;
+import com.mojang.renderpearl.api.device.GpuBackend;
+import com.mojang.renderpearl.backend.opengl.GlBackend;
 import com.mojang.blaze3d.platform.DisplayData;
 import com.mojang.blaze3d.platform.MonitorManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
-import com.mojang.blaze3d.systems.GpuBackend;
 
 import net.minecraft.util.Util;
 
@@ -34,60 +34,44 @@ public class WindowMixin implements IWindow {
 
     @Final
     @Shadow
-    // GLFW Window id
+    // SDL_Window pointer
     private long handle;
 
-    @Inject(
-            method = "createGlfwWindow",
+    /**
+     * Add {@code SDL_WINDOW_TRANSPARENT} to the flags handed to the GPU backend,
+     * which is what creates the SDL window. This is the SDL3 replacement for the
+     * old {@code GLFW_TRANSPARENT_FRAMEBUFFER} window hint and works for both the
+     * OpenGL and Vulkan backends.
+     */
+    @ModifyArg(
+            method = "createWindow",
             remap = false,
             at = @At(
                     value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/systems/GpuBackend;setWindowHints()V",
-                    remap = false,
-                    shift = At.Shift.AFTER
-            )
+                    target = "Lcom/mojang/renderpearl/api/device/GpuBackend;createWindow(Ljava/lang/String;IIJ)J",
+                    remap = false
+            ),
+            index = 3
     )
-    private static void glfwWindowHintInject(int width, int height, String title, long monitor, GpuBackend gpuBackend, CallbackInfoReturnable<Long> cir) {
-
-        // Window hints applied to vanilla window:
-
-        // 0x22001            196609
-        // GLFW_FOCUSED       0x30001
-
-        // 0x2200B            221185
-        // GLFW_HOVERED       0x36001
-
-        // 0x22002            3
-        // GLFW_ICONIFIED     0x11
-
-        // 0x22003            2
-        // GLFW_RESIZABLE     0x10
-
-        // 0x22008            204801
-        // GLFW_MAXIMIZED     0x32001
-
-        // 0x22006            1 (GLFW_TRUE)
-        // GLFW_AUTO_ICONIFY  0x1
-
-        // Initialize Acrylic by accessing its instance
+    private long acrylic_mod$transparentWindowFlags(long flags) {
         if ((boolean) AcrylicConfig.getInstance().getValue(AcrylicConfig.TRANSPARENT_WINDOW)) {
-            // Magic! (This also works on macOS and linux)
-            GLFW.glfwWindowHint(GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_TRUE);
+            return flags | SDLVideo.SDL_WINDOW_TRANSPARENT;
         }
 
-        LOGGER.info("Window hints applied!");
+        return flags;
     }
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     private void init(
             final WindowEventHandler handler,
             final DisplayData display, final String videoMode, final boolean fullscreen, final String title,
-            final MonitorManager monitorManager, final GpuBackend gpuBackend,
+            final MonitorManager monitorManager, final GpuBackend gpuBackend, final int maxWindowSize,
             final CallbackInfo callback
     ) {
-        // Check if transparent frame buffer is enabled
-        // See https://www.glfw.org/docs/3.3/window_guide.html#window_transparency
-        var transparent = GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_TRANSPARENT_FRAMEBUFFER) == 1;
+        // Check whether the window was created with a transparent framebuffer.
+        // SDL exposes this as the SDL_WINDOW_TRANSPARENT flag on the created window.
+        // See https://wiki.libsdl.org/SDL3/SDL_WindowFlags
+        var transparent = (SDLVideo.SDL_GetWindowFlags(handle) & SDLVideo.SDL_WINDOW_TRANSPARENT) != 0;
 
         AcrylicMod.setTransparencyEnabled(transparent);
 
@@ -115,40 +99,34 @@ public class WindowMixin implements IWindow {
     }
 
     /**
-     * Try to determine why the transparent framebuffer was not granted and record a
+     * Try to determine why the transparent window was not granted and record a
      * more specific hint than the generic failure message.
      *
-     * The most common Linux case: even in a Wayland session, the game's bundled GLFW
-     * runs on its X11 backend through XWayland by default. On the X11 backend GLFW only
-     * selects an alpha-capable (ARGB) X visual on the GLX/EGL context-creation path; a
-     * window created for a non-OpenGL backend uses GLFW_NO_API as its client API and
-     * therefore falls back to the opaque DefaultVisual, so GLFW_TRANSPARENT_FRAMEBUFFER
-     * can never be honoured. The OpenGL backend, or running on GLFW's native Wayland
-     * backend (system GLFW 3.4+ via -Dorg.lwjgl.glfw.libname), do not have this problem.
+     * The most common Linux case: even in a Wayland session, SDL may be running
+     * on its X11 video driver through XWayland. SDL's X11 driver cannot create an
+     * alpha-capable window for a non-OpenGL backend, so the OpenGL backend or
+     * SDL's native Wayland driver must be used instead.
      */
     @Unique
     private void acrylic_mod$diagnoseTransparencyFailure(GpuBackend gpuBackend) {
-        final int platform = GLFW.glfwGetPlatform();
+        final String driver = SDLVideo.SDL_GetCurrentVideoDriver();
+        final boolean x11Driver = "x11".equals(driver);
 
-        // A NO_API window means a non-OpenGL backend (e.g. Minecraft 26.2's Vulkan backend).
-        final boolean noApiWindow = GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_CLIENT_API) == GLFW.GLFW_NO_API;
-
-        if (platform == GLFW.GLFW_PLATFORM_X11 && noApiWindow && !(gpuBackend instanceof GlBackend)) {
+        if (x11Driver && !(gpuBackend instanceof GlBackend)) {
             AcrylicMod.setTransparencyInitFailureHintKey(AcrylicMod.MOD_ID + ".hint.transparency_x11_vulkan");
-            LOGGER.warn("Acrylic: transparent framebuffer unavailable. GLFW is using the X11 backend "
+            LOGGER.warn("Acrylic: transparent window unavailable. SDL is using the X11 video driver "
                     + "(this includes XWayland on a Wayland session) together with a non-OpenGL GPU backend "
-                    + "(GLFW_NO_API, e.g. Vulkan). GLFW cannot create an alpha-capable framebuffer for such "
-                    + "windows on X11. Switch to the OpenGL backend, or run on GLFW's native Wayland backend "
-                    + "(system GLFW 3.4+ via -Dorg.lwjgl.glfw.libname).");
+                    + "(e.g. Vulkan). SDL cannot create an alpha-capable window for such backends on X11. "
+                    + "Switch to the OpenGL backend, or run on SDL's native Wayland driver "
+                    + "(enable \"Prefer native Wayland\", or set SDL_VIDEO_DRIVER=wayland).");
         } else {
             AcrylicMod.setTransparencyInitFailureHintKey(AcrylicMod.MOD_ID + ".hint.transparency_init_failure");
-            LOGGER.warn("Acrylic: failed to initialize transparent framebuffer (GLFW platform={}, GLFW_NO_API window={}).",
-                    platform, noApiWindow);
+            LOGGER.warn("Acrylic: failed to initialize transparent window (SDL video driver={}).", driver);
         }
     }
 
     @Override
-    public long acrylic_mod$getGLFWId() {
+    public long acrylic_mod$getSDLWindowHandle() {
         return handle;
     }
 

@@ -4,14 +4,14 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
-    "GLXMixin",
+    "RenderSystemMixin",
     "WindowMixin",
     "TitleScreenMixin",
     "ScreenMixin",
     "PanoramaRendererMixin",
     "GpuSurfaceMixin",
     "GlCommandEncoderMixin",
-    "CommandEncoderAccessor",
+    "RenderPipelinesMixin",
     "VulkanGpuSurfaceMixin"
   ],
   "mixins": [

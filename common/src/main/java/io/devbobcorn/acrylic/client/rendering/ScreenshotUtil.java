@@ -3,8 +3,8 @@ package io.devbobcorn.acrylic.client.rendering;
 import java.io.File;
 import java.util.function.Consumer;
 
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.textures.GpuTexture;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.textures.GpuTexture;
 import org.slf4j.Logger;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;

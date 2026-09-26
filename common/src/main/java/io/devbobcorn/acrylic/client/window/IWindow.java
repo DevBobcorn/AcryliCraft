@@ -2,6 +2,6 @@ package io.devbobcorn.acrylic.client.window;
 
 public interface IWindow {
 
-    long acrylic_mod$getGLFWId();
+    long acrylic_mod$getSDLWindowHandle();
 
 }

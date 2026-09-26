@@ -11,7 +11,6 @@ import io.devbobcorn.acrylic.AcrylicConfig;
 import io.devbobcorn.acrylic.AcrylicMod;
 import io.devbobcorn.acrylic.client.window.WindowUtil;
 
-import com.mojang.blaze3d.opengl.GlBackend;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -54,12 +53,12 @@ public class TitleScreenMixin {
             if ((boolean) config.getValue(AcrylicConfig.SHOW_DEBUG_INFO)) {
                 // Draw debug info
                 var windowHandle = AcrylicMod.getWindowHandle();
-                var glfwWindowId = s_minecraft.getWindow().handle();
+                var sdlWindowId = s_minecraft.getWindow().handle();
 
                 acrylic_mod$renderString(guiGraphicsExtractor, "Window Handle: " + String.format("0x%016X", windowHandle)
-                        + " / GLFW Window: " + String.format("0x%016X", glfwWindowId), 2, textPos);
+                        + " / SDL Window: " + String.format("0x%016X", sdlWindowId), 2, textPos);
                 textPos += 10;
-                acrylic_mod$renderString(guiGraphicsExtractor, "GLFW Platform: " + WindowUtil.getGlfwPlatformName(), 2, textPos);
+                acrylic_mod$renderString(guiGraphicsExtractor, "SDL Platform: " + WindowUtil.getPlatformName(), 2, textPos);
                 textPos += 10;
                 var deviceInfo = gpuDevice.getDeviceInfo();
                 acrylic_mod$renderString(guiGraphicsExtractor, deviceInfo.name() + " / " +
@@ -73,7 +72,7 @@ public class TitleScreenMixin {
 
                 // A discarded Vulkan window may have set this before OpenGL fallback succeeded.
                 if (hintKey.equals(AcrylicMod.MOD_ID + ".hint.transparency_x11_vulkan")
-                        && s_minecraft.getWindow().backend() instanceof GlBackend) {
+                        && "OpenGL".equals(gpuDevice.getDeviceInfo().backendName())) {
                     hintKey = AcrylicMod.MOD_ID + ".hint.transparency_init_failure";
                 }
 

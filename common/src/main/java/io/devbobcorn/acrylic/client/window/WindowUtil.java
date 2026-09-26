@@ -1,24 +1,21 @@
 package io.devbobcorn.acrylic.client.window;
 
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWNativeWin32;
+import org.lwjgl.sdl.SDLProperties;
+import org.lwjgl.sdl.SDLVideo;
 import org.lwjgl.system.Platform;
 
 public class WindowUtil {
 
-    public static String getGlfwPlatformName() {
-        final int platform = GLFW.glfwGetPlatform();
-        return switch (platform) {
-            case GLFW.GLFW_PLATFORM_WIN32 -> "Win32";
-            case GLFW.GLFW_PLATFORM_COCOA -> "Cocoa";
-            case GLFW.GLFW_PLATFORM_WAYLAND -> "Wayland";
-            case GLFW.GLFW_PLATFORM_X11 -> "X11";
-            case GLFW.GLFW_PLATFORM_NULL -> "Null";
-            default -> "Unknown (0x" + Integer.toHexString(platform) + ")";
-        };
+    /**
+     * Name of the SDL video driver currently in use (e.g. "windows", "x11",
+     * "wayland" or "cocoa"), or "Unknown" before SDL has been initialized.
+     */
+    public static String getPlatformName() {
+        final String driver = SDLVideo.SDL_GetCurrentVideoDriver();
+        return driver != null ? driver : "Unknown";
     }
 
-    // Get window handle (HWND) from GLFW window id
+    // Get the native window handle (HWND) from an SDL window pointer.
     public static long getWindowHandle(long windowId) {
         if (Platform.get() == Platform.WINDOWS) {
             return innerGetWindowHandle(windowId);
@@ -30,7 +27,14 @@ public class WindowUtil {
 
     private static long innerGetWindowHandle(long windowId) {
 
-        return GLFWNativeWin32.glfwGetWin32Window(windowId);
+        final int properties = SDLVideo.SDL_GetWindowProperties(windowId);
+
+        if (properties == 0) {
+            return 0L;
+        }
+
+        return SDLProperties.SDL_GetPointerProperty(
+                properties, SDLVideo.SDL_PROP_WINDOW_WIN32_HWND_POINTER, 0L);
     }
 
 }

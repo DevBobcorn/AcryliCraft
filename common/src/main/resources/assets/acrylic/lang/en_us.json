@@ -47,7 +47,7 @@
   "acrylic.config.border_color.description": "Color of window border.",
 
   "acrylic.config.prefer_wayland": "Prefer native Wayland",
-  "acrylic.config.prefer_wayland.description": "Use GLFW's native Wayland backend when available instead of falling back to X11 via XWayland. This improves transparent window support with non-OpenGL GPU backends. Takes effect after a restart.",
+  "acrylic.config.prefer_wayland.description": "Use SDL's native Wayland video driver when available instead of falling back to X11 via XWayland. This improves transparent window support with non-OpenGL GPU backends. Takes effect after a restart.",
 
   "acrylic.hint.transparency_init_failure": "Failed to initialize. Make sure FML earlyWindowControl is turned off.",
   "acrylic.hint.transparency_x11_vulkan": "Transparency needs OpenGL or native Wayland (not X11/XWayland + Vulkan).",

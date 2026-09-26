@@ -1,10 +1,10 @@
 package io.devbobcorn.acrylic.mixin;
 
-import com.mojang.blaze3d.opengl.DirectStateAccess;
-import com.mojang.blaze3d.opengl.FrameBufferAttachment;
-import com.mojang.blaze3d.opengl.FrameBufferCache;
-import com.mojang.blaze3d.opengl.GlStateManager;
-import com.mojang.blaze3d.textures.GpuTexture;
+import com.mojang.renderpearl.backend.opengl.DirectStateAccess;
+import com.mojang.renderpearl.backend.opengl.FrameBufferAttachment;
+import com.mojang.renderpearl.backend.opengl.FrameBufferCache;
+import com.mojang.renderpearl.backend.opengl.GlStateManager;
+import com.mojang.renderpearl.api.textures.GpuTexture;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,7 +16,7 @@ import java.util.List;
 import net.minecraft.util.ARGB;
 import io.devbobcorn.acrylic.client.rendering.IGlCommandEncoder;
 
-@Mixin(targets = "com.mojang.blaze3d.opengl.GlCommandEncoder")
+@Mixin(targets = "com.mojang.renderpearl.backend.opengl.GlCommandEncoder")
 public class GlCommandEncoderMixin implements IGlCommandEncoder {
 
     @Unique

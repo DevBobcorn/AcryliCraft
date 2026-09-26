@@ -47,7 +47,7 @@
   "acrylic.config.border_color.description": "ウィンドウボーダーの色。",
 
   "acrylic.config.prefer_wayland": "ネイティブ Wayland を優先",
-  "acrylic.config.prefer_wayland.description": "利用可能な場合、XWayland 経由の X11 へのフォールバックではなく、GLFW のネイティブ Wayland バックエンドを使用します。OpenGL 以外の GPU バックエンドでの透明ウィンドウのサポートが向上します。再起動後に有効になります。",
+  "acrylic.config.prefer_wayland.description": "利用可能な場合、XWayland 経由の X11 へのフォールバックではなく、SDL のネイティブ Wayland ドライバーを使用します。OpenGL 以外の GPU バックエンドでの透明ウィンドウのサポートが向上します。再起動後に有効になります。",
 
   "acrylic.hint.transparency_init_failure": "初期化に失敗しました。FML earlyWindowControl がオフになっていることを確認してください。",
   "acrylic.hint.transparency_x11_vulkan": "透明化には OpenGL かネイティブ Wayland が必要です（X11/XWayland + Vulkan は不可）。",

@@ -19,12 +19,12 @@ import io.devbobcorn.acrylic.AcrylicMod;
 // menus (verifiable in RenderDoc), the window is composited as solid black instead
 // of being see-through.
 //
-// The OpenGL backend does not have this problem because GLFW_TRANSPARENT_FRAMEBUFFER
+// The OpenGL backend does not have this problem because SDL_WINDOW_TRANSPARENT
 // already configures the GL default framebuffer to be composited with per-pixel
 // alpha. To get the same behaviour on Vulkan we must pick a composite-alpha mode
 // that respects the alpha channel, restricted to what the surface actually supports
 // (creating a swapchain with an unsupported mode would fail).
-@Mixin(targets = "com.mojang.blaze3d.vulkan.VulkanGpuSurface")
+@Mixin(targets = "com.mojang.renderpearl.backend.vulkan.VulkanGpuSurface")
 public class VulkanGpuSurfaceMixin {
 
     @ModifyArg(
@@ -45,10 +45,10 @@ public class VulkanGpuSurfaceMixin {
         final int supported = capabilities.supportedCompositeAlpha();
 
         // Pre-multiplied matches the compositor's expectation on most platforms
-        // (and is what GLFW's transparent framebuffer relies on); post-multiplied
+        // (and is what SDL's transparent window relies on); post-multiplied
         // and inherit are accepted fallbacks. Inherit is what Windows desktop WSI
         // typically exposes alongside opaque, and it inherits the per-pixel alpha
-        // setup GLFW already applied to the window.
+        // setup SDL already applied to the window.
         if ((supported & KHRSurface.VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR) != 0) {
             return KHRSurface.VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR;
         }
